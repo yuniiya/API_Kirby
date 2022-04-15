@@ -28,7 +28,7 @@ void Level_2::Loading()
 	// 플레이어
 	{
 		Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
-		Kirby->SetPosition({ 5200.f, 200.f });
+		Kirby->SetPosition({ 100.f, 490.f });
 		Kirby->MapScale(5376.f, 768.f);
 	}
 

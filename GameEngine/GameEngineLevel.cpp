@@ -2,6 +2,7 @@
 #include "GameEngineActor.h"
 #include "GameEngineCollision.h"
 #include "GameEngineRenderer.h"
+#include <GameEngineBase/GameEngineDebug.h>
 
 
 GameEngineLevel::GameEngineLevel()
@@ -342,6 +343,15 @@ void GameEngineLevel::AddRenderer(GameEngineRenderer* _Renderer)
 	AllRenderer_[_Renderer->GetOrder()].push_back(_Renderer);
 }
 
+
+void GameEngineLevel::ChangeUpdateOrder(GameEngineActor* _Actor, int _NewOreder)
+{
+	if (_Actor->GetOrder() == _NewOreder)
+	{
+		return;
+	}
+	ChangeOrderList.push_back({ _Actor ,_NewOreder });
+}
 
 void GameEngineLevel::ChangeRenderOrder(GameEngineRenderer* _Renderer, int _NewOrder)
 {

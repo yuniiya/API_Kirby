@@ -29,7 +29,7 @@ void Level_1::Loading()
 
 	// 플레이어 엑터
 	Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER, "Player");
-	Kirby->SetPosition({100.f, 300.f});
+	Kirby->SetPosition({100.f, 520.f });
 	Kirby->MapScale(5753.f, 768.f);
 
 	 // 백그라운드 엑터
@@ -80,10 +80,10 @@ void Level_1::Update()
 
 void Level_1::LevelChangeStart()
 {
-	//BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
+	BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 }
 
 void Level_1::LevelChangeEnd()
 {
-	//BgmPlayer.Stop();
+	BgmPlayer.Stop();
 }

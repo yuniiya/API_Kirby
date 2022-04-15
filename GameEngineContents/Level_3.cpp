@@ -27,7 +27,7 @@ void Level_3::Loading()
 	{
 		// 플레이어 엑터
 		Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
-		Kirby->SetPosition({ 5700.f, 10.f });
+		Kirby->SetPosition({ 100.f, 490.f });
 		Kirby->MapScale(5960.f, 768.f);
 
 	}

@@ -12,6 +12,8 @@
 #include "Stage.h"
 #include "ContentsEnum.h"
 
+Player* Player::MainPlayer = nullptr;
+
 Player::Player()
 	: Speed_(500.0f)
 	, Gravity_(100.0f)
@@ -74,6 +76,9 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::RunToStop:
 			RunToStopStart();
 			break;
+		case PlayerState::Down:
+			DownStart();
+			break;
 		case PlayerState::Slide:
 			SlideStart();
 			break;
@@ -126,6 +131,9 @@ void Player::PlayerStateUpdate()
 	case PlayerState::RunToStop:
 		RunToStopUpdate();
 		break;
+	case PlayerState::Down:
+		DownUpdate();
+		break;
 	case PlayerState::Slide:
 		SlideUpdate();
 		break;
@@ -168,21 +176,39 @@ void Player::Start()
 
 	// 애니메이션을 하나라도 만들면 애니메이션이 재생된다.
 	PlayerAnimationRender = CreateRenderer();
+	PlayerAnimationRender->SetPivotType(RenderPivot::BOT);
+	PlayerAnimationRender->SetPivot({ 0.f, 140.f });
 	//PlayerAnimationRender = CreateRendererToScale("Test.bmp",{100, 1000});
 	//PlayerAnimationRender = CreateRendererToScale("1_Right.bmp", {128, 128}, static_cast<int>(ORDER::PLAYER), RenderPivot::BOT);
 
 	// Walk_Right이미지의 0~9인덱스를 0.1초동안 재생 (true = 루프on)
 	//Render->SetPivotType(RenderPivot::BOT);
-	PlayerAnimationRender->CreateAnimation("1_Left.bmp", "Idle_Left", 0, 1, 1.f, true);
-	PlayerAnimationRender->CreateAnimation("1_Right.bmp", "Idle_Right", 0, 1, 1.f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Idle_Left", 0, 1, 1.f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Down_Left", 2, 3, 5.f, false);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Slide_Left", 4, 5, 0.1f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Walk_Left", 6, 15, 0.1f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Run_Left", 16, 23, 1.f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "RunToStop_Left", 24, 24, 0.5f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Float_Left", 29, 25, 0.1f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left", 30, 37, 0.1f, true);
 
-	PlayerAnimationRender->CreateAnimation("1_Left.bmp", "Walk_Left", 30, 37, 0.1f, false);
-	PlayerAnimationRender->CreateAnimation("1_Right.bmp", "Walk_Right", 30, 37, 0.1f, false);
-	
-	//AnimationName_ = "Idle_";
-	//PlayerAnimationRender->ChangeAnimation("WalkRight");
-	//PlayerAnimationRender->CreateAnimation("Test.bmp", "Walk_Right", 0, 1, 0.1f, false);
-	//PlayerAnimationRender->ChangeAnimation("Walk_Right");
+	//PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 0, 9, 0.1f, true);
+
+
+
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Idle_Right", 0, 1, 1.f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Down_Right", 2, 3, 5.f, false);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Slide_Right", 4, 5, 0.1f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Walk_Right", 6, 15, 0.1f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Run_Right", 16, 23, 1.f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "RunToStop_Right", 24, 24, 0.5f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Float_Right", 29, 25, 0.1f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right", 30, 37, 0.1f, true);
+
+	//PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 0, 9, 0.1f, true);
+
+	AnimationName_ = "Idle_";
+	PlayerAnimationRender->ChangeAnimation("Idle_Right");
 
 
 
@@ -197,6 +223,7 @@ void Player::Start()
 		// =============== 이동 ===============
 		GameEngineInput::GetInst()->CreateKey("MoveLeft", VK_LEFT);
 		GameEngineInput::GetInst()->CreateKey("MoveRight", VK_RIGHT);
+		GameEngineInput::GetInst()->CreateKey("Run", VK_SPACE);
 		// 두번 연타 : Run
 		// Run상태에서 반대 방향키 : RunToStop
 
@@ -218,7 +245,8 @@ void Player::Start()
 		
 		// =============== 스킬 ===============
 		// 빨아들인 물체가 스킬을 가졌다면 W : Copy
-		GameEngineInput::GetInst()->CreateKey("Copy", 'W');
+		//GameEngineInput::GetInst()->CreateKey("Copy", 'W');
+		GameEngineInput::GetInst()->CreateKey("Down", 'W');
 		// 능력을 카피한 상태에서 W : 스킬 해제
 	}
 	
@@ -333,12 +361,11 @@ void Player::DirAnimationCheck()
 	std::string ChangeName;
 
 	PlayerDir CheckDir_ = CurDir_;
-	ChangeDirText_ = "Right";
+	//ChangeDirText_ = "Right";
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
 	{
 		CheckDir_ = PlayerDir::Right;
-		ChangeName = "Walk_";
 		ChangeDirText_ = "Right";
 	}
 
@@ -346,8 +373,19 @@ void Player::DirAnimationCheck()
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
 		CheckDir_ = PlayerDir::Left;
-		ChangeName = "Walk_";
 		ChangeDirText_ = "Left";
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveDown"))
+	{
+		if (CheckDir_ == PlayerDir::Left)
+		{
+			ChangeDirText_ = "Left";
+		}
+		else
+		{
+			ChangeDirText_ = "Right";
+		}
 	}
 
 	if (CheckDir_ != CurDir_)

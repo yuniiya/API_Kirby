@@ -77,6 +77,8 @@ protected:
 
 	void DebugRectRender();
 
+	void LevelRegist(std::string _RegistName = "");
+
 private:
 	GameEngineLevel* Level_;
 	float4 Position_;
