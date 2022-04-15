@@ -1,2 +1,1 @@
-API/Resources/Actor/Monster.bmp filter=lfs diff=lfs merge=lfs -text
 C:/Users/skfld/Documents/LYS/API/Resources/Actor/Monster/Boss_Left.bmp filter=lfs diff=lfs merge=lfs -text
