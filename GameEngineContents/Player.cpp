@@ -233,8 +233,8 @@ void Player::Start()
 		// Full 상태에서 MoveDown : Swallow
 
 		// =============== 점프 ===============
-		GameEngineInput::GetInst()->CreateKey("JumpLeft",'A');
-		GameEngineInput::GetInst()->CreateKey("JumpRight", 'D');
+		//GameEngineInput::GetInst()->CreateKey("JumpLeft",'A');
+		//GameEngineInput::GetInst()->CreateKey("JumpRight", 'D');
 		// 두번 연타한다면 A, D : Float
 		// 아래 + A, D: Slide
 

@@ -36,11 +36,11 @@ void Player::IdleUpdate()
 	}
 
 	// 점프 
-	if (true == GameEngineInput::GetInst()->IsDown("JumpLeft") || true == GameEngineInput::GetInst()->IsDown("JumpRight"))
-	{
-		ChangeState(PlayerState::Jump);
-		return;
-	}
+	//if (true == GameEngineInput::GetInst()->IsDown("JumpLeft") || true == GameEngineInput::GetInst()->IsDown("JumpRight"))
+	//{
+	//	ChangeState(PlayerState::Jump);
+	//	return;
+	//}
 }
 
 void Player::WalkUpdate()
@@ -65,11 +65,11 @@ void Player::WalkUpdate()
 	}
 
 	// 점프 
-	if (true == GameEngineInput::GetInst()->IsDown("JumpLeft") || true == GameEngineInput::GetInst()->IsDown("JumpRight"))
-	{
-		ChangeState(PlayerState::Jump);
-		return;
-	}
+	//if (true == GameEngineInput::GetInst()->IsDown("JumpLeft") || true == GameEngineInput::GetInst()->IsDown("JumpRight"))
+	//{
+	//	ChangeState(PlayerState::Jump);
+	//	return;
+	//}
 
 	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
 	{
@@ -131,11 +131,11 @@ void Player::RunUpdate()
 	//	return;
 	//}
 
-	if (true == GameEngineInput::GetInst()->IsDown("JumpLeft") || true == GameEngineInput::GetInst()->IsDown("JumpRight"))
-	{
-		ChangeState(PlayerState::Jump);
-		return;
-	}
+	//if (true == GameEngineInput::GetInst()->IsDown("JumpLeft") || true == GameEngineInput::GetInst()->IsDown("JumpRight"))
+	//{
+	//	ChangeState(PlayerState::Jump);
+	//	return;
+	//}
 
 	// 속력 제한
 	//if (1.f <= MoveDir.Len2D())
