@@ -32,10 +32,14 @@ void Kirby::GameInit()
 	// 리소스 가져오기
 	ResourceLoad();
 
-	GameEngineImage* KirbyLeft1 = GameEngineImageManager::GetInst()->Find("1_Left.bmp");
-	KirbyLeft1->Cut({ 128,128 });
-	GameEngineImage* KirbyRight1 = GameEngineImageManager::GetInst()->Find("1_Right.bmp");
-	KirbyRight1->Cut({ 128,128 });
+	GameEngineImage* KirbyLeft1 = GameEngineImageManager::GetInst()->Find("Default_Left.bmp");
+	KirbyLeft1->CutCount(10, 14);
+	GameEngineImage* KirbyRight1 = GameEngineImageManager::GetInst()->Find("Default_Right.bmp");
+	KirbyRight1->CutCount(10, 14);
+	//GameEngineImage* KirbyLeft2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Left.bmp");
+	//KirbyLeft2->CutCount(9, 1);
+	//GameEngineImage* KirbyRight2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Right.bmp");
+	//KirbyRight2->CutCount(9, 1);
 
 	// 키 생성
 	if (false == GameEngineInput::GetInst()->IsKey("TitleLevel"))
@@ -61,7 +65,7 @@ void Kirby::GameInit()
 	CreateLevel<BossLevel>("BossLevel");
 	CreateLevel<EndingLevel>("EndingLevel");
 
-	ChangeLevel("Level_1");
+	ChangeLevel("TitleLevel");
 }
 
 void Kirby::GameLoop()
@@ -78,7 +82,7 @@ void Kirby::ResourceLoad()
 	{
 		// 현재 디렉토리
 		GameEngineDirectory ResourcesDir;
-		ResourcesDir.MoveParent("Portfolio");
+		ResourcesDir.MoveParent("API");
 		ResourcesDir.Move("Resources");
 		ResourcesDir.Move("Level");
 
@@ -91,24 +95,24 @@ void Kirby::ResourceLoad()
 	}
 
 	// 커비 (Test용)
+	//{
+	//	GameEngineDirectory ResourcesDir;
+	//	ResourcesDir.MoveParent("API");
+	//	ResourcesDir.Move("Resources");
+	//	ResourcesDir.Move("Player");
+
+	//	std::vector<GameEngineFile> AllImageFileList = ResourcesDir.GetAllFile("bmp");
+	//	AllImageFileList = ResourcesDir.GetAllFile("bmp");
+
+	//	for (size_t i = 0; i < AllImageFileList.size(); i++)
+	//	{
+	//		GameEngineImageManager::GetInst()->Load(AllImageFileList[i].GetFullPath());
+	//	}
+	//}
+
 	{
 		GameEngineDirectory ResourcesDir;
-		ResourcesDir.MoveParent("Portfolio");
-		ResourcesDir.Move("Resources");
-		ResourcesDir.Move("Player");
-
-		std::vector<GameEngineFile> AllImageFileList = ResourcesDir.GetAllFile("bmp");
-		AllImageFileList = ResourcesDir.GetAllFile("bmp");
-
-		for (size_t i = 0; i < AllImageFileList.size(); i++)
-		{
-			GameEngineImageManager::GetInst()->Load(AllImageFileList[i].GetFullPath());
-		}
-	}
-
-	{
-		GameEngineDirectory ResourcesDir;
-		ResourcesDir.MoveParent("Portfolio");
+		ResourcesDir.MoveParent("API");
 		ResourcesDir.Move("Resources");
 		ResourcesDir.Move("Actor");
 		ResourcesDir.Move("Kirby");
@@ -125,7 +129,7 @@ void Kirby::ResourceLoad()
 	// 스테이지
 	{
 		GameEngineDirectory ResourcesDir;
-		ResourcesDir.MoveParent("Portfolio");
+		ResourcesDir.MoveParent("API");
 		ResourcesDir.Move("Resources");
 		ResourcesDir.Move("Actor");
 		ResourcesDir.Move("Stage");
@@ -141,7 +145,7 @@ void Kirby::ResourceLoad()
 
 	{
 		GameEngineDirectory ResourcesDir;
-		ResourcesDir.MoveParent("Portfolio");
+		ResourcesDir.MoveParent("API");
 		ResourcesDir.Move("Resources");
 		ResourcesDir.Move("UI");
 
@@ -157,7 +161,7 @@ void Kirby::ResourceLoad()
 	// BossLevel 폴더 이미지 로드
 	{
 		GameEngineDirectory ResourcesDir;
-		ResourcesDir.MoveParent("Portfolio");
+		ResourcesDir.MoveParent("API");
 		ResourcesDir.Move("Resources");
 		ResourcesDir.Move("Level");
 
@@ -172,7 +176,7 @@ void Kirby::ResourceLoad()
 	// 사운드
 	{
 		GameEngineDirectory ResourcesDir;
-		ResourcesDir.MoveParent("Portfolio");
+		ResourcesDir.MoveParent("API");
 		ResourcesDir.Move("Resources");
 		ResourcesDir.Move("Sound");
 		//ResourcesDir.Move("Effect");

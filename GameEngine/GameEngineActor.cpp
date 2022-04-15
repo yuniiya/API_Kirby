@@ -193,3 +193,14 @@ void GameEngineActor::Release()
 
 
 }
+
+void GameEngineActor::LevelRegist(std::string _RegistName/* = ""*/)
+{
+	if (_RegistName == "")
+	{
+		GetLevel()->RegistActor(GetNameConstPtr(), this);
+		return;
+	}
+
+	GetLevel()->RegistActor(_RegistName, this);
+}
