@@ -15,8 +15,7 @@ void Player::IdleUpdate()
 
 
 	if (true == IsMoveKey()
-		&& RunningTime_ < 0
-/*		&& SlidingTime_ < 0*/)	// 슬라이딩 방금 추가함
+		&& RunningTime_ < 0)	
 		// 연속키를 누른적이 없사
 	{
 		InputDir_ = CurDir_;
@@ -24,7 +23,7 @@ void Player::IdleUpdate()
 		ChangeState(PlayerState::Walk);
 		return;
 	} 
-	else	if (true == IsMoveKey()
+	else if (true == IsMoveKey()
 		&& RunningTime_ > 0)
 	{
 		if (InputDir_ == CurDir_)
@@ -154,36 +153,50 @@ void Player::DownUpdate()
 		ChangeState(PlayerState::Idle);
 		return;
 	}
+	
+	
+	DownTime_ -= GameEngineTime::GetDeltaTime();
 
 
-	RunningTime_ = 0.5f;
-
-	if (true == IsMoveKey() && RunningTime_ > 0)
+	if (true == IsMoveKey() 
+		&& DownTime_ > 0)
 	{
 		ChangeState(PlayerState::Slide);
 		return;
 	}
-
 }
 
 void Player::SlideUpdate()
 {
 
-	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	if (true == GameEngineInput::GetInst()->IsDown("MoveLeft"))
 	{
-		CurDir_ = PlayerDir::Left;
+		MoveDir = float4::LEFT;
+
 	}
-	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	else if (true == GameEngineInput::GetInst()->IsDown("MoveRight"))
 	{
-		CurDir_ = PlayerDir::Right;
+		MoveDir = float4::RIGHT;
 	}
 
-	MoveDir += -MoveDir * GameEngineTime::GetDeltaTime();
-	SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
+	// 감속
+	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
+	//SetMove(MoveDir);
 
 
-	// 1. 감속 길이 줄여야됨
-	// 2. CurDir==오른쪽 상태에서 왼쪽으로 슬라이딩하면 오른쪽으로 가버림..., (왼쪽으로 가야된다)
+	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;
+	int Color = MapColImage_->GetImagePixel(CheckPos);
+
+	if (RGB(0, 0, 0) != Color)
+	{
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
+	}
+
+	
+	// 감속 구현 완료 ㅇ
+	// 현재 누른 방향 != 이전 방향일 경우 현재 누른 방향으로 이동해야하는데 이전 방향으로(거꾸로) 이동하는 문제 있음 
+		
+
 
 	
 	/////////////////////////////////////////////////////////// 슬라이딩 지속 시간 
@@ -202,6 +215,8 @@ void Player::SlideUpdate()
 
 void Player::JumpUpdate()
 {
+	MoveDir = float4::UP;
+
 	if (false == IsMoveKey())
 	{
 		ChangeState(PlayerState::Idle);
@@ -325,6 +340,7 @@ void Player::RunToStopStart()
 
 void Player::DownStart()
 {
+	DownTime_ = 0.5f;
 	AnimationName_ = "Down_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 
@@ -332,7 +348,7 @@ void Player::DownStart()
 
 void Player::SlideStart()
 {
-	SlidingTime_ = 1.f;
+	SlidingTime_ = 1.2f;
 
 	AnimationName_ = "Slide_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);

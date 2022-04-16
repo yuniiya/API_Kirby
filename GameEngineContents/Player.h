@@ -86,6 +86,7 @@ private:
 	float RunningTime_;
 	float SlidingTime_;
 	float StopTime_;
+	float DownTime_;
 
 	float MapScaleX_;
 	float MapScaleY_;
@@ -122,6 +123,8 @@ private:
 	GameEngineRenderer* Render1;
 
 	bool IsMoveKey();
+	bool IsMoveKeyDown();
+	bool IsJumpKey();
 	//void KeyMove();
 
 protected:
@@ -129,7 +132,7 @@ protected:
 	void PlayerStateUpdate();
 	void DirAnimationCheck();
 
-	bool IsJumpKey();
+	
 
 private:
 	void IdleStart();

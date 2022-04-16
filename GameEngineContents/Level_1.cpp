@@ -80,10 +80,10 @@ void Level_1::Update()
 
 void Level_1::LevelChangeStart()
 {
-	BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
+	//BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 }
 
 void Level_1::LevelChangeEnd()
 {
-	BgmPlayer.Stop();
+	//BgmPlayer.Stop();
 }

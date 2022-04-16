@@ -18,7 +18,7 @@ Player::Player()
 	: Speed_(400.0f)
 	, Gravity_(100.0f)
 	, MapColImage_(nullptr)
-	, AccGravity_(100.f)
+	, AccGravity_(400.0f)
 	, PlayerCollision(nullptr)
 	, PlayerAnimationRender(nullptr)
 	, CurState_(PlayerState::Idle)
@@ -29,6 +29,7 @@ Player::Player()
 	, CurDir_(PlayerDir::Right)
 	, RunningTime_(0.1f)
 	, StopTime_(1.f)
+	, DownTime_(0.5f)
 {
 
 }
@@ -56,6 +57,18 @@ bool Player::IsMoveKey()
 	}
 
 	return true;
+}
+
+bool Player::IsMoveKeyDown()
+{
+	if (true == GameEngineInput::GetInst()->IsDown("MoveLeft") ||
+		true == GameEngineInput::GetInst()->IsDown("MoveRight")
+		)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 bool Player::IsJumpKey()
