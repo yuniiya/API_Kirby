@@ -28,6 +28,7 @@ Player::Player()
 	, MoveDir(float4::ZERO)
 	, CurDir_(PlayerDir::Right)
 	, RunningTime_(0.1f)
+	, StopTime_(1.f)
 {
 
 }
@@ -476,44 +477,29 @@ void Player::DoorCheck(std::string ChangeLevelName_)
 	}
 }
 
-void Player::StagePixelCheck()
+void Player::StagePixelCheck(float _Speed)
 {
 	// 땅 밑으로 못 가게
+
+
 	MoveDir = float4::ZERO;
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
 		MoveDir = float4::LEFT;
 	}
-
-	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
 	{
 		MoveDir = float4::RIGHT;
 	}
 
-	/*if (true == GameEngineInput::GetInst()->IsPress("MoveUp"))
-	{
-		MoveDir = float4::UP;
-	}*/
 
-	if (true == GameEngineInput::GetInst()->IsPress("Down"))
-	{
-		MoveDir = float4::DOWN;
-	}
+	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
 
-
-	// 미래 위치 -> 이동한다면 이 위치에 도착해있을 것
-	float4 NextPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-	// 미래 위치에서 중심점을 발끝으로 내린 위치
-	float4 CheckPos = NextPos + float4(0.0f, 25.0f);
-
-	// 플레이어 위치 + N = 플레이어 발 끝 (N에 적절한 값을 넣어서 색 가져올 위치 조정할 수 있다)
-	// 충돌맵의 색을 가져와서 
 	int Color = MapColImage_->GetImagePixel(CheckPos);
-	// 초록색이(땅이) 아니라면 && 카메라 바깥 영역이 아니라면 -> 이동 
-	if (RGB(0, 255, 0) != Color && RGB(0, 0, 0) != Color)
+	if (RGB(0, 0, 0) != Color)
 	{
-		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
 	}
 }
 

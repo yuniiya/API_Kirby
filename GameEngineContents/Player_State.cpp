@@ -15,22 +15,34 @@ void Player::IdleUpdate()
 
 
 	if (true == IsMoveKey()
-		&& RunningTime_ < 0)
+		&& RunningTime_ < 0
+/*		&& SlidingTime_ < 0*/)	// 슬라이딩 방금 추가함
 		// 연속키를 누른적이 없사
 	{
+		InputDir_ = CurDir_;
+
 		ChangeState(PlayerState::Walk);
 		return;
 	} 
 	else	if (true == IsMoveKey()
 		&& RunningTime_ > 0)
 	{
-		ChangeState(PlayerState::Run);
-		return;
+		if (InputDir_ == CurDir_)
+		{
+			ChangeState(PlayerState::Run);
+			return;
+		}
+		else
+		{
+			ChangeState(PlayerState::Walk);
+			return;
+		}
+
 	}
 
 
 	
-	if (true == GameEngineInput::GetInst()->IsDown("Down"))
+	if (true == GameEngineInput::GetInst()->IsPress("Down"))
 	{
 		ChangeState(PlayerState::Down);
 		return;
@@ -83,32 +95,7 @@ void Player::WalkUpdate()
 		return;
 	}
 
-	MoveDir = float4::ZERO;
-
-	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
-	{
-		MoveDir = float4::LEFT;
-	}
-
-	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
-	{
-		MoveDir = float4::RIGHT;
-	}
-
-
-	float4 CheckLeftPos = GetPosition() + float4(-20.f, 0.f);
-	float4 CheckRightPos = GetPosition() + float4(20.f, 0.f);
-
-	int ColorLeft = MapColImage_->GetImagePixel(CheckLeftPos);
-	int ColorRight = MapColImage_->GetImagePixel(CheckRightPos);
-
-	if (RGB(0, 255, 0) != ColorLeft && RGB(0, 255, 0) != ColorRight && RGB(0, 0, 0) != ColorLeft)
-	{
-		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-	}
-
-	// SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-	//StagePixelCheck();
+	StagePixelCheck(Speed_);
 }
 
 
@@ -122,29 +109,8 @@ void Player::RunUpdate()
 		return;
 	}
 
-	MoveDir = float4::ZERO;
-
-	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
-	{
-		MoveDir = float4::LEFT;
-	}
-
-	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
-	{
-		MoveDir = float4::RIGHT;
-	}
-
-	float4 CheckLeftPos = GetPosition() + float4(-20.f, 0.f);
-	float4 CheckRightPos = GetPosition() + float4(20.f, 0.f);
-
-	int ColorLeft = MapColImage_->GetImagePixel(CheckLeftPos);
-	int ColorRight = MapColImage_->GetImagePixel(CheckRightPos);
-
-	if (RGB(0, 255, 0) != ColorLeft && RGB(0, 255, 0) != ColorRight && RGB(0, 0, 0) != ColorLeft)
-	{
-		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-	}
-
+	StagePixelCheck(500.f);
+	
 
 
 
@@ -172,14 +138,13 @@ void Player::RunUpdate()
 
 void Player::RunToStopUpdate()
 {
-	if (true == PlayerAnimationRender->IsEndAnimation())
+	StopTime_ -= GameEngineTime::GetDeltaTime();
+
+	if (StopTime_ < 0)
 	{
 		ChangeState(PlayerState::Idle);
 		return;
 	}
-
-
-
 }
 
 void Player::DownUpdate()
@@ -198,15 +163,40 @@ void Player::DownUpdate()
 		ChangeState(PlayerState::Slide);
 		return;
 	}
+
 }
 
 void Player::SlideUpdate()
 {
-	if (true == GameEngineInput::GetInst()->IsFree("Down"))
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
+		CurDir_ = PlayerDir::Left;
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		CurDir_ = PlayerDir::Right;
+	}
+
+	MoveDir += -MoveDir * GameEngineTime::GetDeltaTime();
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
+
+
+	// 1. 감속 길이 줄여야됨
+	// 2. CurDir==오른쪽 상태에서 왼쪽으로 슬라이딩하면 오른쪽으로 가버림..., (왼쪽으로 가야된다)
+
+	
+	/////////////////////////////////////////////////////////// 슬라이딩 지속 시간 
+	SlidingTime_ -= GameEngineTime::GetDeltaTime();
+
+	if (SlidingTime_ < 0)
+	{
+		RunningTime_ = 0;
+
 		ChangeState(PlayerState::Idle);
 		return;
 	}
+
 
 }
 
@@ -328,6 +318,7 @@ void Player::RunStart()
 
 void Player::RunToStopStart()
 {
+	StopTime_ = 1.f;
 	AnimationName_ = "RunToStop_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
@@ -341,13 +332,11 @@ void Player::DownStart()
 
 void Player::SlideStart()
 {
+	SlidingTime_ = 1.f;
+
 	AnimationName_ = "Slide_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 
-	//if (ChangeDirText_ == "Right")
-	//	MoveDir += float4::RIGHT;
-	//else
-	//	MoveDir += float4::LEFT;
 }
 
 void Player::JumpStart()

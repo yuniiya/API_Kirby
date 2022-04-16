@@ -68,6 +68,7 @@ public:
 protected:
 	GameEngineRenderer* PlayerAnimationRender;
 	PlayerDir CurDir_;
+	PlayerDir InputDir_;
 	std::string AnimationName_;
 	std::string ChangeDirText_;
 
@@ -83,6 +84,8 @@ private:
 	float AccGravity_;
 
 	float RunningTime_;
+	float SlidingTime_;
+	float StopTime_;
 
 	float MapScaleX_;
 	float MapScaleY_;
@@ -101,7 +104,7 @@ private:
 
 	void ColMapUpdate();
 
-	void StagePixelCheck();
+	void StagePixelCheck(float _Speed);
 	void DoorPixelCheck();
 	void DoorCheck(std::string ChangeLevelName_);
 
