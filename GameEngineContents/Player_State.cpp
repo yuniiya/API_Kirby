@@ -11,22 +11,29 @@
 
 void Player::IdleUpdate()
 {
-	if (true == GameEngineInput::GetInst()->IsDown("MoveLeft") || true == GameEngineInput::GetInst()->IsDown("MoveRight"))
+	RunningTime_ -= GameEngineTime::GetDeltaTime();
+
+
+	if (true == IsMoveKey()
+		&& RunningTime_ < 0)
+		// 연속키를 누른적이 없사
 	{
 		ChangeState(PlayerState::Walk);
 		return;
+	} 
+	else	if (true == IsMoveKey()
+		&& RunningTime_ > 0)
+	{
+		ChangeState(PlayerState::Run);
+		return;
 	}
+
+
 	
-	if (true == GameEngineInput::GetInst()->IsPress("Down"))
+	if (true == GameEngineInput::GetInst()->IsDown("Down"))
 	{
 		ChangeState(PlayerState::Down);
 		return;
-
-		if (true == IsMoveKey())
-		{
-			ChangeState(PlayerState::Slide);
-			return;
-		}
 	}
 
 	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
@@ -36,15 +43,17 @@ void Player::IdleUpdate()
 	}
 
 	// 점프 
-	//if (true == GameEngineInput::GetInst()->IsDown("JumpLeft") || true == GameEngineInput::GetInst()->IsDown("JumpRight"))
-	//{
-	//	ChangeState(PlayerState::Jump);
-	//	return;
-	//}
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
 }
 
 void Player::WalkUpdate()
 {
+	RunningTime_ = 0.1f;
+
 	if (false == IsMoveKey())
 	{
 		ChangeState(PlayerState::Idle);
@@ -57,34 +66,22 @@ void Player::WalkUpdate()
 		return;
 	}
 
+	
 	// 달리기
-	if (true == GameEngineInput::GetInst()->IsPress("Run") && true == IsMoveKey())
-	{
-		ChangeState(PlayerState::Run);
-		return;
-	}
+
 
 	// 점프 
-	//if (true == GameEngineInput::GetInst()->IsDown("JumpLeft") || true == GameEngineInput::GetInst()->IsDown("JumpRight"))
-	//{
-	//	ChangeState(PlayerState::Jump);
-	//	return;
-	//}
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
 
 	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
 	{
 		ChangeState(PlayerState::Inhale);
 		return;
 	}
-
-	StagePixelCheck();
-}
-
-
-void Player::RunUpdate()
-{
-	//DirAnimationCheck();
-
 
 	MoveDir = float4::ZERO;
 
@@ -98,44 +95,58 @@ void Player::RunUpdate()
 		MoveDir = float4::RIGHT;
 	}
 
-	// 미래 위치 -> 이동한다면 이 위치에 도착해있을 것
-	float4 NextPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-	// 미래 위치에서 중심점을 발끝으로 내린 위치
-	float4 CheckPos = NextPos + float4(0.0f, 25.0f);
 
-	// 플레이어 위치 + N = 플레이어 발 끝 (N에 적절한 값을 넣어서 색 가져올 위치 조정할 수 있다)
-	// 충돌맵의 색을 가져와서 
-	int Color = MapColImage_->GetImagePixel(CheckPos);
-	// 초록색이(땅이) 아니라면 && 카메라 바깥 영역이 아니라면 -> 이동 
-	if (RGB(0, 255, 0) != Color && RGB(0, 0, 0) != Color)
+	float4 CheckLeftPos = GetPosition() + float4(-20.f, 0.f);
+	float4 CheckRightPos = GetPosition() + float4(20.f, 0.f);
+
+	int ColorLeft = MapColImage_->GetImagePixel(CheckLeftPos);
+	int ColorRight = MapColImage_->GetImagePixel(CheckRightPos);
+
+	if (RGB(0, 255, 0) != ColorLeft && RGB(0, 255, 0) != ColorRight && RGB(0, 0, 0) != ColorLeft)
 	{
-		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * 550.f);
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
 	}
 
+	// SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
+	//StagePixelCheck();
+}
 
-	if (true == IsMoveKey())
-	{
-		ChangeState(PlayerState::Walk);
-		return;
-	}
+
+void Player::RunUpdate()
+{
+	//DirAnimationCheck();
 
 	if (false == IsMoveKey())
 	{
-		ChangeState(PlayerState::Idle);
+		ChangeState(PlayerState::RunToStop);
 		return;
 	}
 
-	//if (true == GameEngineInput::GetInst()->IsDown("MoveRight"))
-	//{
-	//	ChangeState(PlayerState::Run);
-	//	return;
-	//}
+	MoveDir = float4::ZERO;
 
-	//if (true == GameEngineInput::GetInst()->IsDown("JumpLeft") || true == GameEngineInput::GetInst()->IsDown("JumpRight"))
-	//{
-	//	ChangeState(PlayerState::Jump);
-	//	return;
-	//}
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4::LEFT;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4::RIGHT;
+	}
+
+	float4 CheckLeftPos = GetPosition() + float4(-20.f, 0.f);
+	float4 CheckRightPos = GetPosition() + float4(20.f, 0.f);
+
+	int ColorLeft = MapColImage_->GetImagePixel(CheckLeftPos);
+	int ColorRight = MapColImage_->GetImagePixel(CheckRightPos);
+
+	if (RGB(0, 255, 0) != ColorLeft && RGB(0, 255, 0) != ColorRight && RGB(0, 0, 0) != ColorLeft)
+	{
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
+	}
+
+
+
 
 	// 속력 제한
 	//if (1.f <= MoveDir.Len2D())
@@ -161,39 +172,39 @@ void Player::RunUpdate()
 
 void Player::RunToStopUpdate()
 {
-}
-
-void Player::DownUpdate()
-{
-	if (PlayerAnimationRender->IsEndAnimation())
-	{
-		ChangeState(PlayerState::Idle);
-	}
-
-	if (false == IsMoveKey())
+	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
 		ChangeState(PlayerState::Idle);
 		return;
 	}
 
-	if (true == IsMoveKey())
+
+
+}
+
+void Player::DownUpdate()
+{
+	if (true == GameEngineInput::GetInst()->IsFree("Down"))
 	{
-		ChangeState(PlayerState::Walk);
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+
+	RunningTime_ = 0.5f;
+
+	if (true == IsMoveKey() && RunningTime_ > 0)
+	{
+		ChangeState(PlayerState::Slide);
 		return;
 	}
 }
 
 void Player::SlideUpdate()
 {
-	if (false == IsMoveKey())
+	if (true == GameEngineInput::GetInst()->IsFree("Down"))
 	{
 		ChangeState(PlayerState::Idle);
-		return;
-	}
-
-	if (true == IsMoveKey())
-	{
-		ChangeState(PlayerState::Walk);
 		return;
 	}
 
@@ -201,9 +212,9 @@ void Player::SlideUpdate()
 
 void Player::JumpUpdate()
 {
-	if (true == IsMoveKey())
+	if (false == IsMoveKey())
 	{
-		ChangeState(PlayerState::Walk);
+		ChangeState(PlayerState::Idle);
 		return;
 	}
 
@@ -247,6 +258,7 @@ void Player::JumpUpdate()
 
 void Player::FloatUpdate()
 {
+
 }
 
 void Player::FallUpdate()
@@ -258,6 +270,12 @@ void Player::InhaleUpdate()
 	if (true == IsMoveKey())
 	{
 		ChangeState(PlayerState::Walk);
+		return;
+	}
+
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::Jump);
 		return;
 	}
 }
@@ -311,6 +329,7 @@ void Player::RunStart()
 void Player::RunToStopStart()
 {
 	AnimationName_ = "RunToStop_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Player::DownStart()
@@ -325,10 +344,10 @@ void Player::SlideStart()
 	AnimationName_ = "Slide_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 
-	if (ChangeDirText_ == "Right")
-		MoveDir += float4::RIGHT;
-	else
-		MoveDir += float4::LEFT;
+	//if (ChangeDirText_ == "Right")
+	//	MoveDir += float4::RIGHT;
+	//else
+	//	MoveDir += float4::LEFT;
 }
 
 void Player::JumpStart()
@@ -350,7 +369,9 @@ void Player::FallStart()
 void Player::InhaleStart()
 {
 	AnimationName_ = "Inhale_";
-	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+	//PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 }
 
 void Player::FullStart()

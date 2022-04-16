@@ -36,10 +36,10 @@ void Kirby::GameInit()
 	KirbyLeft1->CutCount(10, 14);
 	GameEngineImage* KirbyRight1 = GameEngineImageManager::GetInst()->Find("Default_Right.bmp");
 	KirbyRight1->CutCount(10, 14);
-	//GameEngineImage* KirbyLeft2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Left.bmp");
-	//KirbyLeft2->CutCount(9, 1);
-	//GameEngineImage* KirbyRight2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Right.bmp");
-	//KirbyRight2->CutCount(9, 1);
+	GameEngineImage* KirbyLeft2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Left.bmp");
+	KirbyLeft2->CutCount(9, 1);
+	GameEngineImage* KirbyRight2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Right.bmp");
+	KirbyRight2->CutCount(9, 1);
 
 	// Å° »ý¼º
 	if (false == GameEngineInput::GetInst()->IsKey("TitleLevel"))
@@ -65,7 +65,7 @@ void Kirby::GameInit()
 	CreateLevel<BossLevel>("BossLevel");
 	CreateLevel<EndingLevel>("EndingLevel");
 
-	ChangeLevel("TitleLevel");
+	ChangeLevel("Level_1");
 }
 
 void Kirby::GameLoop()

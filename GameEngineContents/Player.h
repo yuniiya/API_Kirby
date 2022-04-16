@@ -82,6 +82,8 @@ private:
 	float Gravity_;
 	float AccGravity_;
 
+	float RunningTime_;
+
 	float MapScaleX_;
 	float MapScaleY_;
 
@@ -119,11 +121,12 @@ private:
 	bool IsMoveKey();
 	//void KeyMove();
 
-
 protected:
 	void ChangeState(PlayerState _State);
 	void PlayerStateUpdate();
 	void DirAnimationCheck();
+
+	bool IsJumpKey();
 
 private:
 	void IdleStart();

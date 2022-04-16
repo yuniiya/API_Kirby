@@ -15,7 +15,7 @@
 Player* Player::MainPlayer = nullptr;
 
 Player::Player()
-	: Speed_(500.0f)
+	: Speed_(400.0f)
 	, Gravity_(100.0f)
 	, MapColImage_(nullptr)
 	, AccGravity_(100.f)
@@ -27,6 +27,7 @@ Player::Player()
 	, MapScaleY_(0.f)
 	, MoveDir(float4::ZERO)
 	, CurDir_(PlayerDir::Right)
+	, RunningTime_(0.1f)
 {
 
 }
@@ -45,10 +46,24 @@ void Player::MapScale(float _x, float _y)
 bool Player::IsMoveKey()
 {
 	if (false == GameEngineInput::GetInst()->IsPress("MoveLeft") &&
-		false == GameEngineInput::GetInst()->IsPress("MoveRight") &&
-		false == GameEngineInput::GetInst()->IsPress("MoveUp") &&
-		false == GameEngineInput::GetInst()->IsPress("MoveDown")
+		false == GameEngineInput::GetInst()->IsPress("MoveRight") 
+		/*false == GameEngineInput::GetInst()->IsPress("MoveUp") &&
+		false == GameEngineInput::GetInst()->IsPress("MoveDown")*/
 		) 
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool Player::IsJumpKey()
+{
+	if (false == GameEngineInput::GetInst()->IsPress("JumpLeft") &&
+		false == GameEngineInput::GetInst()->IsPress("JumpRight")
+		/*false == GameEngineInput::GetInst()->IsPress("MoveUp") &&
+		false == GameEngineInput::GetInst()->IsPress("MoveDown")*/
+		)
 	{
 		return false;
 	}
@@ -184,28 +199,32 @@ void Player::Start()
 	// Walk_Right이미지의 0~9인덱스를 0.1초동안 재생 (true = 루프on)
 	//Render->SetPivotType(RenderPivot::BOT);
 	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Idle_Left", 0, 1, 1.f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Down_Left", 2, 3, 5.f, false);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Slide_Left", 4, 5, 0.1f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Walk_Left", 6, 15, 0.1f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Run_Left", 16, 23, 1.f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "RunToStop_Left", 24, 24, 0.5f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Float_Left", 29, 25, 0.1f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Down_Left", 2, 3, 1.f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Slide_Left", 4, 5, 0.1f, false);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Walk_Left", 6, 15, 0.07f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Run_Left", 16, 23, 0.07f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "RunToStop_Left", 24, 24, 0.3f, false);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Float_Left", 29, 25, 0.1f, false);
 	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left", 30, 37, 0.1f, true);
 
-	//PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 0, 9, 0.1f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left_Loop", 36, 37, 0.1f, true);
+
+	PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 0, 9, 0.1f, true);
 
 
 
 	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Idle_Right", 0, 1, 1.f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Down_Right", 2, 3, 5.f, false);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Slide_Right", 4, 5, 0.1f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Walk_Right", 6, 15, 0.1f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Run_Right", 16, 23, 1.f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "RunToStop_Right", 24, 24, 0.5f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Down_Right", 2, 3, 1.f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Slide_Right", 4, 5, 0.1f, false);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Walk_Right", 6, 15, 0.07f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Run_Right", 16, 23, 0.07f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "RunToStop_Right", 24, 24, 0.3f, false);
 	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Float_Right", 29, 25, 0.1f, true);
 	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right", 30, 37, 0.1f, true);
 
-	//PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 0, 9, 0.1f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right_Loop", 36, 37, 0.1f, true);
+
+	PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 0, 9, 0.1f, true);
 
 	AnimationName_ = "Idle_";
 	PlayerAnimationRender->ChangeAnimation("Idle_Right");
@@ -223,18 +242,18 @@ void Player::Start()
 		// =============== 이동 ===============
 		GameEngineInput::GetInst()->CreateKey("MoveLeft", VK_LEFT);
 		GameEngineInput::GetInst()->CreateKey("MoveRight", VK_RIGHT);
-		GameEngineInput::GetInst()->CreateKey("Run", VK_SPACE);
+		//GameEngineInput::GetInst()->CreateKey("Run", VK_SPACE);
 		// 두번 연타 : Run
 		// Run상태에서 반대 방향키 : RunToStop
 
 		GameEngineInput::GetInst()->CreateKey("MoveUp", VK_UP);
-		GameEngineInput::GetInst()->CreateKey("MoveDown", VK_DOWN);
+		GameEngineInput::GetInst()->CreateKey("Down", VK_DOWN);
 		// 지형 위에서 MoveDown: Down
 		// Full 상태에서 MoveDown : Swallow
 
 		// =============== 점프 ===============
-		//GameEngineInput::GetInst()->CreateKey("JumpLeft",'A');
-		//GameEngineInput::GetInst()->CreateKey("JumpRight", 'D');
+		GameEngineInput::GetInst()->CreateKey("JumpLeft",'A');
+		GameEngineInput::GetInst()->CreateKey("JumpRight", 'D');
 		// 두번 연타한다면 A, D : Float
 		// 아래 + A, D: Slide
 
@@ -246,7 +265,6 @@ void Player::Start()
 		// =============== 스킬 ===============
 		// 빨아들인 물체가 스킬을 가졌다면 W : Copy
 		//GameEngineInput::GetInst()->CreateKey("Copy", 'W');
-		GameEngineInput::GetInst()->CreateKey("Down", 'W');
 		// 능력을 카피한 상태에서 W : 스킬 해제
 	}
 	
@@ -376,7 +394,19 @@ void Player::DirAnimationCheck()
 		ChangeDirText_ = "Left";
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("MoveDown"))
+	if (true == GameEngineInput::GetInst()->IsPress("Down"))
+	{
+		if (CheckDir_ == PlayerDir::Left)
+		{
+			ChangeDirText_ = "Left";
+		}
+		else
+		{
+			ChangeDirText_ = "Right";
+		}
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
 	{
 		if (CheckDir_ == PlayerDir::Left)
 		{
@@ -461,12 +491,12 @@ void Player::StagePixelCheck()
 		MoveDir = float4::RIGHT;
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("MoveUp"))
+	/*if (true == GameEngineInput::GetInst()->IsPress("MoveUp"))
 	{
 		MoveDir = float4::UP;
-	}
+	}*/
 
-	if (true == GameEngineInput::GetInst()->IsPress("MoveDown"))
+	if (true == GameEngineInput::GetInst()->IsPress("Down"))
 	{
 		MoveDir = float4::DOWN;
 	}
