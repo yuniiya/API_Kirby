@@ -37,9 +37,9 @@ void Kirby::GameInit()
 	GameEngineImage* KirbyRight1 = GameEngineImageManager::GetInst()->Find("Default_Right.bmp");
 	KirbyRight1->CutCount(10, 14);
 	GameEngineImage* KirbyLeft2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Left.bmp");
-	KirbyLeft2->CutCount(9, 1);
+	KirbyLeft2->CutCount(10, 1);
 	GameEngineImage* KirbyRight2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Right.bmp");
-	KirbyRight2->CutCount(9, 1);
+	KirbyRight2->CutCount(10, 1);
 
 	// Å° »ý¼º
 	if (false == GameEngineInput::GetInst()->IsKey("TitleLevel"))
@@ -52,6 +52,8 @@ void Kirby::GameInit()
 		GameEngineInput::GetInst()->CreateKey("BossRoomLevel", '5');
 		GameEngineInput::GetInst()->CreateKey("BossLevel", '6');
 		GameEngineInput::GetInst()->CreateKey("EndingLevel", '7');
+
+		GameEngineInput::GetInst()->CreateKey("NextLevel", VK_SPACE);
 	}
 
 

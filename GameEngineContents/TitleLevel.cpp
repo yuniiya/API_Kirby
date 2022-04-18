@@ -78,9 +78,9 @@ void TitleLevel::Loading()
 void TitleLevel::Update()
 {
 	// 레벨 체인지 
-	if (true == GameEngineInput::GetInst()->IsDown("TitleLevel"))
+	if (true == GameEngineInput::GetInst()->IsDown("NextLevel"))
 	{
-		GameEngine::GetInst().ChangeLevel("TitleLevel");
+		GameEngine::GetInst().ChangeLevel("Level_1");
 	}
 
 	if (true == GameEngineInput::GetInst()->IsDown("Level_1"))

@@ -80,6 +80,7 @@ protected:
 
 private:
 	float Speed_;
+	float AccSpeed_;
 	float Gravity_;
 	float AccGravity_;
 

@@ -70,6 +70,11 @@ void Level_4::Update()
 	{
 		GameEngine::GetInst().ChangeLevel("BossRoomLevel");
 	}
+
+	if (true == GameEngineInput::GetInst()->IsDown("NextLevel"))
+	{
+		GameEngine::GetInst().ChangeLevel("BossRoomLevel");
+	}
 }
 
 void Level_4::LevelChangeStart()

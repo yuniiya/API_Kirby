@@ -16,6 +16,7 @@ Player* Player::MainPlayer = nullptr;
 
 Player::Player()
 	: Speed_(400.0f)
+	, AccSpeed_(400.f)
 	, Gravity_(100.0f)
 	, MapColImage_(nullptr)
 	, AccGravity_(400.0f)
@@ -89,6 +90,7 @@ bool Player::IsJumpKey()
 
 void Player::ChangeState(PlayerState _State)
 {
+
 	if (CurState_ != _State)
 	{
 		switch (_State)
@@ -214,7 +216,10 @@ void Player::Start()
 	//Render->SetPivotType(RenderPivot::BOT);
 	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Idle_Left", 0, 1, 1.f, true);
 	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Down_Left", 2, 3, 1.f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Slide_Left", 4, 5, 0.1f, false);
+	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Slide_Left", 4, 4, 0.5f, false);
+
+
+
 	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Walk_Left", 6, 15, 0.07f, true);
 	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Run_Left", 16, 23, 0.07f, true);
 	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "RunToStop_Left", 24, 24, 0.3f, false);
@@ -223,13 +228,13 @@ void Player::Start()
 
 	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left_Loop", 36, 37, 0.1f, true);
 
-	PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 0, 9, 0.1f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 1, 8, 1.f, true);
 
 
 
 	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Idle_Right", 0, 1, 1.f, true);
 	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Down_Right", 2, 3, 1.f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Slide_Right", 4, 5, 0.1f, false);
+	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Slide_Right", 4, 4, 0.5f, false);
 	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Walk_Right", 6, 15, 0.07f, true);
 	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Run_Right", 16, 23, 0.07f, true);
 	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "RunToStop_Right", 24, 24, 0.3f, false);
@@ -238,7 +243,7 @@ void Player::Start()
 
 	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right_Loop", 36, 37, 0.1f, true);
 
-	PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 0, 9, 0.1f, true);
+	PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 1, 8, 1.f, true);
 
 	AnimationName_ = "Idle_";
 	PlayerAnimationRender->ChangeAnimation("Idle_Right");
@@ -401,7 +406,6 @@ void Player::DirAnimationCheck()
 		ChangeDirText_ = "Right";
 	}
 
-
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
 		CheckDir_ = PlayerDir::Left;
@@ -414,13 +418,37 @@ void Player::DirAnimationCheck()
 		{
 			ChangeDirText_ = "Left";
 		}
-		else
+		else 
 		{
 			ChangeDirText_ = "Right";
 		}
 	}
 
 	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	{
+		if (CheckDir_ == PlayerDir::Left)
+		{
+			ChangeDirText_ = "Left";
+		}
+		else
+		{
+			ChangeDirText_ = "Right";
+		}
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("JumpLeft"))
+	{
+		if (CheckDir_ == PlayerDir::Left)
+		{
+			ChangeDirText_ = "Left";
+		}
+		else
+		{
+			ChangeDirText_ = "Right";
+		}
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("JumpRight"))
 	{
 		if (CheckDir_ == PlayerDir::Left)
 		{

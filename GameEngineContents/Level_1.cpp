@@ -76,6 +76,11 @@ void Level_1::Update()
 	{
 		GameEngine::GetInst().ChangeLevel("Level_2");
 	}
+
+	if (true == GameEngineInput::GetInst()->IsDown("NextLevel"))
+	{
+		GameEngine::GetInst().ChangeLevel("Level_2");
+	}
 }
 
 void Level_1::LevelChangeStart()

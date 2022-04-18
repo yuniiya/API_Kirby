@@ -137,6 +137,16 @@ void Player::RunUpdate()
 
 void Player::RunToStopUpdate()
 {
+	MoveDir += -(MoveDir * 4.5f) * GameEngineTime::GetDeltaTime();
+	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * AccSpeed_;
+	int Color = MapColImage_->GetImagePixel(CheckPos);
+
+	if (RGB(0, 0, 0) != Color)
+	{
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * AccSpeed_);
+	}
+
+	////////////////////////////////////////////////// Stop 지속 시간
 	StopTime_ -= GameEngineTime::GetDeltaTime();
 
 	if (StopTime_ < 0)
@@ -169,36 +179,21 @@ void Player::DownUpdate()
 void Player::SlideUpdate()
 {
 
-	if (true == GameEngineInput::GetInst()->IsDown("MoveLeft"))
-	{
-		MoveDir = float4::LEFT;
-
-	}
-	else if (true == GameEngineInput::GetInst()->IsDown("MoveRight"))
-	{
-		MoveDir = float4::RIGHT;
-	}
-
 	// 감속
 	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
 	//SetMove(MoveDir);
 
 
-	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;
+	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * AccSpeed_;
 	int Color = MapColImage_->GetImagePixel(CheckPos);
 
 	if (RGB(0, 0, 0) != Color)
 	{
-		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * AccSpeed_);
 	}
 
-	
-	// 감속 구현 완료 ㅇ
-	// 현재 누른 방향 != 이전 방향일 경우 현재 누른 방향으로 이동해야하는데 이전 방향으로(거꾸로) 이동하는 문제 있음 
-		
+	// 문제: 애니메이션이 재생되는 동안 다른 방향으로 변경안되게
 
-
-	
 	/////////////////////////////////////////////////////////// 슬라이딩 지속 시간 
 	SlidingTime_ -= GameEngineTime::GetDeltaTime();
 
@@ -209,8 +204,6 @@ void Player::SlideUpdate()
 		ChangeState(PlayerState::Idle);
 		return;
 	}
-
-
 }
 
 void Player::JumpUpdate()
@@ -333,7 +326,7 @@ void Player::RunStart()
 
 void Player::RunToStopStart()
 {
-	StopTime_ = 1.f;
+	StopTime_ = 0.3f;
 	AnimationName_ = "RunToStop_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
@@ -350,6 +343,16 @@ void Player::SlideStart()
 {
 	SlidingTime_ = 1.2f;
 
+	if (true == GameEngineInput::GetInst()->IsDown("MoveLeft"))
+	{
+		MoveDir = float4::LEFT;
+
+	}
+	else if (true == GameEngineInput::GetInst()->IsDown("MoveRight"))
+	{
+		MoveDir = float4::RIGHT;
+	}
+
 	AnimationName_ = "Slide_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 
@@ -359,6 +362,8 @@ void Player::JumpStart()
 {
 	AnimationName_ = "Jump_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+
+	MoveDir = float4::UP * 200.f;
 }
 
 void Player::FloatStart()
