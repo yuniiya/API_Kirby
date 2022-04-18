@@ -4,6 +4,11 @@
 class GameEngineMath
 {
 public:
+	static const float PIE;
+	static const float DEG;
+	static const float DegreeToRadian;
+
+public:
 	// constrcuter destructer
 	GameEngineMath();
 	~GameEngineMath();
@@ -23,6 +28,17 @@ private:
 // float을 형변환하는 클래스 
 class float4
 {
+public:
+	static float4 DegreeToDirectionFloat4(float _Degree)
+	{
+		return RadianToDirectionFloat4(_Degree * GameEngineMath::DegreeToRadian);
+	}
+
+	static float4 RadianToDirectionFloat4(float _Radian)
+	{
+		return { cosf(_Radian), sinf(_Radian) };
+	}
+
 public:
 	static float4 LEFT;
 	static float4 RIGHT;
@@ -176,6 +192,18 @@ public:
 		z *= _Other.z;
 
 		return *this;
+	}
+
+	bool CompareInt2D(const float4& _Value)
+	{
+		return ix() == _Value.ix() && iy() == _Value.iy();
+	}
+
+	bool CompareInt3D(const float4& _Value)
+	{
+		return ix() == _Value.ix() &&
+			iy() == _Value.iy() &&
+			iz() == _Value.iz();
 	}
 
 	// float4의 생성자

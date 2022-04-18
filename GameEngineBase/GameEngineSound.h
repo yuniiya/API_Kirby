@@ -30,7 +30,6 @@ public:
 	// 그냥 사운드 재생1회 절대로 멈추거나 이런건 못합니다.
 	static GameEngineSoundPlayer SoundPlayControl(const std::string& _Name);
 
-	// 사운드 한 번만 실행 ex) 효과음
 	static void SoundPlayOneShot(const std::string& _Name, int LoopCount = 0);
 	static void Update();
 
@@ -62,7 +61,7 @@ public:
 
 private:
 	GameEngineSound* Sound_;
-	FMOD::Channel* ControlHandle_;		// 제어 권한 
+	FMOD::Channel* ControlHandle_;
 
 
 	GameEngineSoundPlayer(GameEngineSound* Sound, FMOD::Channel* ControlHandle);

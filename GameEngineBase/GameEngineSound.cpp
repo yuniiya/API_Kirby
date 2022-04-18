@@ -13,7 +13,6 @@ class SoundSystemCreater
 public:
 	SoundSystemCreater() 
 	{
-		// ** : 주소 넣어주면 만들어서 돌려준다
 		FMOD::System_Create(&SoundSystem_);
 
 		if (nullptr == SoundSystem_)
@@ -32,7 +31,6 @@ public:
 	}
 };
 
-// 생성자 호출하면서 만들어진다
 SoundSystemCreater CreateInst = SoundSystemCreater();
 
 GameEngineSound::GameEngineSound() 
@@ -76,7 +74,6 @@ GameEngineSoundPlayer GameEngineSound::SoundPlayControl(const std::string& _Name
 	return GameEngineSoundPlayer(FindSound, PlayControl);
 }
 
-
 void GameEngineSound::SoundPlayOneShot(const std::string& _Name, int LoopCount /*= 1*/)
 {
 	std::string UpperName = GameEngineString::ToUpperReturn(_Name);
@@ -110,7 +107,6 @@ void GameEngineSound::Update()
 
 /// /////////////////////////////////////////////////////////////// 매니지먼트
 
-// static이니까 초기화
 std::map<std::string, GameEngineSound*> GameEngineSound::AllRes;
 
 
@@ -132,7 +128,6 @@ GameEngineSound* GameEngineSound::LoadRes(const std::string& _Path)
 	GameEnginePath NewPath = GameEnginePath(_Path);
 	return LoadRes(_Path, NewPath.GetFileName());	//경로와 파일이름(ex.idle.bmp)을 Map의 key,value로 넣기위해 각각 넘겨준다.
 }
-
 GameEngineSound* GameEngineSound::LoadRes(const std::string& _Path, const std::string& _Name)
 {
 	std::string UpperName = GameEngineString::ToUpperReturn(_Name);
@@ -152,7 +147,6 @@ GameEngineSound* GameEngineSound::LoadRes(const std::string& _Path, const std::s
 
 void GameEngineSound::AllResourcesDestroy()
 {
-	// 메모리 해제
 	for (std::pair<std::string, GameEngineSound*> Res : AllRes)
 	{
 		delete Res.second;
