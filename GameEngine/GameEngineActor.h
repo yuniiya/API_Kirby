@@ -6,18 +6,20 @@
 #include "GameEngineEnum.h"
 #include <list>
 
+// 
+
+// #define RENDERORDERMAX 2147483647
+
+// 설명 :
 class GameEngineLevel;
 class GameEngineRenderer;
 class GameEngineCollision;
 class GameEngineActor : public GameEngineNameObject, public GameEngineUpdateObject
 {
-// ========================
-// AcotrBase
-// ========================
-private:
+//// ActorBase
+public:
 	friend GameEngineLevel;
 
-public:
 	// constrcuter destructer
 	GameEngineActor();
 	virtual ~GameEngineActor();
@@ -28,12 +30,11 @@ public:
 	GameEngineActor& operator=(const GameEngineActor& _Other) = delete;
 	GameEngineActor& operator=(GameEngineActor&& _Other) noexcept = delete;
 
-	inline GameEngineLevel* GetLevel()
+	inline GameEngineLevel* GetLevel() 
 	{
 		return Level_;
 	}
 
-	// 카메라에 영향받은 위치 
 	inline float4 GetCameraEffectPosition()
 	{
 		return Position_ - GetLevel()->GetCameraPos();
@@ -58,20 +59,28 @@ public:
 	{
 		Position_ = _Value;
 	}
-
 	inline void SetScale(float4 _Value)
 	{
 		Scale_ = _Value;
 	}
 
+	inline void NextLevelOn() 
+	{
+		NextLevelOn_ = true;
+	}
+
+	void SetOrder(int _Order) override;
 
 protected:
+	// 시작할때 뭔가를 하고 싶은데 생성자에서는 절대로 못할 부분들을 처리한다.
 	virtual void Start() = 0;
+	// 지속적으로 게임이 실행될때 호출된다.
 	virtual void Update() {}
+	// 지속적으로 게임이 실행될때 호출된다.
 	virtual void Render() {}
 
-	virtual void LevelChangeStart() {}
-	virtual void LevelChangeEnd() {}
+	virtual void LevelChangeStart(GameEngineLevel* _PrevLevel) {}
+	virtual void LevelChangeEnd(GameEngineLevel* _NextLevel) {}
 
 	void Release();
 
@@ -83,30 +92,34 @@ private:
 	GameEngineLevel* Level_;
 	float4 Position_;
 	float4 Scale_;
-	
-	// private로 둔 이유: 자식 프로젝트에서 Level을 재세팅할 수 없도록
-	// -> Actor는 반드시 Level이 세팅되어 있는 상태에서 동작해야 한다 
+
+	bool NextLevelOn_;
+
+	inline void NextLevelOff()
+	{
+		NextLevelOn_ = false;
+	}
+
+
+	// 나를 만들어준 레벨이야.
 	inline void SetLevel(GameEngineLevel* _Level)
 	{
 		Level_ = _Level;
 	}
 
-// ========================
-// Render
-// ========================
+	/////////////////////////////////////////////////// Render
 public:
-	// 센터에서 그린다 (PivotPos: 그린 뒤 수정 값)
-	// 이미지가 없어도 렌더링 가능
+	// 벡터의 값
 	GameEngineRenderer* CreateRenderer(int _Order = static_cast<int>(EngineMax::RENDERORDERMAX), RenderPivot _PivotType = RenderPivot::CENTER, const float4 & _PivotPos = {0,0});
 
 	// 가장 빠를겁니다.
 	// 디폴트 인자는 선언에서만 지정 가능합니다.
-	GameEngineRenderer* CreateRenderer(const std::string& _Image, int _Order = static_cast<int>(EngineMax::RENDERORDERMAX), RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = {0,0});
+	GameEngineRenderer* CreateRenderer(const std::string& _Image, int _Order = static_cast<int>(EngineMax::RENDERORDERMAX),RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = {0,0});
 
 	GameEngineRenderer* CreateRendererToScale(const std::string& _Image, const float4& _Scale, int _Order = static_cast<int>(EngineMax::RENDERORDERMAX) ,RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = { 0,0 });
 
 private:
-	// list내부 렌더링될 이미지 리스트 순회
+	// 이터레이터
 	std::list<GameEngineRenderer*>::iterator StartRenderIter;
 	std::list<GameEngineRenderer*>::iterator EndRenderIter;
 
@@ -116,11 +129,12 @@ private:
 	////////////////////////////////////////////////////////// Collision
 
 public:
-	GameEngineCollision* CreateCollision(const std::string& _GroupName, float4 _Scale, float4 _Pivot = { 0, 0 });
+	GameEngineCollision* CreateCollision(const std::string& _GroupName, float4 _Scale, float4 _Pivot = {0, 0});
 
 private:
 	// 이터레이터
 	std::list<GameEngineCollision*> CollisionList_;
-};
 
+	
+};
 

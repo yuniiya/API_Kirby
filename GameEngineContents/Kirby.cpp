@@ -40,6 +40,15 @@ void Kirby::GameInit()
 	KirbyLeft2->CutCount(10, 1);
 	GameEngineImage* KirbyRight2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Right.bmp");
 	KirbyRight2->CutCount(10, 1);
+	GameEngineImage* KirbyLeft3 = GameEngineImageManager::GetInst()->Find("Default_Float_Left.bmp");
+	KirbyLeft3->CutCount(10, 2);
+	GameEngineImage* KirbyRight3 = GameEngineImageManager::GetInst()->Find("Default_Float_Right.bmp");
+	KirbyRight3->CutCount(10, 2);
+	GameEngineImage* KirbyLeft4 = GameEngineImageManager::GetInst()->Find("Default_Fall_Left.bmp");
+	KirbyLeft4->CutCount(10, 2);
+	GameEngineImage* KirbyRight4 = GameEngineImageManager::GetInst()->Find("Default_Fall_Right.bmp");
+	KirbyRight4->CutCount(10, 2);
+
 
 	// Å° »ı¼º
 	if (false == GameEngineInput::GetInst()->IsKey("TitleLevel"))
@@ -54,6 +63,8 @@ void Kirby::GameInit()
 		GameEngineInput::GetInst()->CreateKey("EndingLevel", '7');
 
 		GameEngineInput::GetInst()->CreateKey("NextLevel", VK_SPACE);
+
+		GameEngineInput::GetInst()->CreateKey("DebugMode", 'O');
 	}
 
 
@@ -190,16 +201,5 @@ void Kirby::ResourceLoad()
 			GameEngineSound::LoadRes(AllImageFileList[i].GetFullPath());
 		}
 	}
-
-
-
-	//GameEngineImage* WalkImage = GameEngineImageManager::GetInst()->Find("Test.bmp");
-	//WalkImage->CutCount(2, 1);
-	//GameEngineImage* Right_1 = GameEngineImageManager::GetInst()->Find("1_Right.bmp");
-	//Right_1->Cut({ 128,128 });
-
-	//GameEngineImage* Image = GameEngineImageManager::GetInst()->Find("Test.bmp");
-	//Image->Cut({80, 80});
-
 
 }

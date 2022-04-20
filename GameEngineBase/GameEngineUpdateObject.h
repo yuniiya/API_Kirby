@@ -27,7 +27,6 @@ public:
 		IsUpdate_ = false;
 	}
 
-	// 살아있는 애만 업데이트 
 	inline virtual bool IsUpdate()
 	{
 		return IsUpdate_ && false == IsDeath_;
@@ -38,12 +37,28 @@ public:
 		return IsDeath_;
 	}
 
-	inline void Death()
+	void AddAccTime(float _DeltaTime) 
+	{
+		AccTime_ += _DeltaTime;
+	}
+
+	float GetAccTime()
+	{
+		return AccTime_;
+	}
+
+
+	void ReSetAccTime()
+	{
+		AccTime_ = 0.0f;
+	}
+
+
+	inline 	void Death()
 	{
 		IsDeath_ = true;
 	}
 
-	// Death의 시간을 정해줬을 때만 유효하게 도는 업데이트
 	void ReleaseUpdate()
 	{
 		if (false == IsReleaseUpdate_)
@@ -70,19 +85,19 @@ public:
 		return Order_;
 	}
 
-	// 렌더러 만들 때 Order초기화
 	virtual inline void SetOrder(int _Order)
 	{
 		Order_ = _Order;
 	}
 
-
 private:
 	int Order_;
 	bool IsReleaseUpdate_;
 	float DeathTime_;
+	float AccTime_;
 
 	bool IsUpdate_;
 	bool IsDeath_;
 
 };
+

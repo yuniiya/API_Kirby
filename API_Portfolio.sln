@@ -4,10 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngine", "GameEngine\GameEngine.vcxproj", "{3BFBA927-1D22-4777-9FE8-9204BC1D8EAC}"
-	ProjectSection(ProjectDependencies) = postProject
-		{AA33D242-A716-40CF-AC42-289B5943B0C2} = {AA33D242-A716-40CF-AC42-289B5943B0C2}
-		{5F2FB4B3-5107-42C9-B72E-C101544B126C} = {5F2FB4B3-5107-42C9-B72E-C101544B126C}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngineBase", "GameEngineBase\GameEngineBase.vcxproj", "{5AFAE6F0-AEBD-4BCC-B000-8C573BE09F54}"
 EndProject
@@ -17,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Level1", "Level1", "{CA3695
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameApp", "GameApp\GameApp.vcxproj", "{5F2FB4B3-5107-42C9-B72E-C101544B126C}"
 	ProjectSection(ProjectDependencies) = postProject
+		{3BFBA927-1D22-4777-9FE8-9204BC1D8EAC} = {3BFBA927-1D22-4777-9FE8-9204BC1D8EAC}
 		{5AFAE6F0-AEBD-4BCC-B000-8C573BE09F54} = {5AFAE6F0-AEBD-4BCC-B000-8C573BE09F54}
 	EndProjectSection
 EndProject
@@ -26,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Level2", "Level2", "{42C3CA
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngineContents", "GameEngineContents\GameEngineContents.vcxproj", "{AA33D242-A716-40CF-AC42-289B5943B0C2}"
 	ProjectSection(ProjectDependencies) = postProject
+		{3BFBA927-1D22-4777-9FE8-9204BC1D8EAC} = {3BFBA927-1D22-4777-9FE8-9204BC1D8EAC}
 		{5AFAE6F0-AEBD-4BCC-B000-8C573BE09F54} = {5AFAE6F0-AEBD-4BCC-B000-8C573BE09F54}
 	EndProjectSection
 EndProject

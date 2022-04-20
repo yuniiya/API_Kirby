@@ -71,13 +71,18 @@ void BossLevel::Update()
 	}
 }
 
-void BossLevel::LevelChangeStart()
+void BossLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	BgmPlayer = GameEngineSound::SoundPlayControl("Boss.mp3");
 }
 
-void BossLevel::LevelChangeEnd()
+void BossLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
 {
+	if (_NextLevel->GetNameCopy() != "TitleLevel")
+	{
+		Player::MainPlayer->NextLevelOn();
+	}
+
 	BgmPlayer.Stop();
 }
 

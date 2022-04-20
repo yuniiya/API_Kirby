@@ -9,12 +9,13 @@ PlayLevel::~PlayLevel()
 
 }
 
-void PlayLevel::LevelChangeStart()
+void PlayLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 }
 
-void PlayLevel::LevelChangeEnd()
+void PlayLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
 {
 }
+
 
 

@@ -21,18 +21,27 @@ Level_1::~Level_1()
 
 void Level_1::Loading()
 {
-	
+	if (nullptr == Player::MainPlayer)
+	{
+		Player::MainPlayer = CreateActor<Player>((int)ORDER::PLAYER, "Player");
 
-	// UI 
-	CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
+		Player::MainPlayer->SetPosition({ 100.f, 520.f });
+		//Player::MainPlayer->SetScale({200,200});
+		//Player::MainPlayer->MapScale(57253.f, 768.f);
+
+		// UI 
+		PlayUI::MainUI = CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
+	}
+
+	
 
 
 	// 플레이어 엑터
-	Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER, "Player");
-	Kirby->SetPosition({100.f, 520.f });
-	Kirby->MapScale(5753.f, 768.f);
+	//Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER, "Player");
+	//Kirby->SetPosition({ 100.f, 520.f });
+	//Kirby->MapScale(5753.f, 768.f);
 
-	 // 백그라운드 엑터
+	// 백그라운드 엑터
 	{
 		BackGround* CurBack = CreateActor<BackGround>((int)ORDER::BACKGROUND);
 		CurBack->GetRenderer()->SetImage("Back1.bmp");
@@ -44,7 +53,7 @@ void Level_1::Loading()
 		CurBack->GetRenderer()->SetPivot(BackActor);
 	}
 
-	
+
 	// 스테이지
 	{
 		Stage* CurStage = CreateActor<Stage>((int)ORDER::STAGE);
@@ -83,12 +92,21 @@ void Level_1::Update()
 	}
 }
 
-void Level_1::LevelChangeStart()
+void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	//BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
+
+	Player::MainPlayer->SetPosition({ 100.f, 520.f });
+	Player::MainPlayer->MapScale(5753.f, 768.f);
 }
 
-void Level_1::LevelChangeEnd()
+void Level_1::LevelChangeEnd(GameEngineLevel* _NextLevel)
 {
 	//BgmPlayer.Stop();
+
+	if (_NextLevel->GetNameCopy() != "TitleLevel")
+	{
+		Player::MainPlayer->NextLevelOn();
+		PlayUI::MainUI->NextLevelOn();
+	}
 }

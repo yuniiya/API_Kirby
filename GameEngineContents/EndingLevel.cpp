@@ -49,14 +49,17 @@ void EndingLevel::Update()
 	}
 }
 
-void EndingLevel::LevelChangeStart()
+void EndingLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	GameEngineSound::SoundPlayOneShot("Ending.mp3");
 }
 
-void EndingLevel::LevelChangeEnd()
+void EndingLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
 {
-
+	if (_NextLevel->GetNameCopy() != "TitleLevel")
+	{
+		Player::MainPlayer->NextLevelOn();
+	}
 }
 
 

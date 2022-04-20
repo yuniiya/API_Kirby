@@ -21,16 +21,15 @@ Level_2::~Level_2()
 void Level_2::Loading()
 {
 	// UI 
-	CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
+	//CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
 
-	// 렌더러로 이미지 추가 
 
 	// 플레이어
-	{
-		Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
-		Kirby->SetPosition({ 100.f, 490.f });
-		Kirby->MapScale(5376.f, 768.f);
-	}
+	//{
+	//	Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
+	//	Kirby->SetPosition({ 100.f, 490.f });
+	//	Kirby->MapScale(5376.f, 768.f);
+	//}
 
 	{
 		// 백그라운드
@@ -77,12 +76,21 @@ void Level_2::Update()
 	}
 }
 
-void Level_2::LevelChangeStart()
+void Level_2::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	Player::MainPlayer->SetPosition({ 100.f, 490.f });
+	Player::MainPlayer->MapScale(5376.f, 768.f);
+
 	BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 }
 
-void Level_2::LevelChangeEnd()
+void Level_2::LevelChangeEnd(GameEngineLevel* _NextLevel)
 {
+	if (_NextLevel->GetNameCopy() != "TitleLevel")
+	{
+		Player::MainPlayer->NextLevelOn();
+		PlayUI::MainUI->NextLevelOn();
+	}
+
 	BgmPlayer.Stop();
 }

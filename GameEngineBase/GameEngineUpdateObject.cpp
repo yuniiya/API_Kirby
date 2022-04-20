@@ -1,17 +1,15 @@
 #include "GameEngineUpdateObject.h"
 
-GameEngineUpdateObject::GameEngineUpdateObject()
+GameEngineUpdateObject::GameEngineUpdateObject() 
 	: IsUpdate_(true)
 	, IsDeath_(false)
 	, IsReleaseUpdate_(false)
-	, DeathTime_(0.f)
-	, Order_(0)
+	, AccTime_(0.0f)
+	, DeathTime_(0.0f)
 {
 }
 
-GameEngineUpdateObject::~GameEngineUpdateObject()
+GameEngineUpdateObject::~GameEngineUpdateObject() 
 {
-
 }
-
 

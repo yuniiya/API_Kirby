@@ -4,11 +4,16 @@
 #include <map>
 #include <vector>
 
+
+
+
+// 설명 : 그리는걸 도와주는 클래스
 class GameEngineImage;
 class GameEngineCollision : public GameEngineActorSubObject
 {
 	friend GameEngineActor;
-	
+	friend GameEngineLevel;
+
 public:
 	// constrcuter destructer
 	GameEngineCollision();
@@ -30,29 +35,31 @@ public:
 		Scale_ = _Scale;
 	}
 
-	// 엑터 좌표를 기준으로 설정한 충돌체의 진짜 위치
 	inline float4 GetCollisionPos()
 	{
 		return GetActor()->GetPosition() + Pivot_;
 	}
 
-	// 사각형 충돌체 좌표
 	inline GameEngineRect GetRect()
 	{
 		return GameEngineRect(GetActor()->GetPosition() + Pivot_, Scale_);
 	}
 
-	// 충돌한 대상이 있는지 체크 -> 존재하면 true 
+
+	// Player   Bullet
+	// 방패     적의 총알을 막는다.
+	// 방패     적의 총알
+
+	// 충돌한 대상이 있는지 없는지만 체크하는 함수
 	bool CollisionCheck(
-		const std::string& _TargetGroup,
-		CollisionType _This = CollisionType::Circle,
+		const std::string& _TargetGroup, 
+		CollisionType _This = CollisionType::Circle, 
 		CollisionType _Target = CollisionType::Circle
 	);
 
-	// 충돌했다 = true -> 파괴
 	bool CollisionResult(
 		const std::string& _TargetGroup,
-		std::vector<GameEngineCollision*>& _ColResult,	// 넣어준 값으로 충돌체 리스트(vector) 채워서 줄게
+		std::vector<GameEngineCollision*>& _ColResult,
 		CollisionType _This = CollisionType::Circle,
 		CollisionType _Target = CollisionType::Circle
 	);
@@ -61,9 +68,10 @@ public:
 
 private:
 	friend class FrameAnimation;
-
-	// 엑터의 중심에서 Pivot만큼 떨어진 위치를 중심으로 충돌체를 그린다
 	float4 Pivot_;
 	float4 Scale_;
+
+	std::string CollisionName_;
+
 
 };

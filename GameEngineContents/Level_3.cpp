@@ -21,7 +21,7 @@ Level_3::~Level_3()
 void Level_3::Loading()
 {
 	// UI 
-	CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
+	//CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
 
 
 	{
@@ -76,12 +76,17 @@ void Level_3::Update()
 
 }
 
-void Level_3::LevelChangeStart()
+void Level_3::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 }
 
-void Level_3::LevelChangeEnd()
+void Level_3::LevelChangeEnd(GameEngineLevel* _NextLevel)
 {
+	if (_NextLevel->GetNameCopy() != "TitleLevel")
+	{
+		Player::MainPlayer->NextLevelOn();
+	}
+
 	BgmPlayer.Stop();
 }

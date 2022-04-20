@@ -61,12 +61,17 @@ void BossRoomLevel::Update()
 	}
 }
 
-void BossRoomLevel::LevelChangeStart()
+void BossRoomLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	BgmPlayer = GameEngineSound::SoundPlayControl("BossRoom.mp3");
 }
 
-void BossRoomLevel::LevelChangeEnd()
+void BossRoomLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
 {
+	if (_NextLevel->GetNameCopy() != "TitleLevel")
+	{
+		Player::MainPlayer->NextLevelOn();
+	}
+
 	BgmPlayer.Stop();
 }

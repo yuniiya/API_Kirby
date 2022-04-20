@@ -194,13 +194,29 @@ void GameEngineActor::Release()
 
 }
 
+void GameEngineActor::SetOrder(int _Order)
+{
+	if (nullptr == GetLevel())
+	{
+		MsgBoxAssert("레벨이 세팅되지 않았습니다.");
+	}
+
+	if (_Order == GetOrder())
+	{
+		return;
+	}
+
+	GetLevel()->ChangeUpdateOrder(this, _Order);
+}
+
+
 void GameEngineActor::LevelRegist(std::string _RegistName/* = ""*/)
 {
 	if (_RegistName == "")
 	{
 		GetLevel()->RegistActor(GetNameConstPtr(), this);
 		return;
-	}
+	} 
 
 	GetLevel()->RegistActor(_RegistName, this);
 }

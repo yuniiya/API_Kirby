@@ -3,6 +3,8 @@
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineImageManager.h>
 
+PlayUI* PlayUI::MainUI = nullptr;
+
 PlayUI::PlayUI()
 {
 

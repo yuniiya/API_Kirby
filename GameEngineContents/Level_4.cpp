@@ -21,7 +21,7 @@ Level_4::~Level_4()
 void Level_4::Loading()
 {
 	// UI 
-	CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
+	//CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
 
 
 	// 플레이어 엑터
@@ -77,12 +77,17 @@ void Level_4::Update()
 	}
 }
 
-void Level_4::LevelChangeStart()
+void Level_4::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	BgmPlayer = GameEngineSound::SoundPlayControl("Play2.mp3");
 }
 
-void Level_4::LevelChangeEnd()
+void Level_4::LevelChangeEnd(GameEngineLevel* _NextLevel)
 {
+	if (_NextLevel->GetNameCopy() != "TitleLevel")
+	{
+		Player::MainPlayer->NextLevelOn();
+	}
+
 	BgmPlayer.Stop();
 }

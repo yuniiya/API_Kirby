@@ -214,46 +214,54 @@ void Player::Start()
 
 	// Walk_Right이미지의 0~9인덱스를 0.1초동안 재생 (true = 루프on)
 	//Render->SetPivotType(RenderPivot::BOT);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Idle_Left", 0, 1, 1.f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Down_Left", 2, 3, 1.f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Slide_Left", 4, 4, 0.5f, false);
 
+	// Default Left
+	{
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Idle_Left", 0, 1, 1.f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Down_Left", 2, 3, 1.f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Slide_Left", 4, 4, 0.5f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Walk_Left", 6, 15, 0.07f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Run_Left", 16, 23, 0.07f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "RunToStop_Left", 24, 24, 0.3f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left", 30, 37, 0.1f, true);
 
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left_Loop", 36, 37, 0.1f, true);
 
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Walk_Left", 6, 15, 0.07f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Run_Left", 16, 23, 0.07f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "RunToStop_Left", 24, 24, 0.3f, false);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Float_Left", 29, 25, 0.1f, false);
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left", 30, 37, 0.1f, true);
+		// Jump
+		PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 0, 8, 0.05f, true);
 
-	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left_Loop", 36, 37, 0.1f, true);
+		// Float
+		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Float_Left", 0, 11, 0.1f, true);
 
-	PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 1, 8, 1.f, true);
+		// Fall
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 12, 0.1f, true);
+	}
+	
 
+	// Default Right
+	{
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Idle_Right", 0, 1, 1.f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Down_Right", 2, 3, 1.f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Slide_Right", 4, 4, 0.5f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Walk_Right", 6, 15, 0.07f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Run_Right", 16, 23, 0.07f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "RunToStop_Right", 24, 24, 0.3f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right", 30, 37, 0.1f, true);
 
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right_Loop", 36, 37, 0.1f, true);
 
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Idle_Right", 0, 1, 1.f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Down_Right", 2, 3, 1.f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Slide_Right", 4, 4, 0.5f, false);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Walk_Right", 6, 15, 0.07f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Run_Right", 16, 23, 0.07f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "RunToStop_Right", 24, 24, 0.3f, false);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Float_Right", 29, 25, 0.1f, true);
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right", 30, 37, 0.1f, true);
+		// Jump
+		PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 0, 8, 0.05f, true);
 
-	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right_Loop", 36, 37, 0.1f, true);
+		// Float
+		PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Float_Right", 0, 10, 0.1f, true);
 
-	PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 1, 8, 1.f, true);
-
+		// Fall
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 12, 0.1f, true);
+	}
+	
 	AnimationName_ = "Idle_";
 	PlayerAnimationRender->ChangeAnimation("Idle_Right");
-
-
-
-	//CreateRendererToScale("Walk.bmp", GetScale(), RenderPivot::CENTER, float4(0.0f, 170.0f));
-	//AnimationName = "Walk_Right";
-	//CurDir_ = PlayerDir::Right;
-
 
 
 	if (false == GameEngineInput::GetInst()->IsKey("MoveLeft"))
@@ -308,9 +316,13 @@ void Player::Update()
 	CameraFix();
 
 
+
 	//WallCheck();
 
-
+	//if (GameEngineInput::GetInst()->IsPress("DebugMode"))
+	//{
+	//	DebugModeSwitch();
+	//}
 
 	// ============================================== 가속 
 	//AccGravity_ += GameEngineTime::GetDeltaTime() * Gravity_;
@@ -560,7 +572,7 @@ void Player::DoorPixelCheck()
 
 }
 
-void Player::LevelChangeStart()
+void Player::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	MainPlayer = this;
 }

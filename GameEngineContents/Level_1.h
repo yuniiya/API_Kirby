@@ -4,6 +4,7 @@
 #include <GameEngineBase/GameEngineSound.h>
 //#include "PlayLevel.h"
 
+class Player;
 class Level_1 : public GameEngineLevel
 {
 public:
@@ -23,9 +24,12 @@ public:
 protected:
 	void Loading() override;
 	void Update() override;
-	void LevelChangeStart() override;
-	void LevelChangeEnd() override;
+	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
+	void LevelChangeEnd(GameEngineLevel* _NextLevel) override;
 
 private:
+	//Player* Kirby;
+	Player* MainPlayer;
+	
 
 };

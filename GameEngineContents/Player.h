@@ -39,6 +39,7 @@ class Player : public GameEngineActor
 {
 public:
 	static Player* MainPlayer;
+
 	// constrcuter destructer
 	Player();
 	~Player();
@@ -62,6 +63,11 @@ public:
 	{
 		CurrentLevel = GetLevel()->GetNameCopy();
 		return CurrentLevel;
+	}
+
+	void DebugModeSwitch()
+	{
+		GetLevel()->IsDebugModeSwitch();
 	}
 
 
@@ -102,7 +108,7 @@ private:
 	void Update() override;
 	void Render() override;
 
-	void LevelChangeStart() override;
+	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
 
 	void ColMapUpdate();
 

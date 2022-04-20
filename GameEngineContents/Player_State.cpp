@@ -208,13 +208,19 @@ void Player::SlideUpdate()
 
 void Player::JumpUpdate()
 {
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		if (false == IsMoveKey())
+		{
+			ChangeState(PlayerState::Idle);
+			return;
+		}
+	}
+
+
 	MoveDir = float4::UP;
 
-	if (false == IsMoveKey())
-	{
-		ChangeState(PlayerState::Idle);
-		return;
-	}
+	
 
 	//SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
