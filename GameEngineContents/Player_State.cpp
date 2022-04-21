@@ -531,6 +531,7 @@ void Player::SlideStart()
 
 void Player::JumpStart()
 {
+
 	// 한 번에 100의 힘으로 위로 간다 
 	MoveDir = float4::UP * JumpPower_;
 	

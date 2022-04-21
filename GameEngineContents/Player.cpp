@@ -538,7 +538,7 @@ void Player::DoorCheck(std::string ChangeLevelName_)
 {
 	int Color = MapColImage_->GetImagePixel(GetPosition());
 
-	if (RGB(0, 0, 255) == Color && true == GameEngineInput::GetInst()->IsDown("MoveDown"))
+	if (RGB(0, 0, 255) == Color && true == GameEngineInput::GetInst()->IsDown("Down"))
 	{
 		GameEngine::GetInst().ChangeLevel(ChangeLevelName_);
 	}

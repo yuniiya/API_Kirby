@@ -93,6 +93,7 @@ void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	//BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 
 	Player::MainPlayer->SetPosition({ 100.f, 520.f });
+	//Player::MainPlayer->SetPosition({ 5500.f, 450.f });
 	Player::MainPlayer->MapScale(5753.f, 768.f);
 }
 
