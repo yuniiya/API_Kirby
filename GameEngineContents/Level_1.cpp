@@ -25,10 +25,6 @@ void Level_1::Loading()
 	{
 		Player::MainPlayer = CreateActor<Player>((int)ORDER::PLAYER, "Player");
 
-		Player::MainPlayer->SetPosition({ 100.f, 520.f });
-		//Player::MainPlayer->SetScale({200,200});
-		//Player::MainPlayer->MapScale(57253.f, 768.f);
-
 		// UI 
 		PlayUI::MainUI = CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
 	}
@@ -96,7 +92,7 @@ void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	//BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 
-	Player::MainPlayer->SetPosition({ 100.f, 520.f });
+	Player::MainPlayer->SetPosition({ 1000.f, 520.f });
 	Player::MainPlayer->MapScale(5753.f, 768.f);
 }
 

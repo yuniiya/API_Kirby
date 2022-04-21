@@ -31,6 +31,7 @@ enum class PlayerDir
 {
 	Left,
 	Right,
+	Down, 
 	Max,
 };
 
@@ -79,31 +80,32 @@ private:
 	float AccSpeed_;
 
 	float JumpPower_;
+	float JumpMaxHeight_;
 
 	float Gravity_;
-	float AccGravity_;
 
+	// State 지속 시간
 	float RunningTime_;
 	float SlidingTime_;
 	float StopTime_;
 	float DownTime_;
 
+	float JumpTimeL_;
+	float JumpTimeR_;
+
+	// 스테이지 관련
 	float MapScaleX_;
 	float MapScaleY_;
 
-	float4 MoveDir;
-
 	GameEngineImage* MapColImage_;
 
-	GameEngineCollision* PlayerCollision;
-
-	void Start() override;
-	void Update() override;
-	void Render() override;
-
-	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
-
 	void ColMapUpdate();
+
+	std::string CurrentLevel;
+
+
+	// 충돌
+	GameEngineCollision* PlayerCollision;
 
 	void StagePixelCheck(float _Speed);
 	void DoorPixelCheck();
@@ -113,12 +115,18 @@ private:
 	void WallCheck();
 
 
-	std::string CurrentLevel;
+	
 	
 
+	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
+
+	void Start() override;
+	void Update() override;
+	void Render() override;
 
 
 private:
+	float4 MoveDir;
 	PlayerState CurState_;
 
 	bool IsMoveKey();
@@ -126,12 +134,11 @@ private:
 	bool IsJumpKey();
 	//void KeyMove();
 
+
 protected:
 	void ChangeState(PlayerState _State);
 	void PlayerStateUpdate();
 	void DirAnimationCheck();
-
-	
 
 private:
 	void IdleStart();

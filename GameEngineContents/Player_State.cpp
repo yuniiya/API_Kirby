@@ -13,7 +13,6 @@ void Player::IdleUpdate()
 {
 	RunningTime_ -= GameEngineTime::GetDeltaTime();
 
-
 	if (true == IsMoveKey()
 		&& RunningTime_ < 0)	
 		// 연속키를 누른적이 없사
@@ -56,6 +55,9 @@ void Player::IdleUpdate()
 	// 점프 
 	if (true == IsJumpKey())
 	{
+		//JumpTimeR_ = GameEngineInput::GetInst()->GetTime("JumpRight");
+		//JumpTimeL_ = GameEngineInput::GetInst()->GetTime("JumpLeft");
+
 		ChangeState(PlayerState::Jump);
 		return;
 	}
@@ -95,6 +97,21 @@ void Player::WalkUpdate()
 	}
 
 	StagePixelCheck(Speed_);
+
+	float4 RightDownkPos = GetPosition() + float4{ 0,20 };
+	float4 LeftUpPos = GetPosition() + float4{ -20,0 };
+
+	int DownColor = MapColImage_->GetImagePixel(RightDownkPos);
+	int UpColor = MapColImage_->GetImagePixel(LeftUpPos);
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		SetMove(float4::DOWN);
+	}
+	else if (RGB(0, 0, 0) != UpColor)
+	{
+		SetMove(float4::UP);
+	}
 }
 
 
@@ -105,6 +122,13 @@ void Player::RunUpdate()
 	if (false == IsMoveKey())
 	{
 		ChangeState(PlayerState::RunToStop);
+		return;
+	}
+
+	// 점프 
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::Jump);
 		return;
 	}
 
@@ -208,28 +232,39 @@ void Player::SlideUpdate()
 
 void Player::JumpUpdate()
 {
-	//if (PlayerAnimationRender->IsEndAnimation())
-	//{
-	//	if (false == IsMoveKey())
-	//	{
-	//		ChangeState(PlayerState::Idle);
-	//		return;
-	//	}
-	//}
-
+	// 위로 이동
 	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
+	// ============ 일정 높이가 될 때까지 PauseOn
+	//if (0 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+	//{
+	//	PlayerAnimationRender->PauseOn();
 
-	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * 800.f;
+	//}
 
-	// 중력
 	
 
-	//float4 CheckPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime() * 800.f);
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir += float4::LEFT;
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir += float4::RIGHT;
+	}
 
-	int Color = MapColImage_->GetImagePixel(GetPosition() + float4{0, 20});
+	// Float
+
+	// 중력
+	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
+	
+	int BottomCheck = MapColImage_->GetImagePixel(GetPosition() + float4{0, 20});
+	int UpCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 0, -100 });
+	int LeftCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ -20, 0 });
+	int RightCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 20, 0 });
+
 	// 땅에 닿았다
-	if (RGB(0, 0, 0) == Color)
+	if (RGB(0, 0, 0) == BottomCheck)
 	{
 		MoveDir = float4::ZERO;
 
@@ -237,6 +272,13 @@ void Player::JumpUpdate()
 		return;
 	}
 
+	if (RGB(0, 0, 0) == UpCheck)
+	{
+		MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
+	}
+
+	//StagePixelCheck(Speed_);
+	
 	//if (true == GameEngineInput::GetInst()->IsPress("JumpLeft"))
 	//{
 	//	SetMove(float4::UP * GameEngineTime::GetDeltaTime() * Speed_);
@@ -271,7 +313,10 @@ void Player::JumpUpdate()
 
 void Player::FloatUpdate()
 {
-
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+	}
 }
 
 void Player::FallUpdate()
@@ -377,9 +422,31 @@ void Player::JumpStart()
 {
 	// 한 번에 100의 힘으로 위로 간다 
 	MoveDir = float4::UP * JumpPower_;
-
+	
 	AnimationName_ = "Jump_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+
+
+	//if (JumpTimeL_ <= 0.0025f)
+	//{
+	//	JumpPower_ = 500.f;
+	//	Gravity_ = 800.f;
+	//}
+	//if (JumpTimeR_ <= 0.003f)
+	//{
+	//	JumpPower_ = 500.f;
+	//	Gravity_ = 800.f;
+	//}
+	//else if (JumpTimeL_ >= 0.027f)
+	//{
+	//	JumpPower_ = 1000.f;
+	//	Gravity_ = 1500.f;
+	//}
+	//else if (JumpTimeR_ >= 0.03f)
+	//{
+	//	JumpPower_ = 1000.f;
+	//	Gravity_ = 1500.f;
+	//}
 }
 
 void Player::FloatStart()

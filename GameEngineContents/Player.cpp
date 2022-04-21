@@ -17,10 +17,10 @@ Player* Player::MainPlayer = nullptr;
 Player::Player()
 	: Speed_(400.0f)
 	, AccSpeed_(20.f)
-	, JumpPower_(600.f)
-	, Gravity_(1000.0f)
+	, JumpPower_(1000.f)
+	, JumpMaxHeight_(5.f)
+	, Gravity_(1500.f)
 	, MapColImage_(nullptr)
-	, AccGravity_(400.0f)
 	, PlayerCollision(nullptr)
 	, PlayerAnimationRender(nullptr)
 	, CurState_(PlayerState::Idle)
@@ -229,7 +229,8 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 0, 8, 0.05f, false);
 
 		// Float
-		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Float_Left", 0, 11, 0.1f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Float_Left", 0, 4, 0.1f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Float_Left_Loop", 5, 10, 0.1f, true);
 
 		// Fall
 		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 12, 0.05f, false);
@@ -252,7 +253,8 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 0, 8, 0.05f, false);
 
 		// Float
-		PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Float_Right", 0, 10, 0.1f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Float_Right", 0, 4, 0.1f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Float_Right_Loop", 5, 10, 0.1f, true);
 
 		// Fall
 		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 12, 0.05f, false);
@@ -358,7 +360,7 @@ void Player::ColMapUpdate()
 
 	if ("Level_1" == CurrentLevel)
 	{
-		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level1_ColMap.bmp");
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level1_ColMap1.bmp");
 	}
 	else if ("Level_2" == CurrentLevel)
 	{
@@ -585,6 +587,7 @@ void Player::DebugModeSwitch()
 		GetLevel()->IsDebugModeSwitch();
 	}
 }
+
 
 // 충돌 -> 다음 스테이지로 이동
 //void Player::DoorCheck()
