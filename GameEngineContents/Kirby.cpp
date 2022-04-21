@@ -67,6 +67,44 @@ void Kirby::GameInit()
 		GameEngineInput::GetInst()->CreateKey("DebugMode", 'O');
 	}
 
+	// 몬스터 
+	{
+		GameEngineImage* WaddleDeeLeft = GameEngineImageManager::GetInst()->Find("WaddleDee_Left.bmp");
+		WaddleDeeLeft->CutCount(5, 2);
+		GameEngineImage* WaddleDeeRight = GameEngineImageManager::GetInst()->Find("WaddleDee_Right.bmp");
+		WaddleDeeRight->CutCount(5, 2);
+		GameEngineImage* BigWaddleLeft = GameEngineImageManager::GetInst()->Find("BigWaddleDee_Left.bmp");
+		BigWaddleLeft->CutCount(5, 2);
+		GameEngineImage* BigWaddleRight = GameEngineImageManager::GetInst()->Find("BigWaddleDee_Right.bmp");
+		BigWaddleRight->CutCount(5, 2);
+		GameEngineImage* SnooterLeft = GameEngineImageManager::GetInst()->Find("Snooter_Left.bmp");
+		SnooterLeft->CutCount(5, 4);
+		GameEngineImage* SnooterRight = GameEngineImageManager::GetInst()->Find("Snooter_Right.bmp");
+		SnooterRight->CutCount(5, 4);
+		GameEngineImage* ScarfyLeft = GameEngineImageManager::GetInst()->Find("Scarfy_Left.bmp");
+		ScarfyLeft->CutCount(5, 1);
+		GameEngineImage* ScarfyRight = GameEngineImageManager::GetInst()->Find("Scarfy_Right.bmp");
+		ScarfyRight->CutCount(5, 1);
+
+		GameEngineImage* PengyLeft = GameEngineImageManager::GetInst()->Find("Pengy_Left.bmp");
+		PengyLeft->CutCount(5, 2);
+		GameEngineImage* PengyRight = GameEngineImageManager::GetInst()->Find("Pengy_Right.bmp");
+		PengyRight->CutCount(5, 2);
+		GameEngineImage* MetalunLeft = GameEngineImageManager::GetInst()->Find("Metalun_Left.bmp");
+		MetalunLeft->CutCount(5, 5);
+		GameEngineImage* MetalunRight = GameEngineImageManager::GetInst()->Find("Metalun_Right.bmp");
+		MetalunRight->CutCount(5, 5);
+		//GameEngineImage* BoxinLeft = GameEngineImageManager::GetInst()->Find("Boxin_Left.bmp");
+		//BoxinLeft->CutCount(5, 4);
+		//GameEngineImage* BoxinRight = GameEngineImageManager::GetInst()->Find("Boxin_Right.bmp");
+		//BoxinRight->CutCount(5, 4);
+
+		//GameEngineImage* BossLeft = GameEngineImageManager::GetInst()->Find("Boss_Left.bmp");
+		//BossLeft->CutCount(5, 7);
+		//GameEngineImage* BossRight = GameEngineImageManager::GetInst()->Find("Boss_Right.bmp");
+		//BossRight->CutCount(5, 7);
+	}
+
 
 	// 레벨 생성 및 현재 레벨 설정
 	CreateLevel<TitleLevel>("TitleLevel");
@@ -107,28 +145,29 @@ void Kirby::ResourceLoad()
 		}
 	}
 
-	// 커비 (Test용)
-	//{
-	//	GameEngineDirectory ResourcesDir;
-	//	ResourcesDir.MoveParent("API");
-	//	ResourcesDir.Move("Resources");
-	//	ResourcesDir.Move("Player");
-
-	//	std::vector<GameEngineFile> AllImageFileList = ResourcesDir.GetAllFile("bmp");
-	//	AllImageFileList = ResourcesDir.GetAllFile("bmp");
-
-	//	for (size_t i = 0; i < AllImageFileList.size(); i++)
-	//	{
-	//		GameEngineImageManager::GetInst()->Load(AllImageFileList[i].GetFullPath());
-	//	}
-	//}
-
+	// 플레이어 
 	{
 		GameEngineDirectory ResourcesDir;
 		ResourcesDir.MoveParent("API");
 		ResourcesDir.Move("Resources");
 		ResourcesDir.Move("Actor");
 		ResourcesDir.Move("Kirby");
+
+		std::vector<GameEngineFile> AllImageFileList = ResourcesDir.GetAllFile("bmp");
+		AllImageFileList = ResourcesDir.GetAllFile("bmp");
+
+		for (size_t i = 0; i < AllImageFileList.size(); i++)
+		{
+			GameEngineImageManager::GetInst()->Load(AllImageFileList[i].GetFullPath());
+		}
+	}
+
+	{
+		GameEngineDirectory ResourcesDir;
+		ResourcesDir.MoveParent("API");
+		ResourcesDir.Move("Resources");
+		ResourcesDir.Move("Actor");
+		ResourcesDir.Move("Monster");
 
 		std::vector<GameEngineFile> AllImageFileList = ResourcesDir.GetAllFile("bmp");
 		AllImageFileList = ResourcesDir.GetAllFile("bmp");

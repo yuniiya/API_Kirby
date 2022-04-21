@@ -97,7 +97,7 @@ void GameEngineRenderer::Render()
 		float4 Scale = RenderScale_.Half();
 		Scale.y *= 2;
 
-		if (Alpha_ == 255)
+		if (Alpha_ != 255)
 		{
 			GameEngine::BackBufferImage()->AlphaCopy(Image_, RenderPos - Scale, RenderScale_, RenderImagePivot_, RenderImageScale_, Alpha_);
 		} 

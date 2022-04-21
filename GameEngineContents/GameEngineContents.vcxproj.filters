@@ -101,6 +101,9 @@
     <ClCompile Include="PlayLevel.cpp">
       <Filter>Level</Filter>
     </ClCompile>
+    <ClCompile Include="BigWaddleDee.cpp">
+      <Filter>Actor\Play\Monster\Default</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Kirby.h" />
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="PlayLevel.h">
       <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="BigWaddleDee.h">
+      <Filter>Actor\Play\Monster\Default</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

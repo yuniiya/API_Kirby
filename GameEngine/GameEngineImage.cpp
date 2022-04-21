@@ -5,7 +5,10 @@
 // #pragma comment(lib, "msimg32.lib")
 
 GameEngineImage::GameEngineImage()
-	:ImageDC_(nullptr)
+	: ImageDC_(nullptr)
+	, BitMap_(nullptr)
+	, OldBitMap_(nullptr)
+	, Info_{}
 {
 }
 
@@ -237,15 +240,15 @@ void GameEngineImage::CutCount(int _x, int _y)
 void GameEngineImage::Cut(const float4& _CutSize)
 {	
 	// 딱맞아 떨어지게 만들어줄것.
-	if (0 != (GetScale().ix() % _CutSize.ix()))
-	{
-		MsgBoxAssert("자를수 있는 수치가 딱 맞아떨어지지 않습니다.");
-	}
+	//if (0 != (GetScale().ix() % _CutSize.ix()))
+	//{
+	//	MsgBoxAssert("자를수 있는 수치가 딱 맞아떨어지지 않습니다.");
+	//}
 
-	if (0 != (GetScale().iy() % _CutSize.iy()))
-	{
-		MsgBoxAssert("자를수 있는 수치가 딱 맞아떨어지지 않습니다.");
-	}
+	//if (0 != (GetScale().iy() % _CutSize.iy()))
+	//{
+	//	MsgBoxAssert("자를수 있는 수치가 딱 맞아떨어지지 않습니다.");
+	//}
 
 	// 가로세로 갯수를 구하고
 	int XCount = GetScale().ix() / _CutSize.ix();
@@ -266,5 +269,26 @@ void GameEngineImage::Cut(const float4& _CutSize)
 
 int GameEngineImage::GetImagePixel(int _x, int _y)
 {
+	// 화면 밖으로 나가면 해당 부분 검은색으로 인식 -> 따라서 플레이어가 화면 밖으로 못 나간다 
+	if (0 > _x)
+	{
+		return RGB(0, 0, 0);
+	}
+
+	if (0 > _y)
+	{
+		return RGB(0, 0, 0);
+	}
+
+	if (GetScale().ix() <= _x)
+	{
+		return RGB(0, 0, 0);
+	}
+
+	if (GetScale().iy() <= _y)
+	{
+		return RGB(0, 0, 0);
+	}
+
 	return GetPixel(ImageDC_, _x, _y);
 }
