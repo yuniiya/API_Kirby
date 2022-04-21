@@ -360,7 +360,7 @@ void Player::ColMapUpdate()
 
 	if ("Level_1" == CurrentLevel)
 	{
-		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level1_ColMap1.bmp");
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level1_ColMap.bmp");
 	}
 	else if ("Level_2" == CurrentLevel)
 	{
@@ -531,6 +531,7 @@ void Player::DoorCheck(std::string ChangeLevelName_)
 	{
 		GameEngine::GetInst().ChangeLevel(ChangeLevelName_);
 	}
+		
 }
 
 void Player::StagePixelCheck(float _Speed)

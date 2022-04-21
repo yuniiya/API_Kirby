@@ -38,8 +38,6 @@ void Player::IdleUpdate()
 
 	}
 
-
-	
 	if (true == GameEngineInput::GetInst()->IsPress("Down"))
 	{
 		ChangeState(PlayerState::Down);
@@ -61,6 +59,10 @@ void Player::IdleUpdate()
 		ChangeState(PlayerState::Jump);
 		return;
 	}
+
+	StagePixelCheck(Speed_);
+
+
 }
 
 void Player::WalkUpdate()
@@ -98,6 +100,7 @@ void Player::WalkUpdate()
 
 	StagePixelCheck(Speed_);
 
+	// 오르막, 내리막길 
 	float4 RightDownkPos = GetPosition() + float4{ 0,20 };
 	float4 LeftUpPos = GetPosition() + float4{ -20,0 };
 
@@ -133,9 +136,23 @@ void Player::RunUpdate()
 	}
 
 	StagePixelCheck(500.f);
-	
 
 
+	// 오르막, 내리막길 
+	float4 RightDownkPos = GetPosition() + float4{ 0,20 };
+	float4 LeftUpPos = GetPosition() + float4{ -20,0 };
+
+	int DownColor = MapColImage_->GetImagePixel(RightDownkPos);
+	int UpColor = MapColImage_->GetImagePixel(LeftUpPos);
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		SetMove(float4::DOWN);
+	}
+	else if (RGB(0, 0, 0) != UpColor)
+	{
+		SetMove(float4::UP);
+	}
 
 	// 속력 제한
 	//if (1.f <= MoveDir.Len2D())
@@ -259,10 +276,14 @@ void Player::JumpUpdate()
 	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
 	
 	int BottomCheck = MapColImage_->GetImagePixel(GetPosition() + float4{0, 20});
-	int UpCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 0, -100 });
+	int UpCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 0, -200 });
 	int LeftCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ -20, 0 });
 	int RightCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 20, 0 });
 
+	if (RGB(0, 0, 0) == UpCheck)
+	{
+		MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
+	}
 	// 땅에 닿았다
 	if (RGB(0, 0, 0) == BottomCheck)
 	{
@@ -272,10 +293,6 @@ void Player::JumpUpdate()
 		return;
 	}
 
-	if (RGB(0, 0, 0) == UpCheck)
-	{
-		MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
-	}
 
 	//StagePixelCheck(Speed_);
 	
