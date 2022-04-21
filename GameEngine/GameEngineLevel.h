@@ -46,7 +46,7 @@ public:
 		IsDebug = false;
 	}
 
-	bool IsDebugModeSwitch()
+	void IsDebugModeSwitch()
 	{
 		IsDebug = !IsDebug;
 	}

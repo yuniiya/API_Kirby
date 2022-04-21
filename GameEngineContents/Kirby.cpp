@@ -94,15 +94,15 @@ void Kirby::GameInit()
 		MetalunLeft->CutCount(5, 5);
 		GameEngineImage* MetalunRight = GameEngineImageManager::GetInst()->Find("Metalun_Right.bmp");
 		MetalunRight->CutCount(5, 5);
-		//GameEngineImage* BoxinLeft = GameEngineImageManager::GetInst()->Find("Boxin_Left.bmp");
-		//BoxinLeft->CutCount(5, 4);
-		//GameEngineImage* BoxinRight = GameEngineImageManager::GetInst()->Find("Boxin_Right.bmp");
-		//BoxinRight->CutCount(5, 4);
+		GameEngineImage* BoxinLeft = GameEngineImageManager::GetInst()->Find("Boxin_Left.bmp");
+		BoxinLeft->CutCount(5, 4);
+		GameEngineImage* BoxinRight = GameEngineImageManager::GetInst()->Find("Boxin_Right.bmp");
+		BoxinRight->CutCount(5, 4);
 
-		//GameEngineImage* BossLeft = GameEngineImageManager::GetInst()->Find("Boss_Left.bmp");
-		//BossLeft->CutCount(5, 7);
-		//GameEngineImage* BossRight = GameEngineImageManager::GetInst()->Find("Boss_Right.bmp");
-		//BossRight->CutCount(5, 7);
+		GameEngineImage* BossLeft = GameEngineImageManager::GetInst()->Find("Boss_Left.bmp");
+		BossLeft->CutCount(5, 7);
+		GameEngineImage* BossRight = GameEngineImageManager::GetInst()->Find("Boss_Right.bmp");
+		BossRight->CutCount(5, 7);
 	}
 
 

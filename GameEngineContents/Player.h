@@ -50,13 +50,6 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
-
-	//inline Stage* GetStage()
-	//{
-	//	return CurStage_;
-	//	GetLevel()->
-	//}
-
 	void MapScale(float _x, float _y);
 
 	std::string GetCurrentLevelName()
@@ -65,10 +58,7 @@ public:
 		return CurrentLevel;
 	}
 
-	void DebugModeSwitch()
-	{
-		GetLevel()->IsDebugModeSwitch();
-	}
+	void DebugModeSwitch();
 
 
 protected:
@@ -87,6 +77,9 @@ protected:
 private:
 	float Speed_;
 	float AccSpeed_;
+
+	float JumpPower_;
+
 	float Gravity_;
 	float AccGravity_;
 
@@ -127,7 +120,6 @@ private:
 
 private:
 	PlayerState CurState_;
-	GameEngineRenderer* Render1;
 
 	bool IsMoveKey();
 	bool IsMoveKeyDown();

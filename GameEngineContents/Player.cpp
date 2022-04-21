@@ -16,14 +16,14 @@ Player* Player::MainPlayer = nullptr;
 
 Player::Player()
 	: Speed_(400.0f)
-	, AccSpeed_(400.f)
-	, Gravity_(100.0f)
+	, AccSpeed_(20.f)
+	, JumpPower_(600.f)
+	, Gravity_(1000.0f)
 	, MapColImage_(nullptr)
 	, AccGravity_(400.0f)
 	, PlayerCollision(nullptr)
 	, PlayerAnimationRender(nullptr)
 	, CurState_(PlayerState::Idle)
-	, Render1(nullptr)
 	, MapScaleX_(0.f)
 	, MapScaleY_(0.f)
 	, MoveDir(float4::ZERO)
@@ -209,8 +209,6 @@ void Player::Start()
 	PlayerAnimationRender = CreateRenderer();
 	PlayerAnimationRender->SetPivotType(RenderPivot::BOT);
 	PlayerAnimationRender->SetPivot({ 0.f, 140.f });
-	//PlayerAnimationRender = CreateRendererToScale("Test.bmp",{100, 1000});
-	//PlayerAnimationRender = CreateRendererToScale("1_Right.bmp", {128, 128}, static_cast<int>(ORDER::PLAYER), RenderPivot::BOT);
 
 	// Walk_Right이미지의 0~9인덱스를 0.1초동안 재생 (true = 루프on)
 	//Render->SetPivotType(RenderPivot::BOT);
@@ -228,13 +226,13 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left_Loop", 36, 37, 0.1f, true);
 
 		// Jump
-		PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 0, 8, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 0, 8, 0.05f, false);
 
 		// Float
 		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Float_Left", 0, 11, 0.1f, true);
 
 		// Fall
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 12, 0.1f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 12, 0.05f, false);
 	}
 	
 
@@ -251,13 +249,13 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right_Loop", 36, 37, 0.1f, true);
 
 		// Jump
-		PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 0, 8, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 0, 8, 0.05f, false);
 
 		// Float
 		PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Float_Right", 0, 10, 0.1f, true);
 
 		// Fall
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 12, 0.1f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 12, 0.05f, false);
 	}
 	
 	AnimationName_ = "Idle_";
@@ -293,6 +291,7 @@ void Player::Start()
 		// 빨아들인 물체가 스킬을 가졌다면 W : Copy
 		//GameEngineInput::GetInst()->CreateKey("Copy", 'W');
 		// 능력을 카피한 상태에서 W : 스킬 해제
+
 	}
 	
 }
@@ -311,6 +310,8 @@ void Player::Update()
 
 	DirAnimationCheck();
 	PlayerStateUpdate();
+
+	DebugModeSwitch();
 
 	// 카메라 위치 고정
 	CameraFix();
@@ -577,6 +578,13 @@ void Player::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	MainPlayer = this;
 }
 
+void Player::DebugModeSwitch()
+{
+	if (true == GameEngineInput::GetInst()->IsDown("DebugMode"))
+	{
+		GetLevel()->IsDebugModeSwitch();
+	}
+}
 
 // 충돌 -> 다음 스테이지로 이동
 //void Player::DoorCheck()

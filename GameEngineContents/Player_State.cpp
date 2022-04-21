@@ -138,12 +138,12 @@ void Player::RunUpdate()
 void Player::RunToStopUpdate()
 {
 	MoveDir += -(MoveDir * 4.5f) * GameEngineTime::GetDeltaTime();
-	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * AccSpeed_;
+	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;
 	int Color = MapColImage_->GetImagePixel(CheckPos);
 
 	if (RGB(0, 0, 0) != Color)
 	{
-		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * AccSpeed_);
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
 	}
 
 	////////////////////////////////////////////////// Stop 지속 시간
@@ -184,12 +184,12 @@ void Player::SlideUpdate()
 	//SetMove(MoveDir);
 
 
-	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * AccSpeed_;
+	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;
 	int Color = MapColImage_->GetImagePixel(CheckPos);
 
 	if (RGB(0, 0, 0) != Color)
 	{
-		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * AccSpeed_);
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
 	}
 
 	// 문제: 애니메이션이 재생되는 동안 다른 방향으로 변경안되게
@@ -208,25 +208,34 @@ void Player::SlideUpdate()
 
 void Player::JumpUpdate()
 {
-	if (PlayerAnimationRender->IsEndAnimation())
-	{
-		if (false == IsMoveKey())
-		{
-			ChangeState(PlayerState::Idle);
-			return;
-		}
-	}
+	//if (PlayerAnimationRender->IsEndAnimation())
+	//{
+	//	if (false == IsMoveKey())
+	//	{
+	//		ChangeState(PlayerState::Idle);
+	//		return;
+	//	}
+	//}
+
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
 
-	MoveDir = float4::UP;
+	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * 800.f;
 
+	// 중력
 	
 
-	//SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+	//float4 CheckPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime() * 800.f);
 
-	//// 중력
-	//MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * 1000.0f;
+	int Color = MapColImage_->GetImagePixel(GetPosition() + float4{0, 20});
+	// 땅에 닿았다
+	if (RGB(0, 0, 0) == Color)
+	{
+		MoveDir = float4::ZERO;
 
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 
 	//if (true == GameEngineInput::GetInst()->IsPress("JumpLeft"))
 	//{
@@ -242,11 +251,11 @@ void Player::JumpUpdate()
 	//{
 	//	MoveDir += -MoveDir * GameEngineTime::GetDeltaTime();
 
-	//	if (0.005f >= MoveDir.Len2D())
-	//	{
-	//		MoveDir = float4::ZERO;
-	//		return;
-	//	}
+		//if (0.005f >= MoveDir.Len2D())
+		//{
+		//	MoveDir = float4::ZERO;
+		//	return;
+		//}
 
 	//	SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
 	//	return;
@@ -366,10 +375,11 @@ void Player::SlideStart()
 
 void Player::JumpStart()
 {
+	// 한 번에 100의 힘으로 위로 간다 
+	MoveDir = float4::UP * JumpPower_;
+
 	AnimationName_ = "Jump_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
-
-	MoveDir = float4::UP * 200.f;
 }
 
 void Player::FloatStart()
@@ -380,6 +390,8 @@ void Player::FloatStart()
 
 void Player::FallStart()
 {
+	AnimationName_ = "Fall_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Player::InhaleStart()
