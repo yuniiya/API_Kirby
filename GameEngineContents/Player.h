@@ -21,6 +21,7 @@ enum class PlayerState
 	Full,
 	Exhale,
 	Swallow,
+	Exhausted,
 	Attack,
 	Damaged,
 	
@@ -89,6 +90,7 @@ private:
 	float SlidingTime_;
 	float StopTime_;
 	float DownTime_;
+	float InhaleTime_;
 
 	float JumpTimeL_;
 	float JumpTimeR_;
@@ -155,6 +157,8 @@ private:
 	void FullStart();
 	void ExhaleStart();
 	void SwallowStart();
+	void ExhaustedStart();
+
 	void AttackStart();
 	void DamagedStart();
 
@@ -173,6 +177,8 @@ private:
 	void FullUpdate();
 	void ExhaleUpdate();
 	void SwallowUpdate();
+	void ExhaustedUpdate();
+
 	void AttackUpdate();
 	void DamagedUpdate();
 	

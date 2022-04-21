@@ -15,9 +15,9 @@
 Player* Player::MainPlayer = nullptr;
 
 Player::Player()
-	: Speed_(400.0f)
+	: Speed_(300.0f)
 	, AccSpeed_(20.f)
-	, JumpPower_(1000.f)
+	, JumpPower_(1300.f)
 	, JumpMaxHeight_(5.f)
 	, Gravity_(1500.f)
 	, MapColImage_(nullptr)
@@ -31,6 +31,7 @@ Player::Player()
 	, RunningTime_(0.1f)
 	, StopTime_(1.f)
 	, DownTime_(0.5f)
+	, InhaleTime_(2.5f)
 {
 
 }
@@ -134,6 +135,9 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::Swallow:
 			SwallowStart();
 			break;
+		case PlayerState::Exhausted:
+			ExhaustedStart();
+			break;
 		case PlayerState::Attack:
 			AttackStart();
 			break;
@@ -189,6 +193,9 @@ void Player::PlayerStateUpdate()
 	case PlayerState::Swallow:
 		SwallowUpdate();
 		break;
+	case PlayerState::Exhausted:
+		ExhaustedUpdate();
+		break;
 	case PlayerState::Attack:
 		AttackUpdate();
 		break;
@@ -221,12 +228,14 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Walk_Left", 6, 15, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Run_Left", 16, 23, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "RunToStop_Left", 24, 24, 0.3f, false);
-		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left", 30, 37, 0.1f, true);
 
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left", 30, 37, 0.1f, false);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left_Loop", 36, 37, 0.1f, true);
 
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Exhausted_Left", 38, 40, 0.15f, false);
+
 		// Jump
-		PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 0, 8, 0.05f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 0, 8, 0.03f, false);
 
 		// Float
 		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Float_Left", 0, 4, 0.1f, false);
@@ -245,12 +254,14 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Walk_Right", 6, 15, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Run_Right", 16, 23, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "RunToStop_Right", 24, 24, 0.3f, false);
-		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right", 30, 37, 0.1f, true);
 
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right", 30, 37, 0.1f, false);
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right_Loop", 36, 37, 0.1f, true);
 
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Exhausted_Right", 38, 40, 0.15f, false);
+
 		// Jump
-		PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 0, 8, 0.05f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 0, 8, 0.03f, false);
 
 		// Float
 		PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Float_Right", 0, 4, 0.1f, false);

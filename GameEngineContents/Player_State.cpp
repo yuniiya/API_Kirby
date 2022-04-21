@@ -62,7 +62,25 @@ void Player::IdleUpdate()
 
 	StagePixelCheck(Speed_);
 
+	// 오르막, 내리막길 
+	float4 RightDownkPos = GetPosition() + float4{ 0,20 };
+	float4 LeftUpPos = GetPosition() + float4{ -20,0 };
 
+	int DownColor = MapColImage_->GetImagePixel(RightDownkPos);
+	int UpColor = MapColImage_->GetImagePixel(LeftUpPos);
+
+
+	float4 XMove = { MoveDir.x, 0.0f };
+	float4 YMove = { 0.0f, MoveDir.y };
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		SetMove(float4::DOWN);
+	}
+	else if (RGB(0, 0, 0) != UpColor)
+	{
+		SetMove(YMove);
+	}
 }
 
 void Player::WalkUpdate()
@@ -107,13 +125,17 @@ void Player::WalkUpdate()
 	int DownColor = MapColImage_->GetImagePixel(RightDownkPos);
 	int UpColor = MapColImage_->GetImagePixel(LeftUpPos);
 
+
+	float4 XMove = { MoveDir.x, 0.0f };
+	float4 YMove = { 0.0f, MoveDir.y - 1.f};
+
 	if (RGB(0, 0, 0) != DownColor)
 	{
 		SetMove(float4::DOWN);
 	}
 	else if (RGB(0, 0, 0) != UpColor)
 	{
-		SetMove(float4::UP);
+		SetMove(YMove);
 	}
 }
 
@@ -145,13 +167,17 @@ void Player::RunUpdate()
 	int DownColor = MapColImage_->GetImagePixel(RightDownkPos);
 	int UpColor = MapColImage_->GetImagePixel(LeftUpPos);
 
+
+	float4 XMove = { MoveDir.x, 0.0f };
+	float4 YMove = { 0.0f, MoveDir.y };
+
 	if (RGB(0, 0, 0) != DownColor)
 	{
 		SetMove(float4::DOWN);
 	}
 	else if (RGB(0, 0, 0) != UpColor)
 	{
-		SetMove(float4::UP);
+		SetMove(YMove);
 	}
 
 	// 속력 제한
@@ -171,9 +197,6 @@ void Player::RunUpdate()
 	//		return;
 	//	}
 
-	//	SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-	//	return;
-	//}
 }
 
 void Player::RunToStopUpdate()
@@ -194,6 +217,26 @@ void Player::RunToStopUpdate()
 	{
 		ChangeState(PlayerState::Idle);
 		return;
+	}
+
+	// 오르막, 내리막길 
+	float4 RightDownkPos = GetPosition() + float4{ 0,20 };
+	float4 LeftUpPos = GetPosition() + float4{ -20,0 };
+
+	int DownColor = MapColImage_->GetImagePixel(RightDownkPos);
+	int UpColor = MapColImage_->GetImagePixel(LeftUpPos);
+
+	float4 XMove = { MoveDir.x, 0.0f };
+	float4 YMove = { 0.0f, MoveDir.y };
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		SetMove(float4::DOWN);
+		//MoveDir.y += 1.f;
+	}
+	else if (RGB(0, 0, 0) != UpColor)
+	{
+		SetMove(YMove);
 	}
 }
 
@@ -222,7 +265,6 @@ void Player::SlideUpdate()
 
 	// 감속
 	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
-	//SetMove(MoveDir);
 
 
 	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;
@@ -252,14 +294,17 @@ void Player::JumpUpdate()
 	// 위로 이동
 	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
-	// ============ 일정 높이가 될 때까지 PauseOn
-	//if (0 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
-	//{
-	//	PlayerAnimationRender->PauseOn();
+	float4 XPos = { MoveDir.x, 0.0f };
+	float4 YPos = { 0.0f, MoveDir.y };
 
-	//}
-
-	
+	// 일정 높이 될 때까지 Pause
+	if (YPos.y = -500.f)
+	{
+		if (0 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+		{
+			PlayerAnimationRender->PauseOn();
+		}
+	}
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
@@ -274,7 +319,15 @@ void Player::JumpUpdate()
 
 	// 중력
 	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
+
+	YPos = { 0.0f, MoveDir.y };
+	if (YPos.y > -500.f)
+	{
+		PlayerAnimationRender->PauseOff();
+	}
 	
+
+	/////////////////////////////////////// 이 부분 수정 필요
 	int BottomCheck = MapColImage_->GetImagePixel(GetPosition() + float4{0, 20});
 	int UpCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 0, -200 });
 	int LeftCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ -20, 0 });
@@ -284,10 +337,19 @@ void Player::JumpUpdate()
 	{
 		MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
 	}
+	else if (RGB(0, 0, 0) != LeftCheck)
+	{
+		MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
+	}
+	else if (RGB(0, 0, 0) != RightCheck)
+	{
+		MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
+	}
 	// 땅에 닿았다
 	if (RGB(0, 0, 0) == BottomCheck)
 	{
-		MoveDir = float4::ZERO;
+		//MoveDir = float4::ZERO;
+		MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
 
 		ChangeState(PlayerState::Idle);
 		return;
@@ -342,12 +404,35 @@ void Player::FallUpdate()
 
 void Player::InhaleUpdate()
 {
+	InhaleTime_ -= GameEngineTime::GetDeltaTime();
+
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+	}
+	
+	// 2.5초 후 Exhausted
+	if (InhaleTime_ <= 0)
+	{
+		ChangeState(PlayerState::Exhausted);
+		return;
+	}
+
+	// 키에서 손 뗐을 때 -> Idle
+	if(GameEngineInput::GetInst()->IsUp("Inhale"))
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+	// 걷기
 	if (true == IsMoveKey())
 	{
 		ChangeState(PlayerState::Walk);
 		return;
 	}
 
+	// 점프
 	if (true == IsJumpKey())
 	{
 		ChangeState(PlayerState::Jump);
@@ -365,6 +450,15 @@ void Player::ExhaleUpdate()
 
 void Player::SwallowUpdate()
 {
+}
+
+void Player::ExhaustedUpdate()
+{
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 
 void Player::AttackUpdate()
@@ -442,28 +536,6 @@ void Player::JumpStart()
 	
 	AnimationName_ = "Jump_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
-
-
-	//if (JumpTimeL_ <= 0.0025f)
-	//{
-	//	JumpPower_ = 500.f;
-	//	Gravity_ = 800.f;
-	//}
-	//if (JumpTimeR_ <= 0.003f)
-	//{
-	//	JumpPower_ = 500.f;
-	//	Gravity_ = 800.f;
-	//}
-	//else if (JumpTimeL_ >= 0.027f)
-	//{
-	//	JumpPower_ = 1000.f;
-	//	Gravity_ = 1500.f;
-	//}
-	//else if (JumpTimeR_ >= 0.03f)
-	//{
-	//	JumpPower_ = 1000.f;
-	//	Gravity_ = 1500.f;
-	//}
 }
 
 void Player::FloatStart()
@@ -480,10 +552,10 @@ void Player::FallStart()
 
 void Player::InhaleStart()
 {
-	AnimationName_ = "Inhale_";
-	//PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+	InhaleTime_ = 2.5f;
 
-	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+	AnimationName_ = "Inhale_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Player::FullStart()
@@ -496,6 +568,12 @@ void Player::ExhaleStart()
 
 void Player::SwallowStart()
 {
+}
+
+void Player::ExhaustedStart()
+{
+	AnimationName_ = "Exhausted_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Player::AttackStart()
