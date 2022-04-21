@@ -24,13 +24,13 @@ void Level_3::Loading()
 	//CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
 
 
-	{
-		// 플레이어 엑터
-		Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
-		Kirby->SetPosition({ 100.f, 490.f });
-		Kirby->MapScale(5960.f, 768.f);
+	//{
+	//	// 플레이어 엑터
+	//	Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
+	//	Kirby->SetPosition({ 100.f, 490.f });
+	//	Kirby->MapScale(5960.f, 768.f);
 
-	}
+	//}
 
 	// 백그라운드 엑터
 	{
@@ -78,6 +78,9 @@ void Level_3::Update()
 
 void Level_3::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	Player::MainPlayer->SetPosition({ 100.f, 490.f });
+	Player::MainPlayer->MapScale(5960.f, 768.f);
+
 	BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 }
 
@@ -86,6 +89,7 @@ void Level_3::LevelChangeEnd(GameEngineLevel* _NextLevel)
 	if (_NextLevel->GetNameCopy() != "TitleLevel")
 	{
 		Player::MainPlayer->NextLevelOn();
+		PlayUI::MainUI->NextLevelOn();
 	}
 
 	BgmPlayer.Stop();

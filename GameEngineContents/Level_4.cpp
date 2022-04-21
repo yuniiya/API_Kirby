@@ -25,12 +25,12 @@ void Level_4::Loading()
 
 
 	// 플레이어 엑터
-	{
+	/*{
 		Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER, "Player");
 		Kirby->SetPosition({ 100.f, 440.f });
 		Kirby->MapScale(3073.f, 768.f);
 	}
-	
+	*/
 
 	
 
@@ -79,6 +79,9 @@ void Level_4::Update()
 
 void Level_4::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	Player::MainPlayer->SetPosition({ 100.f, 440.f });
+	Player::MainPlayer->MapScale(3073.f, 768.f);
+
 	BgmPlayer = GameEngineSound::SoundPlayControl("Play2.mp3");
 }
 
@@ -87,6 +90,7 @@ void Level_4::LevelChangeEnd(GameEngineLevel* _NextLevel)
 	if (_NextLevel->GetNameCopy() != "TitleLevel")
 	{
 		Player::MainPlayer->NextLevelOn();
+		PlayUI::MainUI->NextLevelOn();
 	}
 
 	BgmPlayer.Stop();

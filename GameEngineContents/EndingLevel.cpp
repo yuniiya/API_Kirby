@@ -20,13 +20,13 @@ EndingLevel::~EndingLevel()
 void EndingLevel::Loading()
 {
 	// UI 
-	CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
+	//CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
 
 
-	// 플레이어 엑터
-	Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
-	Kirby->SetPosition({ 100.f, 500.f });
-	Kirby->MapScale(1024.f, 768.f);
+	//// 플레이어 엑터
+	//Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
+	//Kirby->SetPosition({ 100.f, 500.f });
+	//Kirby->MapScale(1024.f, 768.f);
 
 	// 백그라운드 엑터
 	{
@@ -51,6 +51,10 @@ void EndingLevel::Update()
 
 void EndingLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	Player::MainPlayer->SetPosition({ 100.f, 500.f });
+	Player::MainPlayer->MapScale(1024.f, 768.f);
+
+
 	GameEngineSound::SoundPlayOneShot("Ending.mp3");
 }
 
@@ -59,6 +63,7 @@ void EndingLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
 	if (_NextLevel->GetNameCopy() != "TitleLevel")
 	{
 		Player::MainPlayer->NextLevelOn();
+		PlayUI::MainUI->NextLevelOn();
 	}
 }
 

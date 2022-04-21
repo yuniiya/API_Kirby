@@ -22,13 +22,13 @@ BossRoomLevel::~BossRoomLevel()
 void BossRoomLevel::Loading()
 {
 	// UI 
-	CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
+	//CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
 
-	{
-		Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
-		Kirby->SetPosition({ 100.f, 500.f });
-		Kirby->MapScale(1024.f, 768.f);
-	}
+	//{
+	//	Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
+	//	Kirby->SetPosition({ 100.f, 500.f });
+	//	Kirby->MapScale(1024.f, 768.f);
+	//}
 
 	// 백그라운드 엑터
 	{
@@ -63,6 +63,9 @@ void BossRoomLevel::Update()
 
 void BossRoomLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	Player::MainPlayer->SetPosition({ 100.f, 500.f });
+	Player::MainPlayer->MapScale(1024.f, 768.f);
+
 	BgmPlayer = GameEngineSound::SoundPlayControl("BossRoom.mp3");
 }
 
@@ -71,6 +74,7 @@ void BossRoomLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
 	if (_NextLevel->GetNameCopy() != "TitleLevel")
 	{
 		Player::MainPlayer->NextLevelOn();
+		PlayUI::MainUI->NextLevelOn();
 	}
 
 	BgmPlayer.Stop();
