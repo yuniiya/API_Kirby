@@ -224,7 +224,7 @@ void Player::Start()
 	{
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Idle_Left", 0, 1, 1.f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Down_Left", 2, 3, 1.f, true);
-		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Slide_Left", 4, 4, 0.5f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Slide_Left", 4, 4, 0.3f, false);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Walk_Left", 6, 15, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Run_Left", 16, 23, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "RunToStop_Left", 24, 24, 0.3f, false);
@@ -250,7 +250,7 @@ void Player::Start()
 	{
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Idle_Right", 0, 1, 1.f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Down_Right", 2, 3, 1.f, true);
-		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Slide_Right", 4, 4, 0.5f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Slide_Right", 4, 4, 0.3f, false);
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Walk_Right", 6, 15, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Run_Right", 16, 23, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "RunToStop_Right", 24, 24, 0.3f, false);

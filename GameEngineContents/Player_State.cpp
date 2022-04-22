@@ -201,7 +201,7 @@ void Player::RunUpdate()
 
 void Player::RunToStopUpdate()
 {
-	MoveDir += -(MoveDir * 4.5f) * GameEngineTime::GetDeltaTime();
+	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
 	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;
 	int Color = MapColImage_->GetImagePixel(CheckPos);
 
@@ -263,7 +263,7 @@ void Player::SlideUpdate()
 {
 
 	// °¨¼Ó
-	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
+	MoveDir += -(MoveDir * 4.f) * GameEngineTime::GetDeltaTime() * Speed_;
 
 
 	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;
@@ -571,6 +571,8 @@ void Player::DownStart()
 void Player::SlideStart()
 {
 	SlidingTime_ = 1.2f;
+
+	Speed_ = 500.f;
 
 	if (true == GameEngineInput::GetInst()->IsDown("MoveLeft"))
 	{

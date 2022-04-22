@@ -15,7 +15,17 @@ public:
 	WaddleDee& operator=(WaddleDee&& _Other) noexcept = delete;
 
 protected:
+	GameEngineRenderer* AnimationRender;
+
+protected:
+	void Start() override;
+	void Update() override;
+	void Render() override;
 
 private:
+	void WalkStart();
+	void DamagedStart();
 
+	void WalkUpdate();
+	void DamagedUpdate();
 };

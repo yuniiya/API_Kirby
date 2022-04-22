@@ -62,8 +62,8 @@ private:
 
 protected:
 	void ChangeState(MonsterState _State);
-	void MonsterStateUpdate();
-	void DirAnimationCheck();
+	virtual void MonsterStateUpdate();
+	virtual void DirAnimationCheck();
 
 private:
 	void IdleStart();

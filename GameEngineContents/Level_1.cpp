@@ -10,6 +10,8 @@
 #include "Player.h"
 #include "ContentsEnum.h"
 #include "PlayUI.h"
+#include "Monster.h"
+#include "WaddleDee.h"
 
 Level_1::Level_1()
 {
@@ -28,14 +30,6 @@ void Level_1::Loading()
 		// UI 
 		PlayUI::MainUI = CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
 	}
-
-	
-
-
-	// 플레이어 엑터
-	//Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER, "Player");
-	//Kirby->SetPosition({ 100.f, 520.f });
-	//Kirby->MapScale(5753.f, 768.f);
 
 	// 백그라운드 엑터
 	{
@@ -67,6 +61,20 @@ void Level_1::Loading()
 		// 장애물 콜리전
 		//CurStage->CreateCollision("Wall", { 100, 100 }, { 300, 200 });
 	}
+
+
+	// 몬스터
+	Monster* Waddle = CreateActor<Monster>((int)ORDER::MONSTER, "WaddleDee");
+	Waddle->CreateRenderer();
+
+	/*Waddle = dynamic_cast<WaddleDee*>(Waddle);
+
+	Waddle->SetPosition({ 500,500 });
+	Waddle->CreateRenderer();*/
+
+	
+	
+
 }
 
 void Level_1::Update()
