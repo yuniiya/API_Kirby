@@ -45,6 +45,8 @@ private:
 		//}
 	};
 
+	friend class GameEngineWindow;
+
 private:
 	static GameEngineInput* Inst_;
 
@@ -64,21 +66,28 @@ public:
 	}
 
 public:
-	// time을 외부에서 따로 받아서 사용하도록 해서 EngineTime에 종속되지 않도록 함
-	// 0.0f = 기본값 (시간을 안 넣으면 0)
 	void Update(float _DeltaTime = 0.0f);
 	void CreateKey(const std::string& _Name, int _Key);
 
-	float GetTime(const std::string& _Name);	// 이 키가 얼마동안 눌렸는지 
+	float GetTime(const std::string& _Name);
 	bool IsDown(const std::string& _Name);
 	bool IsUp(const std::string& _Name);
 	bool IsPress(const std::string& _Name);
 	bool IsFree(const std::string& _Name);
 	bool IsKey(const std::string& _Name);
 
+	inline int GetMouseWheel()
+	{
+		return CurWheelValue;
+	}
+
 protected:
+	
 
 private:
+	int WheelValue;
+	int CurWheelValue;
+
 	std::map<std::string, GameEngineKey> AllInputKey_;
 
 	// constrcuter destructer

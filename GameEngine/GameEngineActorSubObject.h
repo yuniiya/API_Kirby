@@ -8,7 +8,7 @@ class GameEngineActorSubObject : public GameEngineUpdateObject
 public:
 	// constrcuter destructer
 	GameEngineActorSubObject();
-	virtual ~GameEngineActorSubObject();	 
+	virtual ~GameEngineActorSubObject();
 
 	// delete Function
 	GameEngineActorSubObject(const GameEngineActorSubObject& _Other) = delete;
@@ -21,16 +21,18 @@ public:
 		return Actor_;
 	}
 
+
 	inline bool IsUpdate() override
 	{
-		//     나의 IsUpdate_ && false == IsDeath_
+		//나의 IsUpdate_ && false == IsDeath_
 		return GameEngineUpdateObject::IsUpdate() && Actor_->IsUpdate();
 	}
 
 	inline bool IsDeath() override
 	{
-		return GameEngineUpdateObject::IsDeath() || Actor_->IsDeath();
+		return GameEngineUpdateObject::IsDeath() || Actor_->IsDeath();//이거 ||로하면 터져..
 	}
+
 
 protected:
 	inline void SetActor(GameEngineActor* _Actor)
@@ -38,7 +40,10 @@ protected:
 		Actor_ = _Actor;
 	}
 
-private:
 
+
+private:
 	GameEngineActor* Actor_;
+
 };
+

@@ -1,7 +1,6 @@
 #include "GameEngineInput.h"
 #include "GameEngineDebug.h"
 #include "GameEngineString.h"
-#include "GameEngineTime.h"
 
 //////////////////////////////////////////////////////////////////
 
@@ -24,7 +23,6 @@ void GameEngineInput::GameEngineKey::Update(float _DeltaTime)
 			Press_ = true;
 			Up_ = false;
 			Free_ = false;
-			Time_ = 0.0f;
 			Time_ += _DeltaTime;
 		}
 	}
@@ -95,6 +93,10 @@ void GameEngineInput::CreateKey(const std::string& _Name, int _Key)
 
 void GameEngineInput::Update(float _DeltaTime)
 {
+	CurWheelValue = 0;
+	CurWheelValue = WheelValue;
+	WheelValue = 0;
+
 	std::map<std::string, GameEngineKey>::iterator KeyUpdateStart = AllInputKey_.begin();
 	std::map<std::string, GameEngineKey>::iterator KeyUpdateEnd = AllInputKey_.end();
 
@@ -106,7 +108,7 @@ void GameEngineInput::Update(float _DeltaTime)
 	}
 }
 
-float GameEngineInput::GetTime(const std::string& _Name)
+float GameEngineInput::GetTime(const std::string& _Name) 
 {
 	std::string UpperKey = GameEngineString::ToUpperReturn(_Name);
 
@@ -115,6 +117,7 @@ float GameEngineInput::GetTime(const std::string& _Name)
 		MsgBoxAssert("존재하지 않는 키 입니다.");
 		return false;
 	}
+
 	return AllInputKey_[UpperKey].Time_;
 }
 
@@ -166,5 +169,3 @@ bool GameEngineInput::IsFree(const std::string& _Name)
 	}
 	return AllInputKey_[UpperKey].Free_;
 }
-
-
