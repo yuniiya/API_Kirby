@@ -89,6 +89,25 @@ bool Player::IsJumpKey()
 	return true;
 }
 
+void Player::Move()
+{
+	MoveDir = float4::ZERO;
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4::LEFT;
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4::RIGHT;
+	}
+
+}
+
+void Player::GravityOn()
+{
+	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
+}
 
 
 void Player::ChangeState(PlayerState _State)
@@ -335,27 +354,6 @@ void Player::Update()
 
 	//WallCheck();
 
-	//if (GameEngineInput::GetInst()->IsPress("DebugMode"))
-	//{
-	//	DebugModeSwitch();
-	//}
-
-	// ============================================== 가속 
-	//AccGravity_ += GameEngineTime::GetDeltaTime() * Gravity_;
-	//// 땅에 닿았다면
-	//if (RGB(0, 0, 0) == Color)
-	//{
-	//	AccGravity_ = 0.0f;
-	//}
-	//SetMove(float4::DOWN * GameEngineTime::GetDeltaTime() * AccGravity_);
-
-
-	//if (true == GameEngineInput::GetInst()->IsDown("Fire"))
-	//{
-	//	Bullet* Ptr = GetLevel()->CreateActor<Bullet>();
-	//	// 총알이 내 위치에서 만들어진다
-	//	Ptr->SetPosition(GetPosition());
-	//}
 }
 
 void Player::Render()
@@ -552,20 +550,6 @@ void Player::DoorCheck(std::string ChangeLevelName_)
 void Player::StagePixelCheck(float _Speed)
 {
 	// 땅 밑으로 못 가게
-
-
-	MoveDir = float4::ZERO;
-
-	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
-	{
-		MoveDir = float4::LEFT;
-	}
-	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
-	{
-		MoveDir = float4::RIGHT;
-	}
-
-
 	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
 
 	int Color = MapColImage_->GetImagePixel(CheckPos);
@@ -573,30 +557,34 @@ void Player::StagePixelCheck(float _Speed)
 	{
 		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
 	}
+
 }
 
-void Player::MovePixelCheck()
+void Player::MovePixelCheck(float _x, float _y)
 {
-	int BottomCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 0, 20.f });
-	int UpCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 0, -20.f });
-	int LeftCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.f, 0 });
-	int RightCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.f, 0 });
+	int BottomCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.f, _y });
+	int UpCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.f, -_y });
+	int LeftCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ -_x, 0.f });
+	int RightCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ _x, 0.f });
 
 	float4 Pos = MoveDir;
 
 	if (RGB(0, 0, 0) == UpCheck)
 	{
-		MoveDir = float4{ 0.f, 20.5f };
+		//MoveDir = float4{ 0.0f, _y + 0.1f};
+		MoveDir = float4{ 0.0f, 1.f };
 		SetMove(MoveDir);
 	}
 	else if (RGB(0, 0, 0) == LeftCheck)
 	{
-		MoveDir = float4{ 20.5f, 0.f };
+		//MoveDir = float4{ _x + 0.1f, 0.0f };
+		MoveDir = float4{ 1.f, 0.0f };
 		SetMove(MoveDir);
 	}
 	else if (RGB(0, 0, 0) == RightCheck)
 	{
-		MoveDir = float4{ -20.5f, 0.f };
+		//MoveDir = float4{ -_x - 0.1f, 0.0f };
+		MoveDir = float4{ -1.f, 0.0f };
 		SetMove(MoveDir);
 	}
 }

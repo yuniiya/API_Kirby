@@ -118,7 +118,7 @@ private:
 	//void DoorCheck();
 	void WallCheck();
 
-	void MovePixelCheck();
+	void MovePixelCheck(float _x, float _y);
 	void HillPixelCheck();
 	
 	
@@ -138,7 +138,9 @@ private:
 	bool IsMoveKey();
 	bool IsMoveKeyDown();
 	bool IsJumpKey();
-	//void KeyMove();
+
+	void Move();
+	void GravityOn();
 
 
 protected:
