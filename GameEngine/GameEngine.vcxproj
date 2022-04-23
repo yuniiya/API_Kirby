@@ -176,6 +176,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineFolderImage.h" />
+    <ClInclude Include="GameEngineFont.h" />
     <ClInclude Include="GameEngineImage.h">
       <SubType>
       </SubType>
@@ -209,6 +210,7 @@
     </ClCompile>
     <ClCompile Include="GameEngineCollision.cpp" />
     <ClCompile Include="GameEngineFolderImage.cpp" />
+    <ClCompile Include="GameEngineFont.cpp" />
     <ClCompile Include="GameEngineImage.cpp">
       <SubType>
       </SubType>

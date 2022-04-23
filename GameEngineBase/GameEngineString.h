@@ -6,7 +6,7 @@
 class GameEngineString
 {
 public:
-	static void ToUpper(std::string& _Text)
+	static void ToUpper(std::string& _Text) 
 	{
 		for (size_t i = 0; i < _Text.size(); i++)
 		{
@@ -26,6 +26,14 @@ public:
 		return NewText;
 	}
 
+
+	static void AnsiToUnicode(const std::string& Text, std::wstring& _Out);
+	static void UniCodeToUTF8(const std::wstring& _Text, std::string& _Out);
+	static void AnsiToUTF8(const std::string& Text, std::string& _Out);
+	static std::string AnsiToUTF8Return(const std::string& Text);
+	static std::wstring StringToWStringReturn(const std::string& Text);
+
+
 protected:
 
 private:
@@ -41,3 +49,4 @@ private:
 
 
 };
+
