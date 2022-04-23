@@ -122,6 +122,8 @@ public:
 
 	void SetIndex(size_t _Index, float4 _Scale = { -1.0f, -1.0f });
 
+	void SetImageAnimationReset(const std::string& _Name);
+
 	void SetOrder(int _Order) override;
 
 
@@ -158,9 +160,13 @@ private:
 	/// </summary>
 
 	float RotZ_;
-	GameEngineImage* RotationCuttingImage_;
+	GameEngineImage* RotationFilterImage_;
 
 public:
+	void SetRotationFilter(const std::string& _ImageName);
+	
+
+
 	void SetRotationZ(float _RotZ)
 	{
 		RotZ_ = _RotZ;

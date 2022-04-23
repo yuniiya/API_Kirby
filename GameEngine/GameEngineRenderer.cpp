@@ -18,7 +18,6 @@ GameEngineRenderer::GameEngineRenderer()
 	, RenderImagePivot_({ 0,0 })
 	, IsCameraEffect_(true)
 	, Alpha_(255)
-	, Pause_(false)
 	, RotZ_(0.0f)
 {
 }
@@ -54,6 +53,24 @@ void GameEngineRenderer::SetImage(const std::string& _Name)
 	SetImageScale();
 }
 
+void GameEngineRenderer::SetImageAnimationReset(const std::string& _Name) 
+{
+	SetImage(_Name);
+	CurrentAnimation_ = nullptr;
+}
+
+void GameEngineRenderer::SetRotationFilter(const std::string& _Name)
+{
+	GameEngineImage * FindImage = GameEngineImageManager::GetInst()->Find(_Name);
+	if (nullptr == FindImage)
+	{
+		MsgBoxAssertString(_Name + "존재하지 않는 이미지를 랜더러에 세팅하려고 했습니다.");
+		return;
+	}
+
+	RotationFilterImage_ = FindImage;
+}
+
 
 void GameEngineRenderer::Render()
 {
@@ -86,6 +103,8 @@ void GameEngineRenderer::Render()
 		}
 		else if (RotZ_ != 0.0f)
 		{
+
+			GameEngine::BackBufferImage()->PlgCopy(Image_, RenderPos - RenderScale_.Half(), RenderScale_, RenderImagePivot_, RenderImageScale_, RotZ_, RotationFilterImage_);
 			// GameEngine::BackBufferImage()->PlgCopy(Image_, RenderPos - RenderScale_.Half(), RenderScale_, RenderImagePivot_, RenderImageScale_, Alpha_);
 		}
 		else 
@@ -104,7 +123,7 @@ void GameEngineRenderer::Render()
 		} 
 		else if (RotZ_ != 0.0f)
 		{
-
+			GameEngine::BackBufferImage()->PlgCopy(Image_, RenderPos - Scale, RenderScale_, RenderImagePivot_, RenderImageScale_, RotZ_, RotationFilterImage_);
 		}
 		else 
 		{
