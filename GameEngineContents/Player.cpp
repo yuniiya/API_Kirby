@@ -6,6 +6,7 @@
 #include <GameEngineBase/GameEngineTime.h>
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
+#include <GameEngineBase/GameEngineString.h>
 
 #include <GameEngine/GameEngineLevel.h>
 #include "Bullet.h"
@@ -264,7 +265,7 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Float_Left_Loop", 5, 10, 0.1f, true);
 
 		// Fall
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 12, 0.05f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 12, 0.01f, false);
 	}
 	
 
@@ -290,7 +291,7 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Float_Right_Loop", 5, 10, 0.1f, true);
 
 		// Fall
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 12, 0.05f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 12, 0.01f, false);
 	}
 	
 	AnimationName_ = "Idle_";
@@ -351,9 +352,8 @@ void Player::Update()
 	// 카메라 위치 고정
 	CameraFix();
 
-
-
 	//WallCheck();
+
 
 }
 
