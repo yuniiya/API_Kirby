@@ -119,6 +119,7 @@ private:
 	void WallCheck();
 
 	void MovePixelCheck();
+	void HillPixelCheck();
 	
 	
 private:

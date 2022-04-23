@@ -599,15 +599,34 @@ void Player::MovePixelCheck()
 		MoveDir = float4{ -20.5f, 0.f };
 		SetMove(MoveDir);
 	}
-	// 땅에 닿았다
-	if (RGB(0, 0, 0) == BottomCheck)
-	{
-		//MoveDir = float4::ZERO;
-		MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
+}
 
-		ChangeState(PlayerState::Idle);
-		return;
+void Player::HillPixelCheck()
+{
+	// 오르막, 내리막길 
+	float4 RightDownkPos = GetPosition() + float4{ 0.f,20.f };
+	float4 LeftUpPos = GetPosition() + float4{ -20.f,0.f };
+
+	int RightDownColor = MapColImage_->GetImagePixel(RightDownkPos);
+	int LeftUpColor = MapColImage_->GetImagePixel(LeftUpPos);
+
+
+	float4 XMove = { MoveDir.x, 0.0f };
+	float4 YMove = { 0.0f, MoveDir.y - 1.f };
+
+	if (RGB(0, 0, 0) != RightDownColor)
+	{
+		SetMove(float4::DOWN);
 	}
+	else if (RGB(0, 0, 0) != LeftUpColor)
+	{
+		SetMove(YMove);
+	}
+
+	//else if (RGB(0, 0, 0) == LeftUpColor)
+	//{
+	//	StagePixelCheck(Speed_);
+	//}
 }
 
 void Player::DoorPixelCheck()
