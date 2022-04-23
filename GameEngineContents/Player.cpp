@@ -15,15 +15,16 @@
 Player* Player::MainPlayer = nullptr;
 
 Player::Player()
-	: Speed_(300.0f)
+	: Speed_(350.0f)
 	, AccSpeed_(20.f)
-	, JumpPower_(1300.f)
+	, JumpPower_(1000.f)
 	, JumpMaxHeight_(5.f)
 	, Gravity_(1500.f)
 	, MapColImage_(nullptr)
 	, PlayerCollision(nullptr)
 	, PlayerAnimationRender(nullptr)
 	, CurState_(PlayerState::Idle)
+	, PrevState_(CurState_)
 	, MapScaleX_(0.f)
 	, MapScaleY_(0.f)
 	, MoveDir(float4::ZERO)
@@ -32,6 +33,7 @@ Player::Player()
 	, StopTime_(1.f)
 	, DownTime_(0.5f)
 	, InhaleTime_(2.5f)
+
 {
 
 }
@@ -419,6 +421,8 @@ void Player::WallCheck()
 }
 
 
+
+
 void Player::DirAnimationCheck()
 {
 	std::string ChangeName;
@@ -568,6 +572,41 @@ void Player::StagePixelCheck(float _Speed)
 	if (RGB(0, 0, 0) != Color)
 	{
 		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
+	}
+}
+
+void Player::MovePixelCheck()
+{
+	int BottomCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 0, 20.f });
+	int UpCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 0, -20.f });
+	int LeftCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.f, 0 });
+	int RightCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.f, 0 });
+
+	float4 Pos = MoveDir;
+
+	if (RGB(0, 0, 0) == UpCheck)
+	{
+		MoveDir = float4{ 0.f, 20.5f };
+		SetMove(MoveDir);
+	}
+	else if (RGB(0, 0, 0) == LeftCheck)
+	{
+		MoveDir = float4{ 20.5f, 0.f };
+		SetMove(MoveDir);
+	}
+	else if (RGB(0, 0, 0) == RightCheck)
+	{
+		MoveDir = float4{ -20.5f, 0.f };
+		SetMove(MoveDir);
+	}
+	// ¶¥¿¡ ´ê¾Ò´Ù
+	if (RGB(0, 0, 0) == BottomCheck)
+	{
+		//MoveDir = float4::ZERO;
+		MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
+
+		ChangeState(PlayerState::Idle);
+		return;
 	}
 }
 

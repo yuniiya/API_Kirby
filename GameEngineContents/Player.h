@@ -95,6 +95,8 @@ private:
 	float JumpTimeL_;
 	float JumpTimeR_;
 
+	bool LongJump_;
+
 	// 스테이지 관련
 	float MapScaleX_;
 	float MapScaleY_;
@@ -105,7 +107,7 @@ private:
 
 	std::string CurrentLevel;
 
-
+private:
 	// 충돌
 	GameEngineCollision* PlayerCollision;
 
@@ -116,10 +118,10 @@ private:
 	//void DoorCheck();
 	void WallCheck();
 
-
+	void MovePixelCheck();
 	
 	
-
+private:
 	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
 
 	void Start() override;
@@ -130,6 +132,7 @@ private:
 private:
 	float4 MoveDir;
 	PlayerState CurState_;
+	PlayerState PrevState_;
 
 	bool IsMoveKey();
 	bool IsMoveKeyDown();

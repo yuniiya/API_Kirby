@@ -55,9 +55,6 @@ void Level_1::Loading()
 
 		CurStage->GetRenderer()->SetPivot(StageActor);
 
-
-		CurStage->CreateCollision("Door", { 100, 100 }, { 500, 200 });
-
 		// 장애물 콜리전
 		//CurStage->CreateCollision("Wall", { 100, 100 }, { 300, 200 });
 	}
