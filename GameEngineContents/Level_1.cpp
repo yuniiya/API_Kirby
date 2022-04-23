@@ -62,15 +62,10 @@ void Level_1::Loading()
 		//CurStage->CreateCollision("Wall", { 100, 100 }, { 300, 200 });
 	}
 
-
 	// ∏ÛΩ∫≈Õ
-	Monster* Waddle = CreateActor<Monster>((int)ORDER::MONSTER, "WaddleDee");
-	Waddle->CreateRenderer();
+	WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
 
-	/*Waddle = dynamic_cast<WaddleDee*>(Waddle);
-
-	Waddle->SetPosition({ 500,500 });
-	Waddle->CreateRenderer();*/
+	Waddle->SetPosition({ 100.f,500.f });
 
 	
 	

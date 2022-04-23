@@ -263,7 +263,7 @@ void Player::SlideUpdate()
 {
 
 	// °¨¼Ó
-	MoveDir += -(MoveDir * 4.f) * GameEngineTime::GetDeltaTime() * Speed_;
+	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
 
 
 	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;

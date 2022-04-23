@@ -50,6 +50,7 @@ private:
 
 	float4 MoveDir;
 
+	GameEngineImage* MapColImage_;
 	GameEngineCollision* MonsterCollision;
 
 	MonsterState CurState_;
