@@ -91,6 +91,7 @@ private:
 	float StopTime_;
 	float DownTime_;
 	float InhaleTime_;
+	float FallTime_;
 
 	float JumpTimeL_;
 	float JumpTimeR_;

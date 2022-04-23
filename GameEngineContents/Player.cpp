@@ -33,6 +33,7 @@ Player::Player()
 	, StopTime_(1.f)
 	, DownTime_(0.5f)
 	, InhaleTime_(2.5f)
+	, FallTime_(1.5f)
 
 {
 

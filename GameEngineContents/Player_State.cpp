@@ -376,6 +376,13 @@ void Player::JumpUpdate()
 	if (YPos.y > -500.f)
 	{
 		PlayerAnimationRender->PauseOff();
+
+		FallTime_ -= GameEngineTime::GetDeltaTime();
+		if (FallTime_ <= 0.f)
+		{
+			ChangeState(PlayerState::Fall);
+			return;
+		}
 	}
 	
 
@@ -432,8 +439,18 @@ void Player::FloatUpdate()
 	// 공기 내뱉고 내려오기
 	if (GameEngineInput::GetInst()->IsPress("Inhale"))
 	{
-		ChangeState(PlayerState::Idle);
+		//ChangeState(PlayerState::Idle);
+		
+
+		ChangeState(PlayerState::Fall);
 		return;
+
+		//FallTime_ -= GameEngineTime::GetDeltaTime();
+		//if (FallTime_ <= 0.f)
+		//{
+		//	ChangeState(PlayerState::Fall);
+		//	return;
+		//}
 	}
 
 	if (PlayerAnimationRender->IsEndAnimation())
@@ -489,6 +506,71 @@ void Player::FloatUpdate()
 
 void Player::FallUpdate()
 {
+	// 아래로 떨어진다
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+	float4 CheckPos = GetPosition() + float4{ 0, 20.f };
+
+	int Color = MapColImage_->GetImagePixel(CheckPos);
+	if (RGB(0, 0, 0) == Color)
+	{
+		//PlayerAnimationRender->PauseOff();
+
+		MoveDir = float4::ZERO;
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+	float4 XPos = { MoveDir.x, 0.0f };
+	float4 YPos = { 0.0f, MoveDir.y };
+
+	// 일정 높이 될 때까지 Pause
+	if (YPos.y = -100.f)
+	{
+		if (1 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+		{
+			PlayerAnimationRender->PauseOn();
+
+			if (YPos.y = -70.f)
+			{
+				PlayerAnimationRender->PauseOff();
+
+				if (4 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+				{
+					PlayerAnimationRender->PauseOn();
+
+
+					float4 CheckPos = GetPosition() + float4{ 0, 20.f };
+
+					int Color = MapColImage_->GetImagePixel(CheckPos);
+					if (RGB(0, 0, 0) == Color)
+					{
+						//PlayerAnimationRender->PauseOff();
+
+						MoveDir = float4::ZERO;
+						ChangeState(PlayerState::Idle);
+						return;
+					}
+				}
+			}
+		}
+
+		
+		
+	}
+
+
+
+
+
+	// 떨어지는 상태에서 양 옆 이동 가능
+	/*StagePixelCheck(Speed_);
+
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}*/
 }
 
 void Player::InhaleUpdate()
@@ -630,6 +712,7 @@ void Player::SlideStart()
 
 void Player::JumpStart()
 {
+	FallTime_ = 1.f;
 	JumpPower_ = 1000.f;
 	Gravity_ = 1800.f;
 
@@ -642,6 +725,7 @@ void Player::JumpStart()
 
 void Player::FloatStart()
 {
+	FallTime_ = 0.3f;
 	Speed_ = 5.f;
 	Gravity_ = 100.f;
 
@@ -652,6 +736,10 @@ void Player::FloatStart()
 
 void Player::FallStart()
 {
+	Gravity_ = 500.f;
+
+	MoveDir = float4::DOWN * Gravity_;
+
 	AnimationName_ = "Fall_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
