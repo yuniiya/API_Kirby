@@ -376,28 +376,33 @@ void Player::JumpUpdate()
 	if (YPos.y > -500.f)
 	{
 		PlayerAnimationRender->PauseOff();
+	}
+	
+	// ¾ç¿· + À§ Ã¼Å© 
+	MovePixelCheck(20.0f, 20.0f);
 
+	// ¹Ù´Ú¿¡ ´ê¾Ò´Ù
+	float4 CheckPos = GetPosition() + float4{0, 20.f};
+	int Color = MapColImage_->GetImagePixel(CheckPos);
+
+
+	float4 CheckPos2 = GetPosition() + float4{ 0, 180.f };
+	int Color2 = MapColImage_->GetImagePixel(CheckPos2);
+
+	if (RGB(0, 0, 0) == Color)
+	{
+		MoveDir = float4::ZERO;
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+	else if (RGB(0, 0, 0) != Color2)
+	{
 		FallTime_ -= GameEngineTime::GetDeltaTime();
 		if (FallTime_ <= 0.f)
 		{
 			ChangeState(PlayerState::Fall);
 			return;
 		}
-	}
-	
-
-	// ¾ç¿· + À§ Ã¼Å© 
-	MovePixelCheck(20.0f, 20.0f);
-	
-	// ¹Ù´Ú¿¡ ´ê¾Ò´Ù
-	float4 CheckPos = GetPosition() + float4{0, 20.f};
-
-	int Color = MapColImage_->GetImagePixel(CheckPos);
-	if (RGB(0, 0, 0) == Color)
-	{
-		MoveDir = float4::ZERO;
-		ChangeState(PlayerState::Idle);
-		return;
 	}
 
 
@@ -437,20 +442,10 @@ void Player::JumpUpdate()
 void Player::FloatUpdate()
 {
 	// °ø±â ³»¹ñ°í ³»·Á¿À±â
-	if (GameEngineInput::GetInst()->IsPress("Inhale"))
+	if (GameEngineInput::GetInst()->IsDown("Inhale"))
 	{
-		//ChangeState(PlayerState::Idle);
-		
-
-		ChangeState(PlayerState::Fall);
+		ChangeState(PlayerState::Exhale);
 		return;
-
-		//FallTime_ -= GameEngineTime::GetDeltaTime();
-		//if (FallTime_ <= 0.f)
-		//{
-		//	ChangeState(PlayerState::Fall);
-		//	return;
-		//}
 	}
 
 	if (PlayerAnimationRender->IsEndAnimation())
@@ -506,20 +501,22 @@ void Player::FloatUpdate()
 
 void Player::FallUpdate()
 {
+	// µµÁß¿¡ JumpÅ° ´©¸£¸é FloatÀ¸·Î ÀüÈ¯ 
+	if (GameEngineInput::GetInst()->IsPress("JumpLeft"))
+	{
+		ChangeState(PlayerState::Float);
+		return;
+	}
+	else if (GameEngineInput::GetInst()->IsPress("JumpRight"))
+	{
+		ChangeState(PlayerState::Float);
+		return;
+	}
+
+
 	// ¾Æ·¡·Î ¶³¾îÁø´Ù
 	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
-	//float4 CheckPos = GetPosition() + float4{ 0, 20.f };
-
-	//int Color = MapColImage_->GetImagePixel(CheckPos);
-	//if (RGB(0, 0, 0) == Color)
-	//{
-	//	//PlayerAnimationRender->PauseOff();
-
-	//	MoveDir = float4::ZERO;
-	//	ChangeState(PlayerState::Idle);
-	//	return;
-	//}
 
 	float4 XPos = { MoveDir.x, 0.0f };
 	float4 YPos = { 0.0f, MoveDir.y };
@@ -540,99 +537,49 @@ void Player::FallUpdate()
 	if (RGB(0, 0, 0) == StageColor)
 	{
 		PlayerAnimationRender->PauseOff();
+
 	}
 
 	// ¶¥¿¡ ´ê±â Àü ±îÁö´Â 4¹øÂ° ¾Ö´Ï¸ÞÀÌ¼Ç¿¡¼­ Pause
 	if (4 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
 	{
 		PlayerAnimationRender->PauseOn();
-		//StageCheckPos = {0.0f, 0.0f};
+		StageCheckPos = {0.0f, 0.0f};
 	}
 
-	// ¶¥¿¡ ´êÀ¸¸é ÇÑ ¹ø Æ¨±ä´Ù
-	StageCheckPos = GetPosition() + float4{ 0, 30.f };
-	StageColor = MapColImage_->GetImagePixel(StageCheckPos);
-	if (RGB(0, 0, 0) == StageColor
-		&& 4 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
-	{
-		PlayerAnimationRender->PauseOff();
-
-		MoveDir = float4{ MoveDir.x, -1.f } * 400.f;
-		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
-	}
-
+	// ¶¥¿¡ ´êÀ¸¸é Pause ÇØÁ¦ ÈÄ ÇÑ ¹ø Æ¨±ä´Ù
 	StageCheckPos = GetPosition() + float4{ 0, 20.f };
 	StageColor = MapColImage_->GetImagePixel(StageCheckPos);
-	// Æ¨°å´Ù°¡ ³»·Á°£´Ù
-	if (RGB(0, 0, 0) != StageColor
-		&& 5 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+	if (RGB(0, 0, 0) == StageColor)
 	{
-		StageCheckPos = GetPosition() + float4{ 0, 200.f };
-		StageColor = MapColImage_->GetImagePixel(StageCheckPos);
-		if (RGB(0, 0, 0) == StageColor)
-		{
-			MoveDir = float4::DOWN * 10.f;
-			SetMove(MoveDir * GameEngineTime::GetDeltaTime());
-		}
+		MoveDir = float4{ MoveDir.x, -1.f } * 400.f;
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+		Gravity_ = 1200.f;
+		
 	}
 
-	
+	GravityOn();
 
-	// ´Ù½Ã ¶¥¿¡ ´ê´Â´Ù => Idle
-
-
-
-	//StageCheckPos = GetPosition() + float4{ 0, 20.f };
-
-	//int StageColor = MapColImage_->GetImagePixel(StageCheckPos);
-	//if (RGB(0, 0, 0) == StageColor
-	//	&& PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
-	//{
-	//	PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame();
-	//	//PlayerAnimationRender->PauseOff();
-
-	//	MoveDir = float4::ZERO;
-	//	ChangeState(PlayerState::Idle);
-	//	return;
-	//}
-
-
-	//if (YPos.y >= 20.f)
-	//{
-	//	PlayerAnimationRender->PauseOff();
-
-	//	if (4 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
-	//	{
-	//		PlayerAnimationRender->PauseOn();
-
-
-	//		float4 CheckPos = GetPosition() + float4{ 0, 20.f };
-
-	//		int Color = MapColImage_->GetImagePixel(CheckPos);
-	//		if (RGB(0, 0, 0) == Color)
-	//		{
-	//			//PlayerAnimationRender->PauseOff();
-
-	//			MoveDir = float4::ZERO;
-	//			ChangeState(PlayerState::Idle);
-	//			return;
-	//		}
-	//	}
-	//}
-
-
-
-
-
-
-	// ¶³¾îÁö´Â »óÅÂ¿¡¼­ ¾ç ¿· ÀÌµ¿ °¡´É
-	/*StagePixelCheck(Speed_);
-
-	if (PlayerAnimationRender->IsEndAnimation())
+	// Æ¨±ä´Ù
+	if (Gravity_ >= 1200.f)
 	{
+		PlayerAnimationRender->PauseOff();
+	}
+
+
+	// Æ¨±ä ÈÄ ´Ù½Ã ¶¥¿¡ ÂøÁö => Idle
+	StageCheckPos = GetPosition() + float4{ 0, 40.f };
+	StageColor = MapColImage_->GetImagePixel(StageCheckPos);
+	if (RGB(0, 0, 0) == StageColor
+		&& PlayerAnimationRender->IsEndAnimation())
+	{
+
+
+		MoveDir = float4::ZERO;
 		ChangeState(PlayerState::Idle);
 		return;
-	}*/
+	}
+
 }
 
 void Player::InhaleUpdate()
@@ -679,6 +626,13 @@ void Player::FullUpdate()
 
 void Player::ExhaleUpdate()
 {
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+	
+	
 }
 
 void Player::SwallowUpdate()
@@ -687,11 +641,13 @@ void Player::SwallowUpdate()
 
 void Player::ExhaustedUpdate()
 {
-	if (PlayerAnimationRender->IsEndAnimation())
-	{
-		ChangeState(PlayerState::Idle);
-		return;
-	}
+	ChangeState(PlayerState::Idle);
+	return;
+
+	//if (PlayerAnimationRender->IsEndAnimation())
+	//{
+	//	
+	//}
 }
 
 void Player::AttackUpdate()
@@ -774,7 +730,7 @@ void Player::SlideStart()
 
 void Player::JumpStart()
 {
-	FallTime_ = 1.f;
+	FallTime_ = 0.8f;
 	JumpPower_ = 1000.f;
 	Gravity_ = 1800.f;
 
@@ -787,7 +743,7 @@ void Player::JumpStart()
 
 void Player::FloatStart()
 {
-	FallTime_ = 0.3f;
+	FallTime_ = 0.8f;
 	Speed_ = 5.f;
 	Gravity_ = 100.f;
 
@@ -820,6 +776,8 @@ void Player::FullStart()
 
 void Player::ExhaleStart()
 {
+	AnimationName_ = "Exhale_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Player::SwallowStart()

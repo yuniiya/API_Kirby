@@ -264,8 +264,11 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Float_Left", 0, 4, 0.05f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Float_Left_Loop", 5, 10, 0.1f, true);
 
+		// Exhale
+		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Exhale_Left", 3, 3, 0.1f, false);
+
 		// Fall
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 12, 0.01f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 12, 0.02f, false);
 	}
 	
 
@@ -290,8 +293,11 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Float_Right", 0, 4, 0.05f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Float_Right_Loop", 5, 10, 0.1f, true);
 
+		// Exhale
+		PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Exhale_Right", 3, 3, 0.1f, false);
+
 		// Fall
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 12, 0.01f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 12, 0.02f, false);
 	}
 	
 	AnimationName_ = "Idle_";
