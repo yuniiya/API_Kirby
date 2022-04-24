@@ -62,7 +62,7 @@ void Level_1::Loading()
 	// ∏ÛΩ∫≈Õ
 	WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
 
-	Waddle->SetPosition({ 100.f,500.f });
+	Waddle->SetPosition({ 500.f,500.f });
 
 	
 	
@@ -92,8 +92,8 @@ void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	//BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 
-	//Player::MainPlayer->SetPosition({ 100.f, 520.f });
-	Player::MainPlayer->SetPosition({ 1800.f, 420.f });
+	Player::MainPlayer->SetPosition({ 100.f, 520.f });
+	//Player::MainPlayer->SetPosition({ 1800.f, 420.f });
 	//Player::MainPlayer->SetPosition({ 5500.f, 450.f });
 	Player::MainPlayer->MapScale(5753.f, 768.f);
 }

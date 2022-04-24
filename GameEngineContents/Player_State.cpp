@@ -444,11 +444,17 @@ void Player::FloatUpdate()
 	// °ø±â ³»¹ñ°í ³»·Á¿À±â
 	if (GameEngineInput::GetInst()->IsDown("Inhale"))
 	{
+		if (true == IsJumpKey())
+		{
+			ChangeState(PlayerState::Float);
+			return;
+		}
+
 		ChangeState(PlayerState::Exhale);
 		return;
 	}
 
-	if (PlayerAnimationRender->IsEndAnimation())
+	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 	}
@@ -513,7 +519,6 @@ void Player::FallUpdate()
 		return;
 	}
 
-
 	// ¾Æ·¡·Î ¶³¾îÁø´Ù
 	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
@@ -544,7 +549,8 @@ void Player::FallUpdate()
 	if (4 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
 	{
 		PlayerAnimationRender->PauseOn();
-		StageCheckPos = {0.0f, 0.0f};
+		StageCheckPos = { 0.0f, 0.0f };
+		
 	}
 
 	// ¶¥¿¡ ´êÀ¸¸é Pause ÇØÁ¦ ÈÄ ÇÑ ¹ø Æ¨±ä´Ù
@@ -566,15 +572,12 @@ void Player::FallUpdate()
 		PlayerAnimationRender->PauseOff();
 	}
 
-
 	// Æ¨±ä ÈÄ ´Ù½Ã ¶¥¿¡ ÂøÁö => Idle
 	StageCheckPos = GetPosition() + float4{ 0, 40.f };
 	StageColor = MapColImage_->GetImagePixel(StageCheckPos);
 	if (RGB(0, 0, 0) == StageColor
 		&& PlayerAnimationRender->IsEndAnimation())
 	{
-
-
 		MoveDir = float4::ZERO;
 		ChangeState(PlayerState::Idle);
 		return;
@@ -626,7 +629,7 @@ void Player::FullUpdate()
 
 void Player::ExhaleUpdate()
 {
-	if (PlayerAnimationRender->IsEndAnimation())
+	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
 		ChangeState(PlayerState::Fall);
 		return;
@@ -641,13 +644,11 @@ void Player::SwallowUpdate()
 
 void Player::ExhaustedUpdate()
 {
-	ChangeState(PlayerState::Idle);
-	return;
-
-	//if (PlayerAnimationRender->IsEndAnimation())
-	//{
-	//	
-	//}
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 
 void Player::AttackUpdate()
@@ -744,8 +745,10 @@ void Player::JumpStart()
 void Player::FloatStart()
 {
 	FallTime_ = 0.8f;
-	Speed_ = 5.f;
+	Speed_ = 3.f;
 	Gravity_ = 100.f;
+
+	PlayerAnimationRender->PauseOff();
 
 	AnimationName_ = "Float_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
@@ -764,7 +767,7 @@ void Player::FallStart()
 
 void Player::InhaleStart()
 {
-	InhaleTime_ = 2.5f;
+	InhaleTime_ = 2.f;
 
 	AnimationName_ = "Inhale_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);

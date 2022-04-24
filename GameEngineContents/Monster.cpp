@@ -3,9 +3,13 @@
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineImageManager.h>
 #include <GameEngine/GameEngineCollision.h>
+#include <GameEngineBase/GameEngineInput.h>
 
 Monster::Monster()
-	: Speed_(100.f)
+	: Speed_(20.f)
+	, Gravity_(100.f)
+	, CurDir_(MonsterDir::Left)
+	, CurState_(MonsterState::Idle)
 {
 
 }
@@ -13,6 +17,12 @@ Monster::~Monster()
 {
 
 }
+
+void Monster::GravityOn()
+{
+	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
+}
+
 
 void Monster::ChangeState(MonsterState _State)
 {
@@ -61,6 +71,48 @@ void Monster::MonsterStateUpdate()
 }
 
 
+void Monster::ColMapUpdate()
+{
+	std::string CurrentLevel = GetLevel()->GetNameCopy();
+
+	//if (nullptr == MapColImage_)
+	//{
+	//	MapColImage_ = GameEngineImageManager::GetInst()->Find("Level1_ColMap.bmp");
+	//}
+
+
+	if ("Level_1" == CurrentLevel)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level1_ColMap.bmp");
+	}
+	else if ("Level_2" == CurrentLevel)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level2_ColMap.bmp");
+	}
+	else if ("Level_3" == CurrentLevel)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level3_ColMap.bmp");
+	}
+	else if ("Level_4" == CurrentLevel)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level4_ColMap.bmp");
+	}
+	else if ("TitleLevel" == CurrentLevel)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("Title_ColMap.bmp");
+	}
+	else if ("BossRoomLevel" == CurrentLevel)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("BossRoom_ColMap.bmp");
+	}
+	else if ("BossLevel" == CurrentLevel)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("BossLevel_ColMap.bmp");
+	}
+	else
+		return;
+}
+
 void Monster::Start()
 {
 	MonsterAnimationRenderer = CreateRenderer();
@@ -69,10 +121,6 @@ void Monster::Start()
 
 	// Default Left
 	{
-		// Waddle
-		MonsterAnimationRenderer->CreateAnimation("WaddleDee_Left.bmp", "Waddle_Walk_Left", 0, 4, 0.8f, true);
-		MonsterAnimationRenderer->CreateAnimation("WaddleDee_Left.bmp", "Waddle_Swallowed_Left", 8, 8, 0.8f, false);
-		MonsterAnimationRenderer->CreateAnimation("WaddleDee_Left.bmp", "Waddle_Damaged_Left", 9, 9, 0.8f, false);
 
 		// Big Waddle
 		MonsterAnimationRenderer->CreateAnimation("BigWaddleDee_Right.bmp", "BigWaddle_Walk_Right", 0, 4, 0.8f, true);
@@ -114,10 +162,6 @@ void Monster::Start()
 
 	// Default Right
 	{
-		// Waddle
-		MonsterAnimationRenderer->CreateAnimation("WaddleDee_Left.bmp", "Waddle_Walk_Left", 0, 4, 0.8f, true);
-		MonsterAnimationRenderer->CreateAnimation("WaddleDee_Left.bmp", "Waddle_Swallowed_Left", 5, 5, 0.8f, false);
-		MonsterAnimationRenderer->CreateAnimation("WaddleDee_Left.bmp", "Waddle_Damaged_Left", 6, 6, 0.8f, false);
 
 		// Big Waddle
 		MonsterAnimationRenderer->CreateAnimation("BigWaddleDee_Right.bmp", "BigWaddle_Walk_Right", 0, 4, 0.8f, true);
@@ -155,20 +199,113 @@ void Monster::Start()
 	}
 }
 
-void Monster::Update()
-{
-}
 
-void Monster::Render()
-{
-}
 
 void Monster::StagePixelCheck(float _Speed)
 {
+	float4 NextPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime();
+	float4 CheckPos = NextPos + float4{ 0.f, -50.f };
+
+	int Color = MapColImage_->GetImagePixel(CheckPos);
+	if (RGB(0, 0, 0) != Color)
+	{
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
+	}
+
+
+}
+
+void Monster::WallPixelCheck(float _x, float _y)
+{		
+	// 벽에 부딫히면 반대 방향으로 전환
+	{
+		float4 NextPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime();
+		float4 LeftCheck = NextPos + float4{ -_x, 0.f };
+		int Color = MapColImage_->GetImagePixel(LeftCheck);
+
+		if (RGB(0, 0, 0) == Color)
+		{
+			MoveDir.x = 1.f;
+			SetMove(MoveDir);
+		}
+		else if(RGB(0, 0, 0) != Color)
+		{
+			MoveDir.x = MoveDir.x;
+			SetMove(MoveDir);
+		}
+
+	}
+
+	{
+		float4 NextPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime();
+		float4 RightCheck = NextPos + float4{ _x, 0.f };
+		int Color = MapColImage_->GetImagePixel(RightCheck);
+
+		if (RGB(0, 0, 0) == Color)
+		{
+			MoveDir.x = -1.f;
+			SetMove(MoveDir);
+		}
+		else if (RGB(0, 0, 0) != Color)
+		{
+			MoveDir.x = MoveDir.x;
+			SetMove(MoveDir);
+		}
+	}
+}
+
+void Monster::MovePixelCheck()
+{
+	// 땅에 닿도록 내려준다
+
+	float4 DownPos = GetPosition() + float4{ MoveDir.x, -90.f };
+
+	int DownColor = MapColImage_->GetImagePixel(DownPos);
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		SetMove(float4{0, 1.f});
+	}
 }
 
 
 void Monster::DirAnimationCheck()
+{
+	// 처음 방향은 Left
+	MonsterDir PrevDir_ = CurDir_;
+
+	if (PrevDir_ == MonsterDir::Right)
+	{
+		PrevDir_ = MonsterDir::Right;
+		ChangeDirText_ = "Right";
+	}
+
+	if (PrevDir_ == MonsterDir::Left)
+	{
+		PrevDir_ = MonsterDir::Left;
+		ChangeDirText_ = "Left";
+	}
+
+	if (PrevDir_ != CurDir_)
+	{
+		MonsterAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText_);
+		CurDir_ = PrevDir_;
+	}
+}
+
+void Monster::IdleUpdate()
+{
+}
+
+void Monster::WalkUpdate()
+{
+}
+
+void Monster::AttackUpdate()
+{
+}
+
+void Monster::DamagedUpdate()
 {
 }
 
@@ -185,21 +322,5 @@ void Monster::AttackStart()
 }
 
 void Monster::DamagedStart()
-{
-}
-
-void Monster::IdleUpdate()
-{
-}
-
-void Monster::WalkUpdate()
-{
-}
-
-void Monster::AttackUpdate()
-{
-}
-
-void Monster::DamagedUpdate()
 {
 }

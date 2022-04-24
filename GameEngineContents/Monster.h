@@ -45,35 +45,51 @@ protected:
 	std::string ChangeDirText_;
 
 
-private:
+protected:
 	float Speed_;
+	float Gravity_;
 
 	float4 MoveDir;
+
+	MonsterState CurState_;
+
+	void GravityOn();
+
+	void StagePixelCheck(float _Speed);
+	void WallPixelCheck(float _x, float _y);
+	void MovePixelCheck();
+
+protected:
+	// 스테이지 관련
+	float MapScaleX_;
+	float MapScaleY_;
 
 	GameEngineImage* MapColImage_;
 	GameEngineCollision* MonsterCollision;
 
-	MonsterState CurState_;
+	void ColMapUpdate();
 
-	void StagePixelCheck(float _Speed);
+	std::string CurrentLevel;
 
-	void Start() override;
-	void Update() override;
-	void Render() override;
 
 protected:
-	void ChangeState(MonsterState _State);
+	virtual void Start();
+	virtual void Update() = 0;
+	virtual void Render() = 0;
+
+protected:
+	virtual void ChangeState(MonsterState _State);
 	virtual void MonsterStateUpdate();
 	virtual void DirAnimationCheck();
 
-private:
-	void IdleStart();
-	void WalkStart();
-	void AttackStart();
-	void DamagedStart();
+protected:
+	virtual void IdleStart();
+	virtual void WalkStart();
+	virtual void AttackStart();
+	virtual void DamagedStart();
 
-	void IdleUpdate();
-	void WalkUpdate();
-	void AttackUpdate();
-	void DamagedUpdate();
+	virtual void IdleUpdate();
+	virtual void WalkUpdate();
+	virtual void AttackUpdate();
+	virtual void DamagedUpdate();
 };

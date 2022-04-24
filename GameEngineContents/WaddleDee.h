@@ -14,8 +14,15 @@ public:
 	WaddleDee& operator=(const WaddleDee& _Other) = delete;
 	WaddleDee& operator=(WaddleDee&& _Other) noexcept = delete;
 
+private:
+	//float Speed_;
+
 protected:
 	GameEngineRenderer* AnimationRender;
+
+private:
+	void ChangeState(MonsterState _State) override;
+	void MonsterStateUpdate() override;
 
 protected:
 	void Start() override;
@@ -23,9 +30,9 @@ protected:
 	void Render() override;
 
 private:
-	void WalkStart();
-	void DamagedStart();
+	void WalkStart() override;
+	void DamagedStart() override;
 
-	void WalkUpdate();
-	void DamagedUpdate();
+	void WalkUpdate() override;
+	void DamagedUpdate() override;
 };
