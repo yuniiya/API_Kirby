@@ -50,6 +50,7 @@ void Kirby::GameInit()
 	KirbyRight4->CutCount(10, 2);
 
 
+
 	// Å° »ý¼º
 	if (false == GameEngineInput::GetInst()->IsKey("TitleLevel"))
 	{

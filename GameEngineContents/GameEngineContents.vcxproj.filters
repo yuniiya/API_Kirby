@@ -104,6 +104,12 @@
     <ClCompile Include="BigWaddleDee.cpp">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClCompile>
+    <ClCompile Include="Grass.cpp">
+      <Filter>Actor\Play\Global\Back</Filter>
+    </ClCompile>
+    <ClCompile Include="Water.cpp">
+      <Filter>Actor\Play\Global\Back</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Kirby.h" />
@@ -206,6 +212,12 @@
     </ClInclude>
     <ClInclude Include="BigWaddleDee.h">
       <Filter>Actor\Play\Monster\Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Grass.h">
+      <Filter>Actor\Play\Global\Back</Filter>
+    </ClInclude>
+    <ClInclude Include="Water.h">
+      <Filter>Actor\Play\Global\Back</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

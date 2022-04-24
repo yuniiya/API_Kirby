@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "ContentsEnum.h"
 #include "PlayUI.h"
+#include "Grass.h"
 #include "Monster.h"
 #include "WaddleDee.h"
 
@@ -59,13 +60,29 @@ void Level_1::Loading()
 		//CurStage->CreateCollision("Wall", { 100, 100 }, { 300, 200 });
 	}
 
+	// Grass 
+	{
+		Grass* Grass1 = CreateActor<Grass>((int)ORDER::STAGEACTOR, "Grass1");
+		Grass1->SetPosition({ 780.f, 520.f });
+
+		Grass* Grass2 = CreateActor<Grass>((int)ORDER::STAGEACTOR, "Grass2");
+		Grass2->SetPosition({ 4858.f, 461.f });
+
+
+		GameEngineImage* GrassImage = GameEngineImageManager::GetInst()->Find("Grass1-2.bmp");
+		GrassImage->CutCount(1, 4);
+		Grass* Grass3 = CreateActor<Grass>((int)ORDER::STAGEACTOR, "Grass2");
+		GameEngineRenderer* Renderer = Grass3->CreateRenderer("Grass1-2.bmp", static_cast<int>(EngineMax::RENDERORDERMAX), RenderPivot::CENTER, {3062.f, 295.f});
+		Renderer->CreateAnimation("Grass1-2.bmp", "Grass2", 0, 3, 0.25f, true);
+		Renderer->ChangeAnimation("Grass2");
+
+	}
+
 	// ∏ÛΩ∫≈Õ
 	WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
 
 	Waddle->SetPosition({ 500.f,500.f });
 
-	
-	
 
 }
 
@@ -92,10 +109,11 @@ void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	//BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 
-	Player::MainPlayer->SetPosition({ 100.f, 520.f });
+	//Player::MainPlayer->SetPosition({ 100.f, 520.f });
 	//Player::MainPlayer->SetPosition({ 1800.f, 420.f });
-	//Player::MainPlayer->SetPosition({ 5500.f, 450.f });
-	Player::MainPlayer->MapScale(5753.f, 768.f);
+	//Player::MainPlayer->SetPosition({ 5300.f, 450.f });
+	Player::MainPlayer->SetPosition({ 2600.f, 200.f });
+	Player::MainPlayer->MapScale(5753.f, 760.f);
 }
 
 void Level_1::LevelChangeEnd(GameEngineLevel* _NextLevel)

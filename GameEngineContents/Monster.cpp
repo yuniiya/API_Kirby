@@ -115,6 +115,8 @@ void Monster::ColMapUpdate()
 
 void Monster::Start()
 {
+
+
 	MonsterAnimationRenderer = CreateRenderer();
 	MonsterAnimationRenderer->SetPivotType(RenderPivot::BOT);
 	MonsterAnimationRenderer->SetPivot({ 0.f, 140.f });
