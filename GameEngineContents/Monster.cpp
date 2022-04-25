@@ -20,7 +20,7 @@ Monster::~Monster()
 
 void Monster::GravityOn()
 {
-	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
+	MoveDir.y = 1.f * GameEngineTime::GetDeltaTime() * Gravity_;
 }
 
 
@@ -35,6 +35,9 @@ void Monster::ChangeState(MonsterState _State)
 			break;
 		case MonsterState::Walk:
 			WalkStart();
+			break;
+		case MonsterState::Swallowed:
+			SwallowedStart();
 			break;
 		case MonsterState::Attack:
 			AttackStart();
@@ -59,6 +62,9 @@ void Monster::MonsterStateUpdate()
 			break;
 		case MonsterState::Walk:
 			WalkUpdate();
+			break;
+		case MonsterState::Swallowed:
+			SwallowedUpdate();
 			break;
 		case MonsterState::Attack:
 			AttackUpdate();
@@ -123,12 +129,6 @@ void Monster::Start()
 
 	// Default Left
 	{
-
-		// Big Waddle
-		MonsterAnimationRenderer->CreateAnimation("BigWaddleDee_Right.bmp", "BigWaddle_Walk_Right", 0, 4, 0.8f, true);
-		MonsterAnimationRenderer->CreateAnimation("BigWaddleDee_Right.bmp", "BigWaddle_Swallowed_Right", 5, 5, 0.8f, false);
-		MonsterAnimationRenderer->CreateAnimation("BigWaddleDee_Right.bmp", "BigWaddle_Damaged_Right", 6, 6, 0.8f, false);
-
 		// Snooter
 		//MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Idle_Left", 8, 11, 0.5f, true);
 		//MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Walk_Left", 0, 3, 0.5f, false);
@@ -139,9 +139,7 @@ void Monster::Start()
 		//MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Attack_Left", 10, 17, 0.1f, false);
 		//MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Damaged_Left", 18, 18, 0.1f, false);
 
-		// Scarfy
-		MonsterAnimationRenderer->CreateAnimation("Scarfy_Left.bmp", "Scarfy_Idle_Left", 0, 2, 0.1f, true);
-		MonsterAnimationRenderer->CreateAnimation("Scarfy_Left.bmp", "Scarfy_Damaged_Left", 3, 3, 0.1f, false);
+		
 	}
 
 	// Skilled Left
@@ -159,17 +157,8 @@ void Monster::Start()
 		// Boss
 	}
 
-
-
-
 	// Default Right
 	{
-
-		// Big Waddle
-		MonsterAnimationRenderer->CreateAnimation("BigWaddleDee_Right.bmp", "BigWaddle_Walk_Right", 0, 4, 0.8f, true);
-		MonsterAnimationRenderer->CreateAnimation("BigWaddleDee_Right.bmp", "BigWaddle_Swallowed_Right", 8, 8, 0.8f, false);
-		MonsterAnimationRenderer->CreateAnimation("BigWaddleDee_Right.bmp", "BigWaddle_Damaged_Right", 9, 9, 0.8f, false);
-
 		// Snooter
 		//MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Idle_Right", 8, 11, 0.5f, true);
 		//MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Walk_Right", 0, 3, 0.5f, true);
@@ -180,9 +169,6 @@ void Monster::Start()
 		//MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Attack_Right", 10, 17, 0.1f, false);
 		//MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Damaged_Right", 18, 18, 0.1f, false);
 
-		// Scarfy
-		MonsterAnimationRenderer->CreateAnimation("Scarfy_Right.bmp", "Scarfy_Idle_Right", 0, 2, 0.1f, true);
-		MonsterAnimationRenderer->CreateAnimation("Scarfy_Right.bmp", "Scarfy_Damaged_Right", 3, 3, 0.1f, false);
 	}
 
 	// Skilled Right
@@ -212,59 +198,71 @@ int Monster::BottomPixelColorCheck(float _y)
 void Monster::StagePixelCheck(float _Speed)
 {
 	float4 NextPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime();
-	float4 CheckPos = NextPos + float4{ 0.f, -50.f };
+	float4 LeftCheckPos = NextPos + float4{ -20.f, 0.f };
+	float4 RightCheckPos = NextPos + float4{ 20.f, 0.f };
 
-	int Color = MapColImage_->GetImagePixel(CheckPos);
-	if (RGB(0, 0, 0) != Color)
+	int LeftColor = MapColImage_->GetImagePixel(LeftCheckPos);
+	int RightColor = MapColImage_->GetImagePixel(LeftCheckPos);
+
+	if (RGB(0, 0, 0) != LeftColor)
 	{
 		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
 	}
-}
 
-void Monster::WallPixelCheck(float _x, float _y)
-{		
-	// 벽에 부딫히면 반대 방향으로 전환
+	if (RGB(0, 0, 0) != RightColor)
 	{
-		float4 NextPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime();
-		float4 LeftCheck = NextPos + float4{ -_x, 0.f };
-		int Color = MapColImage_->GetImagePixel(LeftCheck);
-
-		if (RGB(0, 0, 0) == Color)
-		{
-			MoveDir.x = 1.f;
-			SetMove(MoveDir);
-		}
-		else if(RGB(0, 0, 0) != Color)
-		{
-			MoveDir.x = MoveDir.x;
-			SetMove(MoveDir);
-		}
-
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
 	}
 
-	{
-		float4 NextPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime();
-		float4 RightCheck = NextPos + float4{ _x, 0.f };
-		int Color = MapColImage_->GetImagePixel(RightCheck);
-
-		if (RGB(0, 0, 0) == Color)
-		{
-			MoveDir.x = -1.f;
-			SetMove(MoveDir);
-		}
-		else if (RGB(0, 0, 0) != Color)
-		{
-			MoveDir.x = MoveDir.x;
-			SetMove(MoveDir);
-		}
-	}
 }
+
+//void Monster::WallPixelCheck(float _x, float _Speed)
+//{
+//	// 벽에 부딫히면 반대 방향으로 전환
+//
+//	MonsterDir CheckDir_ = CurDir_;
+//
+//	float4 LeftCheck = GetPosition() + float4{ -_x, 0.0f };
+//	float4 RightCheck = GetPosition() + float4{ _x, 0.0f };
+//
+//	int LeftColor = MapColImage_->GetImagePixel(LeftCheck);
+//	int RightColor = MapColImage_->GetImagePixel(RightCheck);
+//
+//	if (CurDir_ == MonsterDir::Left)
+//	{
+//		MoveDir.x = -1.f * _Speed;
+//		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+//
+//		if (RGB(0, 0, 0) == LeftColor)
+//		{
+//			CurDir_ = MonsterDir::Right;
+//			ChangeDirText_ = "Right";
+//		}
+//	}
+//	else if (CurDir_ == MonsterDir::Right)
+//	{
+//		MoveDir.x = 1.f * _Speed;
+//		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+//
+//		if (RGB(0, 0, 0) == RightColor)
+//		{
+//			CurDir_ = MonsterDir::Left;
+//			ChangeDirText_ = "Left";
+//		}
+//	}
+//
+//	if (CheckDir_ != CurDir_)
+//	{
+//		AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+//		CurDir_ = CheckDir_;
+//	}
+//}
 
 void Monster::GroundPixelCheck()
 {
 	// 땅에 닿도록 내려준다
 
-	if (RGB(0, 0, 0) != BottomPixelColorCheck(-90.f))
+	if (RGB(0, 0, 0) != BottomPixelColorCheck(30.f))
 	{
 		SetMove(float4{0, 1.f});
 	}
@@ -307,6 +305,10 @@ void Monster::AttackUpdate()
 {
 }
 
+void Monster::SwallowedUpdate()
+{
+}
+
 void Monster::DamagedUpdate()
 {
 }
@@ -320,6 +322,10 @@ void Monster::WalkStart()
 }
 
 void Monster::AttackStart()
+{
+}
+
+void Monster::SwallowedStart()
 {
 }
 

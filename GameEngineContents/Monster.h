@@ -10,6 +10,7 @@ enum class MonsterState
 	Idle,
 	Walk,
 	Attack,
+	Swallowed,
 	Damaged,
 	Max,
 };
@@ -44,7 +45,6 @@ protected:
 	std::string AnimationName_;
 	std::string ChangeDirText_;
 
-
 protected:
 	float Speed_;
 	float Gravity_;
@@ -56,7 +56,7 @@ protected:
 	void GravityOn();
 
 	void StagePixelCheck(float _Speed);
-	void WallPixelCheck(float _x, float _y);
+	//void WallPixelCheck(float _x, float _Speed);
 	void GroundPixelCheck();
 
 	int BottomPixelColorCheck(float _y);
@@ -67,7 +67,6 @@ protected:
 	float MapScaleY_;
 
 	GameEngineImage* MapColImage_;
-	GameEngineCollision* MonsterCollision;
 
 	void ColMapUpdate();
 
@@ -87,11 +86,13 @@ protected:
 protected:
 	virtual void IdleStart();
 	virtual void WalkStart();
+	virtual void SwallowedStart();
 	virtual void AttackStart();
-	virtual void DamagedStart();
+	virtual void DamagedStart() = 0;
 
 	virtual void IdleUpdate();
 	virtual void WalkUpdate();
 	virtual void AttackUpdate();
-	virtual void DamagedUpdate();
+	virtual void SwallowedUpdate();
+	virtual void DamagedUpdate() = 0;
 };

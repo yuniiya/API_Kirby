@@ -15,14 +15,19 @@ public:
 	WaddleDee& operator=(WaddleDee&& _Other) noexcept = delete;
 
 private:
-	//float Speed_;
+	float Speed_;
 
 protected:
 	GameEngineRenderer* AnimationRender;
 
+	GameEngineCollision* MonsterCollision;
+
 private:
 	void ChangeState(MonsterState _State) override;
 	void MonsterStateUpdate() override;
+
+protected:
+	void WallPixelCheck(float _x, float _Speed);
 
 protected:
 	void Start() override;
@@ -31,8 +36,10 @@ protected:
 
 private:
 	void WalkStart() override;
+	void SwallowedStart() override;
 	void DamagedStart() override;
 
 	void WalkUpdate() override;
+	void SwallowedUpdate() override;
 	void DamagedUpdate() override;
 };

@@ -245,7 +245,7 @@ void Player::Start()
 {
 	//SetScale({ 1000, 1000 });
 
-	PlayerCollision = CreateCollision("PlayerHitBox", { 100, 100 });
+	PlayerCollision = CreateCollision("PlayerHitBox", { 70, 70 });
 
 	// 애니메이션을 하나라도 만들면 애니메이션이 재생된다.
 	PlayerAnimationRender = CreateRenderer();

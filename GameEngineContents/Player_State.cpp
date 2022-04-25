@@ -399,10 +399,10 @@ void Player::FloatUpdate()
 		MoveDir = float4{200.f, MoveDir.y };
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 	}
-	//else if (true == GameEngineInput::GetInst()->IsPress("MoveUp"))
-	//{
-	//	MoveDir = float4{ MoveDir.x, -200.f};
-	//}
+	else if (false == IsMoveKey())
+	{
+		MoveDir.x = 0.0f;
+	}
 
 	// ม฿ทย
 	if (false == IsJumpKey())

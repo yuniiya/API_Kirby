@@ -14,8 +14,30 @@ public:
 	Scarfy& operator=(const Scarfy& _Other) = delete;
 	Scarfy& operator=(Scarfy&& _Other) noexcept = delete;
 
+private:
+	//float Speed_;
+
 protected:
+	GameEngineRenderer* AnimationRender;
+
+	GameEngineCollision* MonsterCollision;
 
 private:
+	void ChangeState(MonsterState _State) override;
+	void MonsterStateUpdate() override;
 
+protected:
+	void Start() override;
+	void Update() override;
+	void Render() override;
+
+private:
+	void IdleStart() override;
+	void SwallowedStart() override;
+	void DamagedStart() override;
+
+	void IdleUpdate() override;
+	void SwallowedUpdate() override;
+	void DamagedUpdate() override;
 };
+

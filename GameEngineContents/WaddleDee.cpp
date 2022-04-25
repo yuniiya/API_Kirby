@@ -6,6 +6,7 @@
 #include <GameEngine/GameEngineCollision.h>
 
 WaddleDee::WaddleDee()
+	: Speed_(50.f)
 {
 	CurState_ = MonsterState::Max;
 	MoveDir = float4::LEFT;
@@ -26,6 +27,9 @@ void WaddleDee::ChangeState(MonsterState _State)
 			break;
 		case MonsterState::Walk:
 			WalkStart();
+			break;
+		case MonsterState::Swallowed:
+			SwallowedStart();
 			break;
 		case MonsterState::Attack:
 			AttackStart();
@@ -49,6 +53,9 @@ void WaddleDee::MonsterStateUpdate()
 	case MonsterState::Walk:
 		WalkUpdate();
 		break;
+	case MonsterState::Swallowed:
+		SwallowedUpdate();
+		break;
 	case MonsterState::Attack:
 		AttackUpdate();
 		break;
@@ -60,21 +67,23 @@ void WaddleDee::MonsterStateUpdate()
 
 void WaddleDee::Start()
 {
-	//// 히트 박스
+	// 히트 박스
+	MonsterCollision = CreateCollision("WaddleHitBox", { 70, 70 });
+
 
 	AnimationRender = CreateRenderer();
-	AnimationRender->SetPivotType(RenderPivot::BOT);
-	AnimationRender->SetPivot({ 0.f, 140.f });
+	AnimationRender->SetPivotType(RenderPivot::CENTER);
+	AnimationRender->SetPivot({ 0.f, 35.f });
 
 	// Waddle - Left
-	AnimationRender->CreateAnimation("WaddleDee_Left.bmp", "Waddle_Walk_Left", 0, 4, 0.2f, true);
-	AnimationRender->CreateAnimation("WaddleDee_Left.bmp", "Waddle_Swallowed_Left", 8, 8, 0.5f, false);
-	AnimationRender->CreateAnimation("WaddleDee_Left.bmp", "Waddle_Damaged_Left", 9, 9, 0.5f, false);
+	AnimationRender->CreateAnimation("WaddleDee_Left.bmp", "Walk_Left", 0, 4, 0.2f, true);
+	AnimationRender->CreateAnimation("WaddleDee_Left.bmp", "Swallowed_Left", 8, 8, 0.5f, false);
+	AnimationRender->CreateAnimation("WaddleDee_Left.bmp", "Damaged_Left", 9, 9, 0.5f, false);
 
 	// Waddle - Right
-	AnimationRender->CreateAnimation("WaddleDee_Right.bmp", "Waddle_Walk_Right", 0, 4, 0.2f, true);
-	AnimationRender->CreateAnimation("WaddleDee_Right.bmp", "Waddle_Swallowed_Right", 5, 5, 0.5f, false);
-	AnimationRender->CreateAnimation("WaddleDee_Right.bmp", "Waddle_Damaged_Right", 6, 6, 0.5f, false);
+	AnimationRender->CreateAnimation("WaddleDee_Right.bmp", "Walk_Right", 0, 4, 0.2f, true);
+	AnimationRender->CreateAnimation("WaddleDee_Right.bmp", "Swallowed_Right", 5, 5, 0.5f, false);
+	AnimationRender->CreateAnimation("WaddleDee_Right.bmp", "Damaged_Right", 6, 6, 0.5f, false);
 
 	AnimationName_ = "Walk_";
 	ChangeDirText_ = "Left";
@@ -86,24 +95,29 @@ void WaddleDee::Update()
 {
 	ColMapUpdate();
 
-	
-
-	DirAnimationCheck();
+	//DirAnimationCheck();
 	MonsterStateUpdate();
+
+	// 항상 땅에 붙어있도록 체크
+	GroundPixelCheck();
 }
 
 void WaddleDee::Render()
 {
 }
 
+
 void WaddleDee::WalkUpdate()
 {
-	GroundPixelCheck();
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(30.f))
+	{
+		WallPixelCheck(30.f, Speed_);
+	}
 
-	//StagePixelCheck(Speed_);
-	//WallPixelCheck(-80.f, 80.f);
-	
+}
 
+void WaddleDee::SwallowedUpdate()
+{
 }
 
 void WaddleDee::DamagedUpdate()
@@ -112,13 +126,66 @@ void WaddleDee::DamagedUpdate()
 
 void WaddleDee::WalkStart()
 {
-	Speed_ = 10.0f;
+	Speed_ = 250.0f;
 	AnimationName_ = "Walk_";
-	AnimationRender->ChangeAnimation("Waddle_" + AnimationName_ + ChangeDirText_);
+	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void WaddleDee::SwallowedStart()
+{
+	AnimationName_ = "Swallowed_";
+	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void WaddleDee::DamagedStart()
 {
 	AnimationName_ = "Damaged_";
-	AnimationRender->ChangeAnimation("Waddle_" + AnimationName_ + ChangeDirText_);
+	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void WaddleDee::WallPixelCheck(float _x, float _Speed)
+{
+	// 벽에 부딫히면 반대 방향으로 전환
+
+	MonsterDir CheckDir_ = CurDir_;
+
+	float4 LeftCheck = GetPosition() + float4{ -_x, 0.0f };
+	float4 RightCheck = GetPosition() + float4{ _x, 0.0f };
+
+	int LeftColor = MapColImage_->GetImagePixel(LeftCheck);
+	int RightColor = MapColImage_->GetImagePixel(RightCheck);
+	
+	if (CurDir_ == MonsterDir::Left)
+	{
+		if (RGB(0, 0, 0) == LeftColor)
+		{
+			CurDir_ = MonsterDir::Right;
+			ChangeDirText_ = "Right";
+			AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+			MoveDir.x = 1.f;
+		}
+		else
+		{
+			MoveDir.x = -1.f;
+		}
+	}
+
+
+	if (CurDir_ == MonsterDir::Right)
+	{
+
+		if (RGB(0, 0, 0) == RightColor)
+		{
+			CurDir_ = MonsterDir::Left;
+			ChangeDirText_ = "Left";
+			AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+			MoveDir.x = -1.f;
+		}
+		else
+		{
+			MoveDir.x = 1.f;
+		}
+	}
+
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
 }
