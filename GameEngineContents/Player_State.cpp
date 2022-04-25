@@ -387,33 +387,33 @@ void Player::FloatUpdate()
 	}
 
 	// Float상태에서 이동
-	MoveDir = float4::ZERO;
+	//MoveDir = float4::ZERO;
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
-		MoveDir = float4{-0.8f, 0.f};
+		MoveDir = float4{-200.f, MoveDir.y};
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 	}
 	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
 	{
-		MoveDir = float4{0.8f, 0.f};
+		MoveDir = float4{200.f, MoveDir.y };
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 	}
-	else if (true == GameEngineInput::GetInst()->IsPress("MoveUp"))
-	{
-		MoveDir = float4{ 0.f, -0.8f};
-	}
+	//else if (true == GameEngineInput::GetInst()->IsPress("MoveUp"))
+	//{
+	//	MoveDir = float4{ MoveDir.x, -200.f};
+	//}
 
 	// 중력
 	if (false == IsJumpKey())
 	{
-		GravityOn();
-		SetMove(MoveDir);
+		MoveDir.y = 100.f;
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 	}
 	else if (true == IsJumpKey())
 	{
-		MoveDir.y = -0.5f;
-		SetMove(MoveDir);
+		MoveDir.y = -200.f;
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 	}
 
 	// 양 옆 + 위 픽셀 체크
@@ -676,7 +676,7 @@ void Player::SlideStart()
 
 void Player::JumpStart()
 {
-	FallTime_ = 0.8f;
+	//FallTime_ = 0.8f;
 	JumpPower_ = 1000.f;
 	Gravity_ = 1800.f;
 
@@ -689,9 +689,9 @@ void Player::JumpStart()
 
 void Player::FloatStart()
 {
-	FallTime_ = 0.8f;
+	//FallTime_ = 0.8f;
 	Speed_ = 3.f;
-	Gravity_ = 100.f;
+	Gravity_ = 300.f;
 
 	PlayerAnimationRender->PauseOff();
 
