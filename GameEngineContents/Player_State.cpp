@@ -492,10 +492,7 @@ void Player::FloatUpdate()
 	MovePixelCheck(20.0f, 20.0f);
 
 	// Float상태로 바닥에 닿았다
-	float4 CheckPos = GetPosition() + float4{ 0, 20.f };
-
-	int Color = MapColImage_->GetImagePixel(CheckPos);
-	if (RGB(0, 0, 0) == Color)
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
 		MoveDir = float4::UP;
 		SetMove(MoveDir);
@@ -533,87 +530,65 @@ void Player::FallUpdate()
 
 
 	// 땅에 닿지 않았다면 MoveDir.y로 가속하며 떨어진다 
-	if (BottomePixelColorCheck(20.f) != RGB(0, 0, 0))
+	if (RGB(0, 0, 0) != BottomPixelColorCheck(20.f))
 	{
-		if (1 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
-		{
-			PlayerAnimationRender->PauseOn();
-			//MoveDir = { 0.0f, MoveDir.y };
-
-			// 땅에 가까워지면 머리가 땅을 향하는 애니메이션 재생
-			if (RGB(0, 0, 0) == BottomePixelColorCheck(200.f))
-			{
-				PlayerAnimationRender->PauseOff();
-			}
-		}
-
-
 		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 	}
-	//else
-	//{
-	//	// 땅에 닿았다면 FallToBounce로 전환
+	else
+	{
+		// 땅에 닿았다면 FallToBounce로 전환
 
-	//	ChangeState(PlayerState::FallToBounce);
-	//	return;
-	//}
-
-
-	float4 YPos = { 0.0f, MoveDir.y };
-
-	// 발이 땅을 향하는 애니메이션 재생
-
-	// 땅에 가까워지면 머리가 땅을 향하는 애니메이션 재생
-	//float4 StageCheckPos = GetPosition() + float4{ 0, 200.f };
-	//int StageColor = MapColImage_->GetImagePixel(StageCheckPos);
-	//if (RGB(0, 0, 0) == StageColor)
-	//{
-	//	PlayerAnimationRender->PauseOff();
-
-	//}
-
-	//// 땅에 닿기 전 까지는 4번째 애니메이션에서 Pause
-	//if (4 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
-	//{
-	//	PlayerAnimationRender->PauseOn();
-	//	StageCheckPos = { 0.0f, 0.0f };
-	//	
-	//}
-
-	//// 땅에 닿으면 Pause 해제 후 한 번 튕긴다
-	//StageCheckPos = GetPosition() + float4{ 0, 20.f };
-	//StageColor = MapColImage_->GetImagePixel(StageCheckPos);
-	//if (RGB(0, 0, 0) == StageColor)
-	//{
-	//	MoveDir = float4{ MoveDir.x, -1.f } * 400.f;
-	//	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
-	//	Gravity_ = 1200.f;
-	//	
-	//}
-
-	//GravityOn();
-
-	//// 튕긴다
-	//if (Gravity_ >= 1200.f)
-	//{
-	//	PlayerAnimationRender->PauseOff();
-	//}
-
-	//// 튕긴 후 다시 땅에 착지 => Idle
-	//StageCheckPos = GetPosition() + float4{ 0, 40.f };
-	//StageColor = MapColImage_->GetImagePixel(StageCheckPos);
-	//if (RGB(0, 0, 0) == StageColor
-	//	&& PlayerAnimationRender->IsEndAnimation())
-	//{
-	//	MoveDir = float4::ZERO;
-	//	ChangeState(PlayerState::Idle);
-	//	return;
-	//}
-
+		ChangeState(PlayerState::FallToBounce);
+		return;
+	}
 }
 
 void Player::FallToBounceUpdate()
 {
+	// 방향키를 누르면 해당 방향으로 x 이동
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -200.0f, MoveDir.y };
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 200.0f, MoveDir.y };
+	}
+
+	// 땅에 닿으면 위로 한 번 튕긴다
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
+	{
+		MoveDir.y = -200.f;
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+		ChangeState(PlayerState::BounceToIdle);
+		return;
+	}
+}
+
+void Player::BounceToIdleUpdate()
+{
+	// 방향키를 누르면 해당 방향으로 x 이동
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -200.0f, MoveDir.y };
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 200.0f, MoveDir.y };
+	}
+
+	// MoveDir.x는 움직이지 않고 y만 가속한다 
+	MoveDir.y += 400.f * GameEngineTime::GetDeltaTime();
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+	if (BottomPixelColorCheck(20.f) == RGB(0, 0, 0))
+	{
+		MoveDir = float4::ZERO;
+
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 
 void Player::InhaleUpdate()
@@ -660,13 +635,14 @@ void Player::FullUpdate()
 
 void Player::ExhaleUpdate()
 {
-	if (true == PlayerAnimationRender->IsEndAnimation())
+	MoveDir.y += 900.f * GameEngineTime::GetDeltaTime();
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+	if (PlayerAnimationRender->IsEndAnimation())
 	{
 		ChangeState(PlayerState::Fall);
 		return;
-	}
-	
-	
+	}	
 }
 
 void Player::SwallowUpdate()
@@ -799,7 +775,17 @@ void Player::FallStart()
 
 void Player::FallToBounceStart()
 {
+	MoveDir = float4::ZERO;
+
 	AnimationName_ = "FallToBounce_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Player::BounceToIdleStart()
+{
+	MoveDir = float4::ZERO;
+
+	AnimationName_ = "BounceToIdle_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
@@ -817,6 +803,8 @@ void Player::FullStart()
 
 void Player::ExhaleStart()
 {
+	MoveDir = float4::ZERO;
+
 	AnimationName_ = "Exhale_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }

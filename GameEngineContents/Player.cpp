@@ -149,6 +149,9 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::FallToBounce:
 			FallToBounceStart();
 			break;
+		case PlayerState::BounceToIdle:
+			BounceToIdleStart();
+			break;
 		case PlayerState::Inhale:
 			InhaleStart();
 			break;
@@ -209,6 +212,9 @@ void Player::PlayerStateUpdate()
 		break;
 	case PlayerState::FallToBounce:
 		FallToBounceUpdate();
+		break;
+	case PlayerState::BounceToIdle:
+		BounceToIdleUpdate();
 		break;
 	case PlayerState::Inhale:
 		InhaleUpdate();
@@ -271,11 +277,12 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Float_Left_Loop", 5, 10, 0.1f, true);
 
 		// Exhale
-		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Exhale_Left", 3, 3, 0.1f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Exhale_Left", 3, 3, 0.01f, false);
 
 		// Fall
 		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 4, 0.2f, false);
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "FallToBounce_Left", 5, 12, 0.02f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "FallToBounce_Left", 5, 11, 0.015f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "BounceToIdle_Left", 12, 12, 0.2f, false);
 
 	}
 	
@@ -305,8 +312,9 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Exhale_Right", 3, 3, 0.1f, false);
 
 		// Fall
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 4, 0.05f, false);
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "FallToBounce_Right", 5, 12, 0.02f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 4, 0.15f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "FallToBounce_Right", 5, 11, 0.01f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "BounceToIdle_Right", 12, 12, 0.2f, false);
 	}
 	
 	AnimationName_ = "Idle_";
@@ -632,7 +640,7 @@ void Player::HillPixelCheck()
 	//}
 }
 
-int Player::BottomePixelColorCheck(float _y)
+int Player::BottomPixelColorCheck(float _y)
 {
 	float4 CheckPos = GetPosition() + float4{0.0f, _y};
 	int Color = MapColImage_->GetImagePixel(CheckPos);
