@@ -121,7 +121,7 @@ void Level_1::Update()
 
 void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
-	//BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
+	BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 
 	Player::MainPlayer->SetPosition({ 100.f, 520.f });
 	//Player::MainPlayer->SetPosition({ 1800.f, 420.f });
@@ -134,7 +134,7 @@ void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 
 void Level_1::LevelChangeEnd(GameEngineLevel* _NextLevel)
 {
-	//BgmPlayer.Stop();
+	BgmPlayer.Stop();
 
 	if (_NextLevel->GetNameCopy() != "TitleLevel")
 	{
