@@ -108,7 +108,7 @@ void Player::Move()
 
 void Player::GravityOn()
 {
-	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * Gravity_;
+	MoveDir.y += 1.f * GameEngineTime::GetDeltaTime() * Gravity_;
 }
 
 
@@ -281,7 +281,7 @@ void Player::Start()
 
 		// Fall
 		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 4, 0.2f, false);
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "FallToBounce_Left", 5, 11, 0.015f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "FallToBounce_Left", 5, 11, 0.02f, false);
 		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "BounceToIdle_Left", 12, 12, 0.2f, false);
 
 	}
@@ -313,7 +313,7 @@ void Player::Start()
 
 		// Fall
 		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 4, 0.15f, false);
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "FallToBounce_Right", 5, 11, 0.01f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "FallToBounce_Right", 5, 11, 0.02f, false);
 		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "BounceToIdle_Right", 12, 12, 0.2f, false);
 	}
 	
