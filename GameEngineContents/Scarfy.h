@@ -15,7 +15,7 @@ public:
 	Scarfy& operator=(Scarfy&& _Other) noexcept = delete;
 
 private:
-	//float Speed_;
+	float Speed_;
 
 protected:
 	GameEngineRenderer* AnimationRender;
@@ -33,10 +33,12 @@ protected:
 
 private:
 	void IdleStart() override;
+	void JumpStart() override;
 	void SwallowedStart() override;
 	void DamagedStart() override;
 
 	void IdleUpdate() override;
+	void JumpUpdate() override;
 	void SwallowedUpdate() override;
 	void DamagedUpdate() override;
 };

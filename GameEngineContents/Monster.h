@@ -9,6 +9,7 @@ enum class MonsterState
 {
 	Idle,
 	Walk,
+	Jump,
 	Attack,
 	Swallowed,
 	Damaged,
@@ -84,15 +85,22 @@ protected:
 	virtual void DirAnimationCheck();
 
 protected:
-	virtual void IdleStart();
-	virtual void WalkStart();
-	virtual void SwallowedStart();
-	virtual void AttackStart();
+	virtual void IdleStart() {};
+	virtual void WalkStart() {};
+	virtual void JumpStart() {};
+	virtual void SwallowedStart() {};
+
+	virtual void AttackStart() {};
 	virtual void DamagedStart() = 0;
 
-	virtual void IdleUpdate();
-	virtual void WalkUpdate();
-	virtual void AttackUpdate();
-	virtual void SwallowedUpdate();
+
+
+
+	virtual void IdleUpdate() {};
+	virtual void WalkUpdate() {};
+	virtual void JumpUpdate() {};
+	virtual void SwallowedUpdate() {};
+
+	virtual void AttackUpdate() {};
 	virtual void DamagedUpdate() = 0;
 };

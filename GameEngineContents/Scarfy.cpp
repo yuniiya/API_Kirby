@@ -6,6 +6,7 @@
 #include <GameEngine/GameEngineCollision.h>
 
 Scarfy::Scarfy()
+	: Speed_(250.0f)
 {
 	CurState_ = MonsterState::Max;
 	MoveDir = float4::LEFT;
@@ -24,14 +25,11 @@ void Scarfy::ChangeState(MonsterState _State)
 		case MonsterState::Idle:
 			IdleStart();
 			break;
-		case MonsterState::Walk:
-			WalkStart();
+		case MonsterState::Jump:
+			JumpStart();
 			break;
 		case MonsterState::Swallowed:
 			SwallowedStart();
-			break;
-		case MonsterState::Attack:
-			AttackStart();
 			break;
 		case MonsterState::Damaged:
 			DamagedStart();
@@ -49,14 +47,11 @@ void Scarfy::MonsterStateUpdate()
 	case MonsterState::Idle:
 		IdleUpdate();
 		break;
-	case MonsterState::Walk:
-		WalkUpdate();
+	case MonsterState::Jump:
+		JumpUpdate();
 		break;
 	case MonsterState::Swallowed:
 		SwallowedUpdate();
-		break;
-	case MonsterState::Attack:
-		AttackUpdate();
 		break;
 	case MonsterState::Damaged:
 		DamagedUpdate();
@@ -67,19 +62,21 @@ void Scarfy::MonsterStateUpdate()
 void Scarfy::Start()
 {
 	// 히트 박스
-	MonsterCollision = CreateCollision("ScarfyHitBox", { 50, 50 });
+	MonsterCollision = CreateCollision("ScarfyHitBox", { 70, 70 });
 
 	AnimationRender = CreateRenderer();
 	AnimationRender->SetPivotType(RenderPivot::CENTER);
 	AnimationRender->SetPivot({ 0.f, 35.f });
 
 	// Scarfy - Left
-	MonsterAnimationRenderer->CreateAnimation("Scarfy_Left.bmp", "Scarfy_Idle_Left", 0, 2, 0.1f, true);
-	MonsterAnimationRenderer->CreateAnimation("Scarfy_Left.bmp", "Scarfy_Damaged_Left", 3, 3, 0.1f, false);
+	AnimationRender->CreateAnimation("Scarfy_Left.bmp", "Idle_Left", 0, 0, 0.2f, false);
+	AnimationRender->CreateAnimation("Scarfy_Left.bmp", "Jump_Left", 1, 2, 0.2f, false);
+	AnimationRender->CreateAnimation("Scarfy_Left.bmp", "Damaged_Left", 3, 3, 0.1f, false);
 
 	// Scarfy - Right
-	MonsterAnimationRenderer->CreateAnimation("Scarfy_Right.bmp", "Scarfy_Idle_Right", 0, 2, 0.1f, true);
-	MonsterAnimationRenderer->CreateAnimation("Scarfy_Right.bmp", "Scarfy_Damaged_Right", 3, 3, 0.1f, false);
+	AnimationRender->CreateAnimation("Scarfy_Right.bmp", "Idle_Right", 0, 0, 0.2f, false);
+	AnimationRender->CreateAnimation("Scarfy_Right.bmp", "Jump_Right", 1, 2, 0.2f, false);
+	AnimationRender->CreateAnimation("Scarfy_Right.bmp", "Damaged_Right", 3, 3, 0.1f, false);
 
 	AnimationName_ = "Idle_";
 	ChangeDirText_ = "Left";
@@ -90,11 +87,8 @@ void Scarfy::Update()
 {
 	ColMapUpdate();
 
-	DirAnimationCheck();
+	//DirAnimationCheck();
 	MonsterStateUpdate();
-
-	// 항상 땅에 붙어있도록 체크
-	GroundPixelCheck();
 }
 
 void Scarfy::Render()
@@ -103,7 +97,43 @@ void Scarfy::Render()
 
 void Scarfy::IdleUpdate()
 {
+	MoveDir = float4::DOWN;
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
+
+	// 바닥에 닿으면 Jump로 전환
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
+	{
+		if (0.38f <= GetAccTime())
+		{
+			ReSetAccTime();
+
+			ChangeState(MonsterState::Jump);
+			return;
+		}
+	}
+
+	
 }
+
+void Scarfy::JumpUpdate()
+{
+	MoveDir = float4::UP;
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
+
+	if (RGB(0, 0, 0) != BottomPixelColorCheck(50.f))
+	{
+		if (0.38f <= GetAccTime())
+		{
+			ReSetAccTime();
+
+			ChangeState(MonsterState::Idle);
+			return;
+		}
+	}
+
+	
+}
+
 
 void Scarfy::SwallowedUpdate()
 {
@@ -115,14 +145,25 @@ void Scarfy::DamagedUpdate()
 
 void Scarfy::IdleStart()
 {
-	Speed_ = 10.0f;
+	MoveDir = float4::ZERO;
+
+	//Speed_ = 50.0f;
 	AnimationName_ = "Idle_";
+	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Scarfy::JumpStart()
+{
+	MoveDir = float4::ZERO;
+
+	//Speed_ = 500.0f;
+	AnimationName_ = "Jump_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Scarfy::SwallowedStart()
 {
-	AnimationName_ = "Swallowed_";
+	AnimationName_ = "Damaged_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 

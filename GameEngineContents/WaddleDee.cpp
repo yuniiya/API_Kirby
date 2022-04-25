@@ -126,7 +126,7 @@ void WaddleDee::DamagedUpdate()
 
 void WaddleDee::WalkStart()
 {
-	Speed_ = 250.0f;
+	Speed_ = 50.0f;
 	AnimationName_ = "Walk_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }

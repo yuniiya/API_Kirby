@@ -15,7 +15,7 @@ public:
 	BigWaddleDee& operator=(BigWaddleDee&& _Other) noexcept = delete;
 
 private:
-	//float Speed_;
+	float Speed_;
 
 protected:
 	GameEngineRenderer* AnimationRender;
@@ -25,6 +25,9 @@ protected:
 private:
 	void ChangeState(MonsterState _State) override;
 	void MonsterStateUpdate() override;
+
+protected:
+	void WallPixelCheck(float _x, float _Speed);
 
 protected:
 	void Start() override;

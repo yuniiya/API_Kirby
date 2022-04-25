@@ -9,6 +9,9 @@
 #include "ContentsEnum.h"
 #include "PlayUI.h"
 #include "Grass_2.h"
+#include "WaddleDee.h"
+#include "BigWaddleDee.h"
+#include "Scarfy.h"
 
 Level_2::Level_2()
 {
@@ -63,6 +66,11 @@ void Level_2::Loading()
 
 	}
 	
+	// ∏ÛΩ∫≈Õ
+	{
+		Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
+		scarfy->SetPosition({ 500.f, 400.f });
+	}
 }
 
 void Level_2::Update()

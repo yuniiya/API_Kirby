@@ -7,6 +7,7 @@
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngineBase/GameEngineString.h>
+#include <GameEngineBase/GameEngineSound.h>
 
 #include <GameEngine/GameEngineLevel.h>
 #include "Bullet.h"

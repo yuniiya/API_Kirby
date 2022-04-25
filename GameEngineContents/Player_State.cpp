@@ -359,11 +359,11 @@ void Player::JumpUpdate()
 		ChangeState(PlayerState::Idle);
 		return;
 	}
-	else if (RGB(0, 0, 0) != BottomPixelColorCheck(400.f))
-	{
-		ChangeState(PlayerState::Fall);
-		return;
-	}
+	//else if (RGB(0, 0, 0) != BottomPixelColorCheck(400.f))
+	//{
+	//	ChangeState(PlayerState::Fall);
+	//	return;
+	//}
 }
 
 void Player::FloatUpdate()
@@ -509,9 +509,10 @@ void Player::BounceToIdleUpdate()
 	}
 
 	// MoveDir.x는 움직이지 않고 y만 가속한다 
-	MoveDir.y += 1000.f * GameEngineTime::GetDeltaTime();
+	MoveDir.y += 1300.f * GameEngineTime::GetDeltaTime();
 	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
+	// 땅에 닿으면 Idle로 전환
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
 		MoveDir = float4::ZERO;
@@ -566,9 +567,6 @@ void Player::FullUpdate()
 
 void Player::ExhaleUpdate()
 {
-	MoveDir.y += 900.f * GameEngineTime::GetDeltaTime();
-	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
-
 	if (PlayerAnimationRender->IsEndAnimation())
 	{
 		// 땅이랑 너무 가깝다 -> Idle
@@ -580,7 +578,11 @@ void Player::ExhaleUpdate()
 			return;
 		}
 
+
 		// 땅에서 일정한 거리 떨어져 있으면 Fall로 전환
+		MoveDir.y += 900.f * GameEngineTime::GetDeltaTime();
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
 		ChangeState(PlayerState::Fall);
 		return;
 	}	

@@ -71,9 +71,7 @@ protected:
 	PlayerDir InputDir_;
 	std::string AnimationName_;
 	std::string ChangeDirText_;
-
 	
-	GameEngineSoundPlayer BgmPlayer_;
 
 	void CameraFix();
 

@@ -14,6 +14,8 @@
 #include "Grass_1.h"
 #include "Monster.h"
 #include "WaddleDee.h"
+#include "BigWaddleDee.h"
+#include "Scarfy.h"
 
 Level_1::Level_1()
 {
@@ -25,6 +27,7 @@ Level_1::~Level_1()
 
 void Level_1::Loading()
 {
+
 	if (nullptr == Player::MainPlayer)
 	{
 		Player::MainPlayer = CreateActor<Player>((int)ORDER::PLAYER, "Player");
@@ -68,16 +71,31 @@ void Level_1::Loading()
 
 		Grass* Grass2 = CreateActor<Grass>((int)ORDER::STAGEACTOR, "Grass2");
 		Grass2->SetPosition({ 4858.f, 461.f });
-
+		
 		Grass_1* Grass3 = CreateActor<Grass_1>((int)ORDER::STAGEACTOR, "Grass3");
 		Grass3->SetPosition({3062.f, 295.f});
 
 	} //{3062.f, 295.f}
 
 	// ∏ÛΩ∫≈Õ
-	WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+	{
+		WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 700.f, 400.f }); 
 
-	Waddle->SetPosition({ 500.f,500.f });
+	/*	WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 1500.f, 400.f });*/
+
+		Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 5200.f, 400.f });
+
+		BigWaddleDee* BigWaddle = CreateActor<BigWaddleDee>((int)ORDER::MONSTER, "BigWaddleDee");
+		BigWaddle->SetPosition({ 2700.f, 400.f });
+
+
+		Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
+		scarfy->SetPosition({1300.f, 300.f});
+	}
+	
 
 
 }
@@ -109,7 +127,9 @@ void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	//Player::MainPlayer->SetPosition({ 1800.f, 420.f });
 	//Player::MainPlayer->SetPosition({ 5300.f, 450.f });
 	//Player::MainPlayer->SetPosition({ 2600.f, 200.f });
+
 	Player::MainPlayer->MapScale(5753.f, 760.f);
+
 }
 
 void Level_1::LevelChangeEnd(GameEngineLevel* _NextLevel)

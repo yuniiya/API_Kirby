@@ -36,6 +36,9 @@ void Monster::ChangeState(MonsterState _State)
 		case MonsterState::Walk:
 			WalkStart();
 			break;
+		case MonsterState::Jump:
+			JumpStart();
+			break;
 		case MonsterState::Swallowed:
 			SwallowedStart();
 			break;
@@ -62,6 +65,9 @@ void Monster::MonsterStateUpdate()
 			break;
 		case MonsterState::Walk:
 			WalkUpdate();
+			break;
+		case MonsterState::Jump:
+			JumpUpdate();
 			break;
 		case MonsterState::Swallowed:
 			SwallowedUpdate();
@@ -291,44 +297,4 @@ void Monster::DirAnimationCheck()
 		MonsterAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText_);
 		CurDir_ = PrevDir_;
 	}
-}
-
-void Monster::IdleUpdate()
-{
-}
-
-void Monster::WalkUpdate()
-{
-}
-
-void Monster::AttackUpdate()
-{
-}
-
-void Monster::SwallowedUpdate()
-{
-}
-
-void Monster::DamagedUpdate()
-{
-}
-
-void Monster::IdleStart()
-{
-}
-
-void Monster::WalkStart()
-{
-}
-
-void Monster::AttackStart()
-{
-}
-
-void Monster::SwallowedStart()
-{
-}
-
-void Monster::DamagedStart()
-{
 }
