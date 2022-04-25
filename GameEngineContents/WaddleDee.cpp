@@ -98,8 +98,9 @@ void WaddleDee::Render()
 
 void WaddleDee::WalkUpdate()
 {
+	GroundPixelCheck();
+
 	//StagePixelCheck(Speed_);
-	//MovePixelCheck();
 	//WallPixelCheck(-80.f, 80.f);
 	
 
@@ -118,6 +119,6 @@ void WaddleDee::WalkStart()
 
 void WaddleDee::DamagedStart()
 {
-	AnimationName_ = "Damaged";
-	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+	AnimationName_ = "Damaged_";
+	AnimationRender->ChangeAnimation("Waddle_" + AnimationName_ + ChangeDirText_);
 }

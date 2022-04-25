@@ -57,7 +57,9 @@ protected:
 
 	void StagePixelCheck(float _Speed);
 	void WallPixelCheck(float _x, float _y);
-	void MovePixelCheck();
+	void GroundPixelCheck();
+
+	int BottomPixelColorCheck(float _y);
 
 protected:
 	// 스테이지 관련

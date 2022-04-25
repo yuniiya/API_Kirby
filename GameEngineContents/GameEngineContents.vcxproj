@@ -281,10 +281,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Snooter.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="Stage.h">
       <SubType>
       </SubType>
@@ -433,10 +429,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Scarfy.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Snooter.cpp">
       <SubType>
       </SubType>
     </ClCompile>

@@ -130,14 +130,14 @@ void Monster::Start()
 		MonsterAnimationRenderer->CreateAnimation("BigWaddleDee_Right.bmp", "BigWaddle_Damaged_Right", 6, 6, 0.8f, false);
 
 		// Snooter
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Idle_Left", 8, 11, 0.5f, true);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Walk_Left", 0, 3, 0.5f, false);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Swallow_Left", 4, 6, 0.5f, false);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Swallow_Left2", 9, 9, 0.5f, false);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Swallow_Left3", 8, 8, 0.5f, false);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Swallow_Left4", 7, 8, 0.1f, false);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Attack_Left", 10, 17, 0.1f, false);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Damaged_Left", 18, 18, 0.1f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Idle_Left", 8, 11, 0.5f, true);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Walk_Left", 0, 3, 0.5f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Swallow_Left", 4, 6, 0.5f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Swallow_Left2", 9, 9, 0.5f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Swallow_Left3", 8, 8, 0.5f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Swallow_Left4", 7, 8, 0.1f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Attack_Left", 10, 17, 0.1f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Left.bmp", "Snooter_Damaged_Left", 18, 18, 0.1f, false);
 
 		// Scarfy
 		MonsterAnimationRenderer->CreateAnimation("Scarfy_Left.bmp", "Scarfy_Idle_Left", 0, 2, 0.1f, true);
@@ -171,14 +171,14 @@ void Monster::Start()
 		MonsterAnimationRenderer->CreateAnimation("BigWaddleDee_Right.bmp", "BigWaddle_Damaged_Right", 9, 9, 0.8f, false);
 
 		// Snooter
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Idle_Right", 8, 11, 0.5f, true);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Walk_Right", 0, 3, 0.5f, true);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Swallow_Right", 4, 6, 0.5f, false);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Swallow_Right2", 9, 9, 0.5f, false);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Swallow_Right3", 8, 8, 0.5f, false);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Swallow_Right4", 7, 8, 0.1f, false);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Attack_Right", 10, 17, 0.1f, false);
-		MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Damaged_Right", 18, 18, 0.1f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Idle_Right", 8, 11, 0.5f, true);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Walk_Right", 0, 3, 0.5f, true);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Swallow_Right", 4, 6, 0.5f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Swallow_Right2", 9, 9, 0.5f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Swallow_Right3", 8, 8, 0.5f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Swallow_Right4", 7, 8, 0.1f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Attack_Right", 10, 17, 0.1f, false);
+		//MonsterAnimationRenderer->CreateAnimation("Snooter_Right.bmp", "Snooter_Damaged_Right", 18, 18, 0.1f, false);
 
 		// Scarfy
 		MonsterAnimationRenderer->CreateAnimation("Scarfy_Right.bmp", "Scarfy_Idle_Right", 0, 2, 0.1f, true);
@@ -201,7 +201,13 @@ void Monster::Start()
 	}
 }
 
+int Monster::BottomPixelColorCheck(float _y)
+{
+	float4 CheckPos = GetPosition() + float4{ 0.0f, _y };
+	int Color = MapColImage_->GetImagePixel(CheckPos);
 
+	return Color;
+}
 
 void Monster::StagePixelCheck(float _Speed)
 {
@@ -213,8 +219,6 @@ void Monster::StagePixelCheck(float _Speed)
 	{
 		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
 	}
-
-
 }
 
 void Monster::WallPixelCheck(float _x, float _y)
@@ -256,15 +260,11 @@ void Monster::WallPixelCheck(float _x, float _y)
 	}
 }
 
-void Monster::MovePixelCheck()
+void Monster::GroundPixelCheck()
 {
 	// ¶¥¿¡ ´êµµ·Ï ³»·ÁÁØ´Ù
 
-	float4 DownPos = GetPosition() + float4{ MoveDir.x, -90.f };
-
-	int DownColor = MapColImage_->GetImagePixel(DownPos);
-
-	if (RGB(0, 0, 0) != DownColor)
+	if (RGB(0, 0, 0) != BottomPixelColorCheck(-90.f))
 	{
 		SetMove(float4{0, 1.f});
 	}

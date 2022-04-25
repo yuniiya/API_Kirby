@@ -71,9 +71,6 @@
     <ClCompile Include="WaddleDee.cpp">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClCompile>
-    <ClCompile Include="Snooter.cpp">
-      <Filter>Actor\Play\Monster\Default</Filter>
-    </ClCompile>
     <ClCompile Include="Scarfy.cpp">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClCompile>
@@ -184,9 +181,6 @@
       <Filter>Actor\Play\Monster</Filter>
     </ClInclude>
     <ClInclude Include="WaddleDee.h">
-      <Filter>Actor\Play\Monster\Default</Filter>
-    </ClInclude>
-    <ClInclude Include="Snooter.h">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClInclude>
     <ClInclude Include="Scarfy.h">

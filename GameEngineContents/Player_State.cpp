@@ -50,32 +50,9 @@ void Player::IdleUpdate()
 		return;
 	}
 
-
-	// 점프 키 누른지 0.03이상이면 LongJump
-	//if (GameEngineInput::GetInst()->GetTime("JumpRight") >= 0.03f)
-	//{
-	//	LongJump_ = true;
-	//}
-	//else if (GameEngineInput::GetInst()->GetTime("JumpRight") < 0.005f)
-	//{
-	//	LongJump_ = false;
-	//}
-	//	
-
 	// 점프 
 	if (true == IsJumpKey())
 	{
-		//if (true == LongJump_)
-		//{
-		//	JumpPower_ = 1000.f;
-		//	Gravity_ = 1800.f;
-		//}
-		//else if (false == LongJump_)
-		//{
-		//	JumpPower_ = 500.f;
-		//	Gravity_ = 900.f;
-		//}
-
 		ChangeState(PlayerState::Jump);
 		return;
 	}
@@ -118,10 +95,6 @@ void Player::WalkUpdate()
 		ChangeState(PlayerState::Down);
 		return;
 	}
-
-
-	// 달리기
-
 
 	// 점프 
 	if (true == IsJumpKey())
@@ -391,38 +364,6 @@ void Player::JumpUpdate()
 		ChangeState(PlayerState::Fall);
 		return;
 	}
-
-	
-	//if (true == GameEngineInput::GetInst()->IsPress("JumpLeft"))
-	//{
-	//	SetMove(float4::UP * GameEngineTime::GetDeltaTime() * Speed_);
-	//}
-	//if (true == GameEngineInput::GetInst()->IsPress("JumpRight"))
-	//{
-	//	SetMove(float4::UP * GameEngineTime::GetDeltaTime() * Speed_);
-	//}
-
-	//// 아무런 키가 눌리지 않으면 점점 감속한다
-	//if (false == IsMoveKey())
-	//{
-	//	MoveDir += -MoveDir * GameEngineTime::GetDeltaTime();
-
-		//if (0.005f >= MoveDir.Len2D())
-		//{
-		//	MoveDir = float4::ZERO;
-		//	return;
-		//}
-
-	//	SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-	//	return;
-	//}
-
-	//if (true == GameEngineInput::GetInst()->IsDown("Inhale"))
-	//{
-	//	ChangeState(PlayerState::Inhale);
-	//	return;
-	//}
-
 }
 
 void Player::FloatUpdate()
@@ -547,7 +488,7 @@ void Player::FallToBounceUpdate()
 
 	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
-
+	// 튕겼으면 BounceToIdle로 전환
 	if (RGB(0, 0, 0) != BottomPixelColorCheck(130.f))
 	{
 		ChangeState(PlayerState::BounceToIdle);
@@ -643,8 +584,6 @@ void Player::ExhaleUpdate()
 		ChangeState(PlayerState::Fall);
 		return;
 	}	
-
-
 }
 
 void Player::SwallowUpdate()
@@ -677,9 +616,6 @@ void Player::DamagedUpdate()
 void Player::IdleStart()
 {
 	Speed_ = 350.f;
-
-	/*JumpPower_ = 1000.f;
-	Gravity_ = 1800.f;*/
 	
 	AnimationName_ = "Idle_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
@@ -766,10 +702,7 @@ void Player::FloatStart()
 
 void Player::FallStart()
 {
-	//Gravity_ = 500.f;
-
-	MoveDir = float4::ZERO;
-	// MoveDir = float4::DOWN * Gravity_;
+	MoveDir = float4::ZERO;;
 
 	AnimationName_ = "Fall_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
