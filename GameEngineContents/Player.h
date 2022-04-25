@@ -17,6 +17,7 @@ enum class PlayerState
 	Jump,
 	Float,
 	Fall,
+	FallToBounce,
 	Inhale,
 	Full,
 	Exhale,
@@ -121,6 +122,7 @@ private:
 
 	void MovePixelCheck(float _x, float _y);
 	void HillPixelCheck();
+	int BottomePixelColorCheck(float _y);
 	
 	
 private:
@@ -159,7 +161,9 @@ private:
 
 	void JumpStart();
 	void FallStart();
+	void FallToBounceStart();
 	void FloatStart();
+
 	void InhaleStart();
 	void FullStart();
 	void ExhaleStart();
@@ -170,6 +174,7 @@ private:
 	void DamagedStart();
 
 
+	///////////////////////
 	void IdleUpdate();
 	void WalkUpdate();
 	void RunUpdate();
@@ -179,6 +184,8 @@ private:
 
 	void JumpUpdate();
 	void FallUpdate();
+	void FallToBounceUpdate();
+
 	void FloatUpdate();
 	void InhaleUpdate();
 	void FullUpdate();

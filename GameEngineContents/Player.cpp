@@ -146,6 +146,9 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::Fall:
 			FallStart();
 			break;
+		case PlayerState::FallToBounce:
+			FallToBounceStart();
+			break;
 		case PlayerState::Inhale:
 			InhaleStart();
 			break;
@@ -203,6 +206,9 @@ void Player::PlayerStateUpdate()
 		break;
 	case PlayerState::Fall:
 		FallUpdate();
+		break;
+	case PlayerState::FallToBounce:
+		FallToBounceUpdate();
 		break;
 	case PlayerState::Inhale:
 		InhaleUpdate();
@@ -268,7 +274,9 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Exhale_Left", 3, 3, 0.1f, false);
 
 		// Fall
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 12, 0.02f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 4, 0.2f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "FallToBounce_Left", 5, 12, 0.02f, false);
+
 	}
 	
 
@@ -297,7 +305,8 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Exhale_Right", 3, 3, 0.1f, false);
 
 		// Fall
-		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 12, 0.02f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 4, 0.05f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "FallToBounce_Right", 5, 12, 0.02f, false);
 	}
 	
 	AnimationName_ = "Idle_";
@@ -569,7 +578,6 @@ void Player::StagePixelCheck(float _Speed)
 
 void Player::MovePixelCheck(float _x, float _y)
 {
-	int BottomCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.f, _y });
 	int UpCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.f, -_y });
 	int LeftCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ -_x, 0.f });
 	int RightCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ _x, 0.f });
@@ -622,6 +630,14 @@ void Player::HillPixelCheck()
 	//{
 	//	StagePixelCheck(Speed_);
 	//}
+}
+
+int Player::BottomePixelColorCheck(float _y)
+{
+	float4 CheckPos = GetPosition() + float4{0.0f, _y};
+	int Color = MapColImage_->GetImagePixel(CheckPos);
+
+	return Color;
 }
 
 void Player::DoorPixelCheck()

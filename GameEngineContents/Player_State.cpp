@@ -528,37 +528,42 @@ void Player::FallUpdate()
 		MoveDir = float4{ 200.0f, MoveDir.y };
 	}
 
-	// 이동하면 안된다.
-	MoveDir.y += 500.f * GameEngineTime::GetDeltaTime();
+	// MoveDir.x는 움직이지 않고 y만 가속한다 
+	MoveDir.y += 900.f * GameEngineTime::GetDeltaTime();
 
-	//if (/*땅에 닿지 않았다면*/)
-	//{
+
+	// 땅에 닿지 않았다면 MoveDir.y로 가속하며 떨어진다 
+	if (BottomePixelColorCheck(20.f) != RGB(0, 0, 0))
+	{
+		if (1 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+		{
+			PlayerAnimationRender->PauseOn();
+			//MoveDir = { 0.0f, MoveDir.y };
+
+			// 땅에 가까워지면 머리가 땅을 향하는 애니메이션 재생
+			if (RGB(0, 0, 0) == BottomePixelColorCheck(200.f))
+			{
+				PlayerAnimationRender->PauseOff();
+			}
+		}
+
+
 		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
-	//}
-
-
-	//if (땅에 닿았다면 튕긴다)
+	}
+	//else
 	//{
+	//	// 땅에 닿았다면 FallToBounce로 전환
 
-	//}
-	//else {
-	//	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
-	//}
-
-	//float4 XPos = { MoveDir.x, 0.0f };
-	//float4 YPos = { 0.0f, MoveDir.y };
-
-	//// 발이 땅을 향하는 애니메이션 재생
-	//if (1 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
-	//{
-	//	if (YPos.y >= 150.f)
-	//	{
-	//		PlayerAnimationRender->PauseOn();
-	//		YPos = { 0.0f, MoveDir.y };
-	//	}
+	//	ChangeState(PlayerState::FallToBounce);
+	//	return;
 	//}
 
-	//// 땅에 가까워지면 머리가 땅을 향하는 애니메이션 재생
+
+	float4 YPos = { 0.0f, MoveDir.y };
+
+	// 발이 땅을 향하는 애니메이션 재생
+
+	// 땅에 가까워지면 머리가 땅을 향하는 애니메이션 재생
 	//float4 StageCheckPos = GetPosition() + float4{ 0, 200.f };
 	//int StageColor = MapColImage_->GetImagePixel(StageCheckPos);
 	//if (RGB(0, 0, 0) == StageColor)
@@ -605,6 +610,10 @@ void Player::FallUpdate()
 	//	return;
 	//}
 
+}
+
+void Player::FallToBounceUpdate()
+{
 }
 
 void Player::InhaleUpdate()
@@ -785,6 +794,12 @@ void Player::FallStart()
 	// MoveDir = float4::DOWN * Gravity_;
 
 	AnimationName_ = "Fall_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Player::FallToBounceStart()
+{
+	AnimationName_ = "FallToBounce_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
