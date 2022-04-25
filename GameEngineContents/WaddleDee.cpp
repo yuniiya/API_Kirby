@@ -7,7 +7,8 @@
 
 WaddleDee::WaddleDee()
 {
-
+	CurState_ = MonsterState::Max;
+	MoveDir = float4::LEFT;
 }
 WaddleDee::~WaddleDee()
 {
@@ -76,8 +77,9 @@ void WaddleDee::Start()
 	AnimationRender->CreateAnimation("WaddleDee_Right.bmp", "Waddle_Damaged_Right", 6, 6, 0.5f, false);
 
 	AnimationName_ = "Walk_";
-	AnimationRender->ChangeAnimation("Waddle_Walk_Left");
-	CurState_ = MonsterState::Walk;
+	ChangeDirText_ = "Left";
+	// AnimationRender->ChangeAnimation("Waddle_Walk_Left");
+	ChangeState(MonsterState::Walk);
 }
 
 void WaddleDee::Update()
@@ -96,23 +98,9 @@ void WaddleDee::Render()
 
 void WaddleDee::WalkUpdate()
 {
-	StagePixelCheck(Speed_);
-	MovePixelCheck();
-	WallPixelCheck(-80.f, 80.f);
-
-	if (CurDir_ == MonsterDir::Left)
-	{
-		MoveDir = float4::LEFT;
-		//SetMove(MoveDir);
-		
-	}
-	else if (CurDir_ == MonsterDir::Right)
-	{
-		MoveDir = float4::RIGHT;
-		//SetMove(MoveDir);
-		//WallPixelCheck(20.f, 20.f);
-	}
-
+	//StagePixelCheck(Speed_);
+	//MovePixelCheck();
+	//WallPixelCheck(-80.f, 80.f);
 	
 
 }
@@ -124,13 +112,12 @@ void WaddleDee::DamagedUpdate()
 void WaddleDee::WalkStart()
 {
 	Speed_ = 10.0f;
-
 	AnimationName_ = "Walk_";
-	MonsterAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText_);
+	AnimationRender->ChangeAnimation("Waddle_" + AnimationName_ + ChangeDirText_);
 }
 
 void WaddleDee::DamagedStart()
 {
 	AnimationName_ = "Damaged";
-	MonsterAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText_);
+	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }

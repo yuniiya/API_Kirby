@@ -11,6 +11,7 @@
 #include "ContentsEnum.h"
 #include "PlayUI.h"
 #include "Grass.h"
+#include "Grass_1.h"
 #include "Monster.h"
 #include "WaddleDee.h"
 
@@ -68,15 +69,10 @@ void Level_1::Loading()
 		Grass* Grass2 = CreateActor<Grass>((int)ORDER::STAGEACTOR, "Grass2");
 		Grass2->SetPosition({ 4858.f, 461.f });
 
+		Grass_1* Grass3 = CreateActor<Grass_1>((int)ORDER::STAGEACTOR, "Grass3");
+		Grass3->SetPosition({3062.f, 295.f});
 
-		GameEngineImage* GrassImage = GameEngineImageManager::GetInst()->Find("Grass1-2.bmp");
-		GrassImage->CutCount(1, 4);
-		Grass* Grass3 = CreateActor<Grass>((int)ORDER::STAGEACTOR, "Grass2");
-		GameEngineRenderer* Renderer = Grass3->CreateRenderer("Grass1-2.bmp", static_cast<int>(EngineMax::RENDERORDERMAX), RenderPivot::CENTER, {3062.f, 295.f});
-		Renderer->CreateAnimation("Grass1-2.bmp", "Grass2", 0, 3, 0.25f, true);
-		Renderer->ChangeAnimation("Grass2");
-
-	}
+	} //{3062.f, 295.f}
 
 	// ∏ÛΩ∫≈Õ
 	WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");

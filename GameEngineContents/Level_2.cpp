@@ -8,7 +8,7 @@
 #include "Player.h"
 #include "ContentsEnum.h"
 #include "PlayUI.h"
-#include "Grass.h"
+#include "Grass_2.h"
 
 Level_2::Level_2()
 {
@@ -58,12 +58,8 @@ void Level_2::Loading()
 	}
 
 	{
-		GameEngineImage* GrassImage = GameEngineImageManager::GetInst()->Find("Grass2-1.bmp");
-		GrassImage->CutCount(1, 4);
-		Grass* Grass1 = CreateActor<Grass>((int)ORDER::STAGEACTOR, "Grass1");
-		GameEngineRenderer* Renderer = Grass1->CreateRenderer("Grass2-1.bmp", static_cast<int>(EngineMax::RENDERORDERMAX), RenderPivot::CENTER, { 355.f, 513.f });
-		Renderer->CreateAnimation("Grass2-1.bmp", "Grass1", 0, 3, 0.25f, true);
-		Renderer->ChangeAnimation("Grass1");
+		Grass_2* Grass1 = CreateActor<Grass_2>((int)ORDER::STAGEACTOR, "Grass1");
+		Grass1->SetPosition({ 355.f, 513.f });
 
 	}
 	

@@ -197,6 +197,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Grass_1.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Grass_2.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="IceKirby.h">
       <SubType>
       </SubType>
@@ -340,6 +348,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Grass.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Grass_1.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Grass_2.cpp">
       <SubType>
       </SubType>
     </ClCompile>

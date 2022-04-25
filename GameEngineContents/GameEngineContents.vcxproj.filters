@@ -104,11 +104,17 @@
     <ClCompile Include="BigWaddleDee.cpp">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClCompile>
-    <ClCompile Include="Grass.cpp">
-      <Filter>Actor\Play\Global\Back</Filter>
-    </ClCompile>
     <ClCompile Include="Water.cpp">
       <Filter>Actor\Play\Global\Back</Filter>
+    </ClCompile>
+    <ClCompile Include="Grass.cpp">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="Grass_1.cpp">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="Grass_2.cpp">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -213,11 +219,17 @@
     <ClInclude Include="BigWaddleDee.h">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClInclude>
-    <ClInclude Include="Grass.h">
-      <Filter>Actor\Play\Global\Back</Filter>
-    </ClInclude>
     <ClInclude Include="Water.h">
       <Filter>Actor\Play\Global\Back</Filter>
+    </ClInclude>
+    <ClInclude Include="Grass.h">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClInclude>
+    <ClInclude Include="Grass_1.h">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClInclude>
+    <ClInclude Include="Grass_2.h">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +271,9 @@
     </Filter>
     <Filter Include="Actor\Play\Global\Back">
       <UniqueIdentifier>{244208ae-a4fe-4548-b96b-9d6d5ea61609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Play\Global\Back\Grass">
+      <UniqueIdentifier>{d1684ddc-c96d-4be2-9271-50bb372f2731}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

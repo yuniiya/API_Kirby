@@ -518,69 +518,92 @@ void Player::FallUpdate()
 		return;
 	}
 
-	// 아래로 떨어진다
-	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
-
-
-	float4 XPos = { MoveDir.x, 0.0f };
-	float4 YPos = { 0.0f, MoveDir.y };
-
-	// 발이 땅을 향하는 애니메이션 재생
-	if (1 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+	// 방향키를 누르면 해당 방향으로 x 이동
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
-		if (YPos.y >= 150.f)
-		{
-			PlayerAnimationRender->PauseOn();
-			YPos = { 0.0f, MoveDir.y };
-		}
+		MoveDir = float4{ -200.0f, MoveDir.y };
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 200.0f, MoveDir.y };
 	}
 
-	// 땅에 가까워지면 머리가 땅을 향하는 애니메이션 재생
-	float4 StageCheckPos = GetPosition() + float4{ 0, 200.f };
-	int StageColor = MapColImage_->GetImagePixel(StageCheckPos);
-	if (RGB(0, 0, 0) == StageColor)
-	{
-		PlayerAnimationRender->PauseOff();
+	// 이동하면 안된다.
+	MoveDir.y += 500.f * GameEngineTime::GetDeltaTime();
 
-	}
-
-	// 땅에 닿기 전 까지는 4번째 애니메이션에서 Pause
-	if (4 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
-	{
-		PlayerAnimationRender->PauseOn();
-		StageCheckPos = { 0.0f, 0.0f };
-		
-	}
-
-	// 땅에 닿으면 Pause 해제 후 한 번 튕긴다
-	StageCheckPos = GetPosition() + float4{ 0, 20.f };
-	StageColor = MapColImage_->GetImagePixel(StageCheckPos);
-	if (RGB(0, 0, 0) == StageColor)
-	{
-		MoveDir = float4{ MoveDir.x, -1.f } * 400.f;
+	//if (/*땅에 닿지 않았다면*/)
+	//{
 		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
-		Gravity_ = 1200.f;
-		
-	}
+	//}
 
-	GravityOn();
 
-	// 튕긴다
-	if (Gravity_ >= 1200.f)
-	{
-		PlayerAnimationRender->PauseOff();
-	}
+	//if (땅에 닿았다면 튕긴다)
+	//{
 
-	// 튕긴 후 다시 땅에 착지 => Idle
-	StageCheckPos = GetPosition() + float4{ 0, 40.f };
-	StageColor = MapColImage_->GetImagePixel(StageCheckPos);
-	if (RGB(0, 0, 0) == StageColor
-		&& PlayerAnimationRender->IsEndAnimation())
-	{
-		MoveDir = float4::ZERO;
-		ChangeState(PlayerState::Idle);
-		return;
-	}
+	//}
+	//else {
+	//	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+	//}
+
+	//float4 XPos = { MoveDir.x, 0.0f };
+	//float4 YPos = { 0.0f, MoveDir.y };
+
+	//// 발이 땅을 향하는 애니메이션 재생
+	//if (1 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+	//{
+	//	if (YPos.y >= 150.f)
+	//	{
+	//		PlayerAnimationRender->PauseOn();
+	//		YPos = { 0.0f, MoveDir.y };
+	//	}
+	//}
+
+	//// 땅에 가까워지면 머리가 땅을 향하는 애니메이션 재생
+	//float4 StageCheckPos = GetPosition() + float4{ 0, 200.f };
+	//int StageColor = MapColImage_->GetImagePixel(StageCheckPos);
+	//if (RGB(0, 0, 0) == StageColor)
+	//{
+	//	PlayerAnimationRender->PauseOff();
+
+	//}
+
+	//// 땅에 닿기 전 까지는 4번째 애니메이션에서 Pause
+	//if (4 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+	//{
+	//	PlayerAnimationRender->PauseOn();
+	//	StageCheckPos = { 0.0f, 0.0f };
+	//	
+	//}
+
+	//// 땅에 닿으면 Pause 해제 후 한 번 튕긴다
+	//StageCheckPos = GetPosition() + float4{ 0, 20.f };
+	//StageColor = MapColImage_->GetImagePixel(StageCheckPos);
+	//if (RGB(0, 0, 0) == StageColor)
+	//{
+	//	MoveDir = float4{ MoveDir.x, -1.f } * 400.f;
+	//	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+	//	Gravity_ = 1200.f;
+	//	
+	//}
+
+	//GravityOn();
+
+	//// 튕긴다
+	//if (Gravity_ >= 1200.f)
+	//{
+	//	PlayerAnimationRender->PauseOff();
+	//}
+
+	//// 튕긴 후 다시 땅에 착지 => Idle
+	//StageCheckPos = GetPosition() + float4{ 0, 40.f };
+	//StageColor = MapColImage_->GetImagePixel(StageCheckPos);
+	//if (RGB(0, 0, 0) == StageColor
+	//	&& PlayerAnimationRender->IsEndAnimation())
+	//{
+	//	MoveDir = float4::ZERO;
+	//	ChangeState(PlayerState::Idle);
+	//	return;
+	//}
 
 }
 
@@ -758,7 +781,8 @@ void Player::FallStart()
 {
 	Gravity_ = 500.f;
 
-	MoveDir = float4::DOWN * Gravity_;
+	MoveDir = float4::ZERO;
+	// MoveDir = float4::DOWN * Gravity_;
 
 	AnimationName_ = "Fall_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
