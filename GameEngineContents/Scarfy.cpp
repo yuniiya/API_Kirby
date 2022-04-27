@@ -4,6 +4,7 @@
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineImageManager.h>
 #include <GameEngine/GameEngineCollision.h>
+#include "Player.h"
 
 Scarfy::Scarfy()
 	: Speed_(250.0f)
@@ -59,6 +60,28 @@ void Scarfy::MonsterStateUpdate()
 	}
 }
 
+void Scarfy::DirCheck()
+{
+	float4 PlayerPos = Player::MainPlayer->GetPosition();
+	float4 MonsterPos = GetPosition();
+
+	// 플레이어가 몬스터 왼쪽에 있다
+	if (PlayerPos.x < MonsterPos.x)
+	{
+		CurDir_ = MonsterDir::Left;
+		ChangeDirText_ = "Left";
+	}
+	else if (PlayerPos.x > MonsterPos.x)
+	{
+		// 몬스터 오른쪽에 있다
+		CurDir_ = MonsterDir::Right;
+		ChangeDirText_ = "Right";
+
+	}
+
+	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
 void Scarfy::Start()
 {
 	// 히트 박스
@@ -88,6 +111,7 @@ void Scarfy::Update()
 	ColMapUpdate();
 
 	//DirAnimationCheck();
+	DirCheck();
 	MonsterStateUpdate();
 }
 

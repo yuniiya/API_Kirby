@@ -59,12 +59,6 @@
     <ClCompile Include="Item.cpp">
       <Filter>Actor\Play\Global</Filter>
     </ClCompile>
-    <ClCompile Include="Metalun.cpp">
-      <Filter>Actor\Play\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="Pengy.cpp">
-      <Filter>Actor\Play\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="WaddleDee.cpp">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClCompile>
@@ -86,14 +80,8 @@
     <ClCompile Include="Stage.cpp">
       <Filter>Actor\Play\Global\Back</Filter>
     </ClCompile>
-    <ClCompile Include="Kingdedede.cpp">
-      <Filter>Actor\Play\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="MapActor.cpp">
       <Filter>Actor\Play\Global\Back</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayLevel.cpp">
-      <Filter>Level</Filter>
     </ClCompile>
     <ClCompile Include="BigWaddleDee.cpp">
       <Filter>Actor\Play\Monster\Default</Filter>
@@ -109,6 +97,15 @@
     </ClCompile>
     <ClCompile Include="Grass_2.cpp">
       <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="Kingdedede.cpp">
+      <Filter>Actor\Play\Monster\Skilled</Filter>
+    </ClCompile>
+    <ClCompile Include="Metalun.cpp">
+      <Filter>Actor\Play\Monster\Skilled</Filter>
+    </ClCompile>
+    <ClCompile Include="Pengy.cpp">
+      <Filter>Actor\Play\Monster\Skilled</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -168,12 +165,6 @@
     <ClInclude Include="Item.h">
       <Filter>Actor\Play\Global</Filter>
     </ClInclude>
-    <ClInclude Include="Metalun.h">
-      <Filter>Actor\Play\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="Pengy.h">
-      <Filter>Actor\Play\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="WaddleDee.h">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClInclude>
@@ -195,14 +186,8 @@
     <ClInclude Include="Stage.h">
       <Filter>Actor\Play\Global\Back</Filter>
     </ClInclude>
-    <ClInclude Include="Kingdedede.h">
-      <Filter>Actor\Play\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="MapActor.h">
       <Filter>Actor\Play\Global\Back</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayLevel.h">
-      <Filter>Level</Filter>
     </ClInclude>
     <ClInclude Include="BigWaddleDee.h">
       <Filter>Actor\Play\Monster\Default</Filter>
@@ -218,6 +203,15 @@
     </ClInclude>
     <ClInclude Include="Grass_2.h">
       <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClInclude>
+    <ClInclude Include="Kingdedede.h">
+      <Filter>Actor\Play\Monster\Skilled</Filter>
+    </ClInclude>
+    <ClInclude Include="Metalun.h">
+      <Filter>Actor\Play\Monster\Skilled</Filter>
+    </ClInclude>
+    <ClInclude Include="Pengy.h">
+      <Filter>Actor\Play\Monster\Skilled</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +256,9 @@
     </Filter>
     <Filter Include="Actor\Play\Global\Back\Grass">
       <UniqueIdentifier>{d1684ddc-c96d-4be2-9271-50bb372f2731}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Play\Monster\Skilled">
+      <UniqueIdentifier>{689bf6ac-a095-4768-ad57-65a7a0c20165}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -26,10 +26,20 @@ private:
 	void ChangeState(MonsterState _State) override;
 	void MonsterStateUpdate() override;
 
+	void DirCheck();
+
+private:
+	MonsterDir CurDir_;
+	MonsterDir InputDir_;
+
+	std::string AnimationName_;
+	std::string ChangeDirText_;
+
 protected:
 	void Start() override;
 	void Update() override;
 	void Render() override;
+
 
 private:
 	void IdleStart() override;

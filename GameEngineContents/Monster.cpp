@@ -4,6 +4,7 @@
 #include <GameEngine/GameEngineImageManager.h>
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngineBase/GameEngineInput.h>
+#include "Player.h"
 
 Monster::Monster()
 	: Speed_(20.f)
