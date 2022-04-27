@@ -31,10 +31,15 @@ enum class PlayerState
 	BounceToIdle,
 	Inhale,
 	Full,
+	FullWalk,
+	FullJump,
 	Exhale,
 	Swallow,
 	Exhausted,
+	AttackStart,
 	Attack,
+	AttackEnd,
+	DamagedStart,
 	Damaged,
 	
 	Max,
@@ -178,11 +183,16 @@ private:
 
 	void InhaleStart();
 	void FullStart();
+	void FullWalkStart();
+	void FullJumpStart();
 	void ExhaleStart();
 	void SwallowStart();
 	void ExhaustedStart();
 
+	void AttackStartStart();
 	void AttackStart();
+	void AttackEndStart();
+	void DamagedStartStart();
 	void DamagedStart();
 
 
@@ -202,11 +212,17 @@ private:
 
 	void InhaleUpdate();
 	void FullUpdate();
+	void FullWalkUpdate();
+	void FullJumpUpdate();
+
 	void ExhaleUpdate();
 	void SwallowUpdate();
 	void ExhaustedUpdate();
 
+	void AttackStartUpdate();
 	void AttackUpdate();
+	void AttackEndUpdate();
+	void DamagedStartUpdate();
 	void DamagedUpdate();
 	
 

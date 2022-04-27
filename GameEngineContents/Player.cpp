@@ -160,6 +160,12 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::Full:
 			FullStart();
 			break;
+		case PlayerState::FullWalk:
+			FullWalkStart();
+			break;
+		case PlayerState::FullJump:
+			FullJumpStart();
+			break;
 		case PlayerState::Exhale:
 			ExhaleStart();
 			break;
@@ -169,8 +175,17 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::Exhausted:
 			ExhaustedStart();
 			break;
+		case PlayerState::AttackStart:
+			AttackStartStart();
+			break;
 		case PlayerState::Attack:
 			AttackStart();
+			break;
+		case PlayerState::AttackEnd:
+			AttackEndStart();
+			break;
+		case PlayerState::DamagedStart:
+			DamagedStartStart();
 			break;
 		case PlayerState::Damaged:
 			DamagedStart();
@@ -224,6 +239,12 @@ void Player::PlayerStateUpdate()
 	case PlayerState::Full:
 		FullUpdate();
 		break;
+	case PlayerState::FullWalk:
+		FullWalkUpdate();
+		break;
+	case PlayerState::FullJump:
+		FullJumpUpdate();
+		break;
 	case PlayerState::Exhale:
 		ExhaleUpdate();
 		break;
@@ -233,8 +254,17 @@ void Player::PlayerStateUpdate()
 	case PlayerState::Exhausted:
 		ExhaustedUpdate();
 		break;
+	case PlayerState::AttackStart:
+		AttackStartUpdate();
+		break;
 	case PlayerState::Attack:
 		AttackUpdate();
+		break;
+	case PlayerState::AttackEnd:
+		AttackEndUpdate();
+		break;
+	case PlayerState::DamagedStart:
+		DamagedStartUpdate();
 		break;
 	case PlayerState::Damaged:
 		DamagedUpdate();
@@ -265,7 +295,8 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Walk_Left", 6, 15, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Run_Left", 16, 23, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "RunToStop_Left", 24, 24, 0.3f, false);
-		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Damaged_Left", 70, 78, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "DamagedStart_Left", 70, 70, 0.08f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Damaged_Left", 71, 78, 0.04f, true);
 
 		// Full
 		//PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Full_Left", 42, 43, 1.f, true);
@@ -278,8 +309,8 @@ void Player::Start()
 		// Attack
 		//PlayerAnimationRender->CreateAnimation("Default_Attack_Leftt.bmp", "AttackStart_Leftt", 0, 1, 0.05f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Att_Left.bmp", "AttackStart_Left", 9, 11, 0.05f, true);	// ÀÌÆåÆ® ÀÖ´Â ver
-		PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "Attack_Leftt", 1, 1, 0.05f, false);
-		PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "AttackEnd_Leftt", 2, 3, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "Attack_Left", 1, 1, 0.05f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "AttackEnd_Left", 2, 3, 0.05f, true);
 
 		// Inhale
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left", 30, 37, 0.1f, false);
@@ -313,7 +344,8 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Walk_Right", 6, 15, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Run_Right", 16, 23, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "RunToStop_Right", 24, 24, 0.3f, false);
-		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Damaged_Right", 70, 78, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "DamagedStart_Right", 70, 70, 0.08f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Damaged_Right", 71, 78, 0.04f, true);
 
 		// Full
 		//PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Full_Right", 42, 43, 1.f, true);
@@ -488,7 +520,7 @@ void Player::MonsterColCheck()
 			ColList[i]->GetActor()->Death();
 		}
 
-		ChangeState(PlayerState::Damaged);
+		ChangeState(PlayerState::DamagedStart);
 		return;
 	}
 }

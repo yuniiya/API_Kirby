@@ -496,6 +496,14 @@ void Player::FullUpdate()
 {
 }
 
+void Player::FullWalkUpdate()
+{
+}
+
+void Player::FullJumpUpdate()
+{
+}
+
 void Player::ExhaleUpdate()
 {
 	if (PlayerAnimationRender->IsEndAnimation())
@@ -532,14 +540,61 @@ void Player::ExhaustedUpdate()
 	}
 }
 
+void Player::AttackStartUpdate()
+{
+}
+
 void Player::AttackUpdate()
 {
 
 }
 
+void Player::AttackEndUpdate()
+{
+}
+
+void Player::DamagedStartUpdate()
+{
+	if (CurDir_ == PlayerDir::Right)
+	{
+		MoveDir.x = -1.2f;
+	}
+	else if (CurDir_ == PlayerDir::Left)
+	{
+		MoveDir.x = 1.2f;
+	}
+
+
+	if (1.9f <= GetAccTime())
+	{
+		ReSetAccTime();
+
+		ChangeState(PlayerState::Damaged);
+		return;
+	}
+}
+
 void Player::DamagedUpdate()
 {
 
+	if (CurDir_ == PlayerDir::Right)
+	{
+		MoveDir.x = -1.2f;
+	}
+	else if (CurDir_ == PlayerDir::Left)
+	{
+		MoveDir.x = 1.2f;
+	}
+
+	SetMove(MoveDir);
+
+
+
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 
 
@@ -549,6 +604,8 @@ void Player::DamagedUpdate()
 
 void Player::IdleStart()
 {
+	MoveDir = float4::ZERO;;
+
 	Speed_ = 350.f;
 	
 	AnimationName_ = "Idle_";
@@ -674,6 +731,18 @@ void Player::FullStart()
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
+void Player::FullWalkStart()
+{
+	AnimationName_ = "FullWalk_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Player::FullJumpStart()
+{
+	AnimationName_ = "FullJump_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
 void Player::ExhaleStart()
 {
 	MoveDir = float4::ZERO;
@@ -694,9 +763,29 @@ void Player::ExhaustedStart()
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
+void Player::AttackStartStart()
+{
+	AnimationName_ = "AttackStart_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
 void Player::AttackStart()
 {
 	AnimationName_ = "Attack_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Player::AttackEndStart()
+{
+	AnimationName_ = "AttackEnd_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Player::DamagedStartStart()
+{
+	MoveDir = float4::ZERO;
+
+	AnimationName_ = "DamagedStart_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
