@@ -265,7 +265,23 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Walk_Left", 6, 15, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Run_Left", 16, 23, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "RunToStop_Left", 24, 24, 0.3f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Damaged_Left", 70, 78, 0.05f, true);
 
+		// Full
+		//PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Full_Left", 42, 43, 1.f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Att_Left.bmp", "Full_Left", 2, 8, 0.05f, true);			// ÀÌÆåÆ® ÀÖ´Â ver
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "FullWalk_Left", 44, 56, 0.07f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "FullJump_Left", 57, 63, 0.03f, true);
+
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Swallow_Left", 64, 69, 0.5f, true);
+
+		// Attack
+		//PlayerAnimationRender->CreateAnimation("Default_Attack_Leftt.bmp", "AttackStart_Leftt", 0, 1, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Att_Left.bmp", "AttackStart_Left", 9, 11, 0.05f, true);	// ÀÌÆåÆ® ÀÖ´Â ver
+		PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "Attack_Leftt", 1, 1, 0.05f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "AttackEnd_Leftt", 2, 3, 0.05f, true);
+
+		// Inhale
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left", 30, 37, 0.1f, false);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left_Loop", 36, 37, 0.1f, true);
 
@@ -297,7 +313,23 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Walk_Right", 6, 15, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Run_Right", 16, 23, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "RunToStop_Right", 24, 24, 0.3f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Damaged_Right", 70, 78, 0.05f, true);
 
+		// Full
+		//PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Full_Right", 42, 43, 1.f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Att_Right.bmp", "Full_Right", 2, 8, 0.05f, true);			// ÀÌÆåÆ® ÀÖ´Â ver
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "FullWalk_Right", 44, 56, 0.07f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "FullJump_Right", 57, 63, 0.03f, true);
+
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Swallow_Right", 64, 69, 0.5f, true);
+
+		// Attack
+		//PlayerAnimationRender->CreateAnimation("Default_Attack_Right.bmp", "AttackStart_Right", 0, 1, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Att_Right.bmp", "AttackStart_Right", 9, 11, 0.05f, true);	// ÀÌÆåÆ® ÀÖ´Â ver
+		PlayerAnimationRender->CreateAnimation("Default_Attack_Right.bmp", "Attack_Right", 1, 1, 0.05f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Attack_Right.bmp", "AttackEnd_Right", 2, 3, 0.05f, true);
+
+		// Inhale
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right", 30, 37, 0.1f, false);
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right_Loop", 36, 37, 0.1f, true);
 

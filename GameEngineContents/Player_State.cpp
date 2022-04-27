@@ -539,6 +539,7 @@ void Player::AttackUpdate()
 
 void Player::DamagedUpdate()
 {
+
 }
 
 
@@ -669,6 +670,8 @@ void Player::InhaleStart()
 
 void Player::FullStart()
 {
+	AnimationName_ = "Full_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Player::ExhaleStart()
@@ -681,6 +684,8 @@ void Player::ExhaleStart()
 
 void Player::SwallowStart()
 {
+	AnimationName_ = "Swallow_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Player::ExhaustedStart()
@@ -691,11 +696,14 @@ void Player::ExhaustedStart()
 
 void Player::AttackStart()
 {
-
+	AnimationName_ = "Attack_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Player::DamagedStart()
 {
+	AnimationName_ = "Damaged_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 

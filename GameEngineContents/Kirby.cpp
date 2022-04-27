@@ -32,24 +32,87 @@ void Kirby::GameInit()
 	// 리소스 가져오기
 	ResourceLoad();
 
-	GameEngineImage* KirbyLeft1 = GameEngineImageManager::GetInst()->Find("Default_Left.bmp");
-	KirbyLeft1->CutCount(10, 14);
-	GameEngineImage* KirbyRight1 = GameEngineImageManager::GetInst()->Find("Default_Right.bmp");
-	KirbyRight1->CutCount(10, 14);
-	GameEngineImage* KirbyLeft2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Left.bmp");
-	KirbyLeft2->CutCount(10, 1);
-	GameEngineImage* KirbyRight2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Right.bmp");
-	KirbyRight2->CutCount(10, 1);
-	GameEngineImage* KirbyLeft3 = GameEngineImageManager::GetInst()->Find("Default_Float_Left.bmp");
-	KirbyLeft3->CutCount(10, 2);
-	GameEngineImage* KirbyRight3 = GameEngineImageManager::GetInst()->Find("Default_Float_Right.bmp");
-	KirbyRight3->CutCount(10, 2);
-	GameEngineImage* KirbyLeft4 = GameEngineImageManager::GetInst()->Find("Default_Fall_Left.bmp");
-	KirbyLeft4->CutCount(10, 2);
-	GameEngineImage* KirbyRight4 = GameEngineImageManager::GetInst()->Find("Default_Fall_Right.bmp");
-	KirbyRight4->CutCount(10, 2);
+	// Default Kirby
+	{
+		GameEngineImage* KirbyLeft1 = GameEngineImageManager::GetInst()->Find("Default_Left.bmp");
+		KirbyLeft1->CutCount(10, 14);
+		GameEngineImage* KirbyRight1 = GameEngineImageManager::GetInst()->Find("Default_Right.bmp");
+		KirbyRight1->CutCount(10, 14);
+		GameEngineImage* KirbyLeft2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Left.bmp");
+		KirbyLeft2->CutCount(10, 1);
+		GameEngineImage* KirbyRight2 = GameEngineImageManager::GetInst()->Find("Default_Jump_Right.bmp");
+		KirbyRight2->CutCount(10, 1);
+		GameEngineImage* KirbyLeft3 = GameEngineImageManager::GetInst()->Find("Default_Float_Left.bmp");
+		KirbyLeft3->CutCount(10, 2);
+		GameEngineImage* KirbyRight3 = GameEngineImageManager::GetInst()->Find("Default_Float_Right.bmp");
+		KirbyRight3->CutCount(10, 2);
+		GameEngineImage* KirbyLeft4 = GameEngineImageManager::GetInst()->Find("Default_Fall_Left.bmp");
+		KirbyLeft4->CutCount(10, 2);
+		GameEngineImage* KirbyRight4 = GameEngineImageManager::GetInst()->Find("Default_Fall_Right.bmp");
+		KirbyRight4->CutCount(10, 2);
+		GameEngineImage* KirbyLeft5 = GameEngineImageManager::GetInst()->Find("Default_Att_Left.bmp");
+		KirbyLeft5->CutCount(10, 3);
+		GameEngineImage* KirbyRight5 = GameEngineImageManager::GetInst()->Find("Default_Att_Right.bmp");
+		KirbyRight5->CutCount(10, 3);
+		GameEngineImage* KirbyLeft6 = GameEngineImageManager::GetInst()->Find("Default_Attack_Left.bmp");
+		KirbyLeft6->CutCount(5, 1);
+		GameEngineImage* KirbyRight6 = GameEngineImageManager::GetInst()->Find("Default_Attack_Right.bmp");
+		KirbyRight6->CutCount(5, 1);
+	}
 
+	// Skilled Kirby
+	{
+		GameEngineImage* KirbyLeft1 = GameEngineImageManager::GetInst()->Find("Ice_Left.bmp");
+		KirbyLeft1->CutCount(10, 11);
+		GameEngineImage* KirbyRight1 = GameEngineImageManager::GetInst()->Find("Ice_Right.bmp");
+		KirbyRight1->CutCount(10, 11);
+		GameEngineImage* KirbyLeft2 = GameEngineImageManager::GetInst()->Find("Metal_Left.bmp");
+		KirbyLeft2->CutCount(10, 7);
+		GameEngineImage* KirbyRight2 = GameEngineImageManager::GetInst()->Find("Metal_Right.bmp");
+		KirbyRight2->CutCount(10, 7);
+		GameEngineImage* KirbyLeft3 = GameEngineImageManager::GetInst()->Find("Spark_Left.bmp");
+		KirbyLeft3->CutCount(10, 14);
+		GameEngineImage* KirbyRight3 = GameEngineImageManager::GetInst()->Find("Spark_Right.bmp");
+		KirbyRight3->CutCount(10, 14);
+		GameEngineImage* KirbyLeft4 = GameEngineImageManager::GetInst()->Find("Spark_Attack.bmp");
+		KirbyLeft4->CutCount(5, 1);
+	}
 
+	// Effect
+	{
+		GameEngineImage* Effect1 = GameEngineImageManager::GetInst()->Find("Effect.bmp");
+		Effect1->CutCount(10, 6);
+
+		// Kirby
+		{
+			GameEngineImage* EffectLeft2 = GameEngineImageManager::GetInst()->Find("Effect_Slide_Left.bmp");
+			EffectLeft2->CutCount(5, 2);
+			GameEngineImage* EffectRight2 = GameEngineImageManager::GetInst()->Find("Effect_Slide_Right.bmp");
+			EffectRight2->CutCount(5, 2);
+			GameEngineImage* EffectLeft3 = GameEngineImageManager::GetInst()->Find("Effect_Run_Left.bmp");
+			EffectLeft3->CutCount(5, 1);
+			GameEngineImage* EffectRight3 = GameEngineImageManager::GetInst()->Find("Effect_Run_Right.bmp");
+			EffectRight3->CutCount(5, 1);
+			GameEngineImage* EffectLeft4 = GameEngineImageManager::GetInst()->Find("Effect_Ice_Left.bmp");
+			EffectLeft4->CutCount(10, 2);
+			GameEngineImage* EffectRight4 = GameEngineImageManager::GetInst()->Find("Effect_Ice_Right.bmp");
+			EffectRight4->CutCount(10, 2);
+		}
+
+		// Monster
+		{
+
+		}
+
+		// Boss
+		{
+			GameEngineImage* EffectBossLeft = GameEngineImageManager::GetInst()->Find("Effect_Boss_Left.bmp");
+			EffectBossLeft->CutCount(10, 2);
+			GameEngineImage* EffectBossRight = GameEngineImageManager::GetInst()->Find("Effect_Boss_Right.bmp");
+			EffectBossRight->CutCount(10, 2);
+		}
+	
+	}
 
 	// 키 생성
 	if (false == GameEngineInput::GetInst()->IsKey("TitleLevel"))
@@ -89,11 +152,18 @@ void Kirby::GameInit()
 	}
 
 	{
-
 		GameEngineImage* PengyLeft = GameEngineImageManager::GetInst()->Find("Pengy_Left.bmp");
 		PengyLeft->CutCount(5, 2);
 		GameEngineImage* PengyRight = GameEngineImageManager::GetInst()->Find("Pengy_Right.bmp");
 		PengyRight->CutCount(5, 2);
+
+		GameEngineImage* SparkyLeft1 = GameEngineImageManager::GetInst()->Find("Sparky_Left.bmp");
+		SparkyLeft1->CutCount(5, 2);
+		GameEngineImage* SparkyRight1 = GameEngineImageManager::GetInst()->Find("Sparky_Right.bmp");
+		SparkyRight1->CutCount(5, 2);
+
+		GameEngineImage* SparkyLeft2 = GameEngineImageManager::GetInst()->Find("Sparky_Attack.bmp");
+		SparkyLeft2->CutCount(5, 1);
 
 		GameEngineImage* MetalunLeft = GameEngineImageManager::GetInst()->Find("Metalun_Left.bmp");
 		MetalunLeft->CutCount(5, 5);
@@ -232,7 +302,7 @@ void Kirby::ResourceLoad()
 		ResourcesDir.MoveParent("API");
 		ResourcesDir.Move("Resources");
 		ResourcesDir.Move("Sound");
-		//ResourcesDir.Move("Effect");
+		//ResourcesDir.Move("EffectSound");
 
 		std::vector<GameEngineFile> AllImageFileList = ResourcesDir.GetAllFile();
 
@@ -241,5 +311,23 @@ void Kirby::ResourceLoad()
 			GameEngineSound::LoadRes(AllImageFileList[i].GetFullPath());
 		}
 	}
+
+	// Effect
+	{
+		GameEngineDirectory ResourcesDir;
+		ResourcesDir.MoveParent("API");
+		ResourcesDir.Move("Resources");
+		ResourcesDir.Move("Actor");
+		ResourcesDir.Move("Effect");
+
+		std::vector<GameEngineFile> AllImageFileList = ResourcesDir.GetAllFile("bmp");
+		AllImageFileList = ResourcesDir.GetAllFile("bmp");
+
+		for (size_t i = 0; i < AllImageFileList.size(); i++)
+		{
+			GameEngineImageManager::GetInst()->Load(AllImageFileList[i].GetFullPath());
+		}
+	}
+
 
 }
