@@ -9,6 +9,7 @@
 #include "BackGround.h"
 #include "MapActor.h"
 #include "ContentsEnum.h"
+#include "Kingdedede.h"
 
 BossLevel::BossLevel()
 {
@@ -50,6 +51,11 @@ void BossLevel::Loading()
 		//BackRender->CreateRenderer()->CreateFolderAnimation("BossLevel", "BossLevel", 0, 11, 0.1f, true);
 		//AnimationRender_->CreateFolderAnimation("BossLevel", "BossLevel", 0, 11, 0.1f, true);
 	
+	}
+
+	{
+		Kingdedede* Boss = CreateActor<Kingdedede>((int)ORDER::MONSTER, "Boss");
+		Boss->SetPosition({900.f, 500.f });
 	}
 }
 

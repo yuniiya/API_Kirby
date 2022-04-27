@@ -633,29 +633,31 @@ void Player::MovePixelCheck(float _x, float _y)
 void Player::HillPixelCheck()
 {
 	// 오르막, 내리막길 
-	float4 RightDownkPos = GetPosition() + float4{ 0.f,20.f };
-	float4 LeftUpPos = GetPosition() + float4{ -20.f,0.f };
+	float4 CheckPos = float4::DOWN;
+	float4 LeftUpPos = float4::UP;
 
-	int RightDownColor = MapColImage_->GetImagePixel(RightDownkPos);
-	int LeftUpColor = MapColImage_->GetImagePixel(LeftUpPos);
+	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + CheckPos);
 
-
-	float4 XMove = { MoveDir.x, 0.0f };
-	float4 YMove = { 0.0f, MoveDir.y - 1.f };
-
-	if (RGB(0, 0, 0) != RightDownColor)
+	if (RGB(0, 0, 0) != DownColor)
 	{
-		SetMove(float4::DOWN);
+		// 땅에 닿아있는 동안은 계속 내려준다
+		while (RGB(0, 0, 0) == DownColor)
+		{
+			CheckPos += float4::DOWN;
+			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+		}
+		SetMove(CheckPos);
 	}
-	else if (RGB(0, 0, 0) != LeftUpColor)
+	else if (RGB(0, 0, 0) == LeftColor)
 	{
-		SetMove(YMove);
+		while (RGB(0, 0, 0) != LeftColor)
+		{
+			LeftUpPos += float4::UP;
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+		}
+		SetMove(LeftUpPos);
 	}
-
-	//else if (RGB(0, 0, 0) == LeftUpColor)
-	//{
-	//	StagePixelCheck(Speed_);
-	//}
 }
 
 int Player::BottomPixelColorCheck(float _y)

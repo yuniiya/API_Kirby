@@ -11,6 +11,7 @@ Pengy::Pengy()
 	CurState_ = MonsterState::Max;
 	MoveDir = float4::LEFT;
 }
+
 Pengy::~Pengy()
 {
 
