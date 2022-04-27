@@ -172,10 +172,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Boxin.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="Bullet.h">
       <SubType>
       </SubType>
@@ -320,10 +316,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="BossRoomLevel.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Boxin.cpp">
       <SubType>
       </SubType>
     </ClCompile>

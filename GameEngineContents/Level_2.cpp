@@ -95,8 +95,6 @@ void Level_2::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	Player::MainPlayer->SetPosition({ 100.f, 490.f });
 	Player::MainPlayer->MapScale(5376.f, 768.f);
-
-	BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 }
 
 void Level_2::LevelChangeEnd(GameEngineLevel* _NextLevel)
@@ -107,5 +105,4 @@ void Level_2::LevelChangeEnd(GameEngineLevel* _NextLevel)
 		PlayUI::MainUI->NextLevelOn();
 	}
 
-	BgmPlayer.Stop();
 }

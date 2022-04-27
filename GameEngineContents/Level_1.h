@@ -18,7 +18,6 @@ public:
 	Level_1& operator=(const Level_1& _Other) = delete;
 	Level_1& operator=(Level_1&& _Other) noexcept = delete;
 
-	GameEngineSoundPlayer BgmPlayer;
 	float SoundTime;
 
 protected:

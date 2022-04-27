@@ -59,9 +59,6 @@
     <ClCompile Include="Item.cpp">
       <Filter>Actor\Play\Global</Filter>
     </ClCompile>
-    <ClCompile Include="Boxin.cpp">
-      <Filter>Actor\Play\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="Metalun.cpp">
       <Filter>Actor\Play\Monster</Filter>
     </ClCompile>
@@ -170,9 +167,6 @@
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Actor\Play\Global</Filter>
-    </ClInclude>
-    <ClInclude Include="Boxin.h">
-      <Filter>Actor\Play\Monster</Filter>
     </ClInclude>
     <ClInclude Include="Metalun.h">
       <Filter>Actor\Play\Monster</Filter>

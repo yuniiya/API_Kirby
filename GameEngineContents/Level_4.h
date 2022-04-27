@@ -16,8 +16,6 @@ public:
 	Level_4& operator=(const Level_4& _Other) = delete;
 	Level_4& operator=(Level_4&& _Other) noexcept = delete;
 
-	GameEngineSoundPlayer BgmPlayer;
-
 protected:
 	void Loading() override;
 	void Update() override;

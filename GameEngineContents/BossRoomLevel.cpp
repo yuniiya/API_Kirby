@@ -63,10 +63,11 @@ void BossRoomLevel::Update()
 
 void BossRoomLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	Player::BgmPlayer.Stop();
+	Player::BgmPlayer = GameEngineSound::SoundPlayControl("BossRoom.mp3");
+
 	Player::MainPlayer->SetPosition({ 100.f, 500.f });
 	Player::MainPlayer->MapScale(1024.f, 768.f);
-
-	BgmPlayer = GameEngineSound::SoundPlayControl("BossRoom.mp3");
 }
 
 void BossRoomLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
@@ -76,6 +77,4 @@ void BossRoomLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
 		Player::MainPlayer->NextLevelOn();
 		PlayUI::MainUI->NextLevelOn();
 	}
-
-	BgmPlayer.Stop();
 }

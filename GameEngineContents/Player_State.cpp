@@ -215,23 +215,23 @@ void Player::RunToStopUpdate()
 	}
 
 	// 오르막, 내리막길 
-	float4 RightDownkPos = GetPosition() + float4{ 0.f,20.f };
-	float4 LeftUpPos = GetPosition() + float4{ -20.f,0.f };
+	//float4 RightDownkPos = GetPosition() + float4{ 0.f,20.f };
+	//float4 LeftUpPos = GetPosition() + float4{ -20.f,0.f };
 
-	int DownColor = MapColImage_->GetImagePixel(RightDownkPos);
-	int UpColor = MapColImage_->GetImagePixel(LeftUpPos);
+	//int DownColor = MapColImage_->GetImagePixel(RightDownkPos);
+	//int UpColor = MapColImage_->GetImagePixel(LeftUpPos);
 
-	float4 XMove = { MoveDir.x, 0.0f };
-	float4 YMove = { 0.0f, MoveDir.y - 1.f };
+	//float4 XMove = { MoveDir.x, 0.0f };
+	//float4 YMove = { 0.0f, MoveDir.y - 1.f };
 
-	if (RGB(0, 0, 0) != DownColor)
-	{ 
-		SetMove(float4::DOWN);
-	}
-	else if (RGB(0, 0, 0) != UpColor)
-	{
-		SetMove(YMove);
-	}
+	//if (RGB(0, 0, 0) != DownColor)
+	//{ 
+	//	SetMove(float4::DOWN);
+	//}
+	//else if (RGB(0, 0, 0) != UpColor)
+	//{
+	//	SetMove(YMove);
+	//}
 
 
 }
@@ -278,24 +278,24 @@ void Player::SlideUpdate()
 	}
 
 	// 오르막, 내리막길 
-	float4 RightDownkPos = GetPosition() + float4{ 0.f,20.f };
-	float4 LeftUpPos = GetPosition() + float4{ -20.f,0.f };
+	//float4 RightDownkPos = GetPosition() + float4{ 0.f,20.f };
+	//float4 LeftUpPos = GetPosition() + float4{ -20.f,0.f };
 
-	int RightDownColor = MapColImage_->GetImagePixel(RightDownkPos);
-	int LeftUpColor = MapColImage_->GetImagePixel(LeftUpPos);
+	//int RightDownColor = MapColImage_->GetImagePixel(RightDownkPos);
+	//int LeftUpColor = MapColImage_->GetImagePixel(LeftUpPos);
 
 
-	float4 XMove = { MoveDir.x, 0.0f };
-	float4 YMove = { 0.0f, MoveDir.y - 1.f };
+	//float4 XMove = { MoveDir.x, 0.0f };
+	//float4 YMove = { 0.0f, MoveDir.y - 1.f };
 
-	if (RGB(0, 0, 0) != RightDownColor)
-	{
-		SetMove(float4::DOWN);
-	}
-	else if (RGB(0, 0, 0) != LeftUpColor)
-	{
-		SetMove(YMove);
-	}
+	//if (RGB(0, 0, 0) != RightDownColor)
+	//{
+	//	SetMove(float4::DOWN);
+	//}
+	//else if (RGB(0, 0, 0) != LeftUpColor)
+	//{
+	//	SetMove(YMove);
+	//}
 }
 
 void Player::JumpUpdate()

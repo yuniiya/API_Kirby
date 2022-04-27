@@ -43,6 +43,7 @@ class Player : public GameEngineActor
 {
 public:
 	static Player* MainPlayer;
+	static GameEngineSoundPlayer BgmPlayer;
 
 	// constrcuter destructer
 	Player();

@@ -51,15 +51,15 @@ void EndingLevel::Update()
 
 void EndingLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	GameEngineSound::SoundPlayOneShot("Ending.mp3");
+
 	Player::MainPlayer->SetPosition({ 100.f, 500.f });
 	Player::MainPlayer->MapScale(1024.f, 768.f);
-
-
-	GameEngineSound::SoundPlayOneShot("Ending.mp3");
 }
 
 void EndingLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
 {
+
 	if (_NextLevel->GetNameCopy() != "TitleLevel")
 	{
 		Player::MainPlayer->NextLevelOn();

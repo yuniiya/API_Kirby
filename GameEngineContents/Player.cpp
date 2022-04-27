@@ -15,6 +15,7 @@
 #include "ContentsEnum.h"
 
 Player* Player::MainPlayer = nullptr;
+GameEngineSoundPlayer Player::BgmPlayer;
 
 Player::Player()
 	: Speed_(350.0f)
