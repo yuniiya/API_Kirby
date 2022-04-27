@@ -107,6 +107,9 @@
     <ClCompile Include="Pengy.cpp">
       <Filter>Actor\Play\Monster\Skilled</Filter>
     </ClCompile>
+    <ClCompile Include="Sparky.cpp">
+      <Filter>Actor\Play\Monster\Skilled</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Kirby.h" />
@@ -211,6 +214,9 @@
       <Filter>Actor\Play\Monster\Skilled</Filter>
     </ClInclude>
     <ClInclude Include="Pengy.h">
+      <Filter>Actor\Play\Monster\Skilled</Filter>
+    </ClInclude>
+    <ClInclude Include="Sparky.h">
       <Filter>Actor\Play\Monster\Skilled</Filter>
     </ClInclude>
   </ItemGroup>

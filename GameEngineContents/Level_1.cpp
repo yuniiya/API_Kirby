@@ -16,6 +16,7 @@
 #include "WaddleDee.h"
 #include "BigWaddleDee.h"
 #include "Scarfy.h"
+#include "Metalun.h"
 
 Level_1::Level_1()
 {
@@ -96,6 +97,11 @@ void Level_1::Loading()
 		scarfy->SetPosition({1300.f, 300.f});
 	}
 	
+
+	{
+		Metalun* metalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
+		metalun->SetPosition({ 4200.f, 300.f });
+	}
 
 
 }

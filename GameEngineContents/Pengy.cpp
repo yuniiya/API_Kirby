@@ -78,12 +78,14 @@ void Pengy::Start()
 	// Pengy - Left
 	AnimationRender->CreateAnimation("Pengy_Left.bmp", "Idle_Left", 0, 0, 0.1f, false);
 	AnimationRender->CreateAnimation("Pengy_Left.bmp", "Walk_Left", 1, 2, 0.1f, true);
+	//AnimationRender->CreateAnimation("Pengy_Left.bmp", "Swallowed_Left", 7, 7, 0.1f, false);
 	AnimationRender->CreateAnimation("Pengy_Left.bmp", "Attack_Left", 3, 5, 0.1f, true);
 	AnimationRender->CreateAnimation("Pengy_Left.bmp", "Damaged_Left", 7, 7, 0.1f, false);
 
 	// Pengy _ Right
 	AnimationRender->CreateAnimation("Pengy_Right.bmp", "Idle_Right", 0, 0, 0.1f, false);
 	AnimationRender->CreateAnimation("Pengy_Right.bmp", "Walk_Right", 1, 2, 0.1f, true);
+	//AnimationRender->CreateAnimation("Pengy_Right.bmp", "Swallowed_Left", 7, 7, 0.1f, false);
 	AnimationRender->CreateAnimation("Pengy_Right.bmp", "Attack_Right", 3, 5, 0.1f, true);
 	AnimationRender->CreateAnimation("Pengy_Right.bmp", "Damaged_Right", 7, 7, 0.1f, false);
 
@@ -149,7 +151,7 @@ void Pengy::WalkStart()
 
 void Pengy::SwallowedStart()
 {
-	AnimationName_ = "Swallowed_";
+	AnimationName_ = "Damaged_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 

@@ -94,6 +94,7 @@ void Kirby::GameInit()
 		PengyLeft->CutCount(5, 2);
 		GameEngineImage* PengyRight = GameEngineImageManager::GetInst()->Find("Pengy_Right.bmp");
 		PengyRight->CutCount(5, 2);
+
 		GameEngineImage* MetalunLeft = GameEngineImageManager::GetInst()->Find("Metalun_Left.bmp");
 		MetalunLeft->CutCount(5, 5);
 		GameEngineImage* MetalunRight = GameEngineImageManager::GetInst()->Find("Metalun_Right.bmp");
