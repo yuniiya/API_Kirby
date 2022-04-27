@@ -98,6 +98,7 @@ void WaddleDee::Update()
 	//DirAnimationCheck();
 	MonsterStateUpdate();
 
+	//MonsterColCheck();
 	// 항상 땅에 붙어있도록 체크
 	GroundPixelCheck();
 }
@@ -199,7 +200,7 @@ void WaddleDee::MonsterColCheck()
 		for (size_t i = 0; i < ColList.size(); i++)
 		{
 			// (엑터 제외한) 콜리전만 파괴 
-			ColList[i]->Death();
+			ColList[i]->GetActor()->Death();
 		}
 	}
 }

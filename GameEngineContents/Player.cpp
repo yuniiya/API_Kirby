@@ -371,6 +371,7 @@ void Player::Update()
 
 	DirAnimationCheck();
 	PlayerStateUpdate();
+	MonsterColCheck();
 
 	DebugModeSwitch();
 
@@ -452,7 +453,7 @@ void Player::MonsterColCheck()
 	{
 		for (size_t i = 0; i < ColList.size(); i++)
 		{
-			ColList[i]->Death();
+			ColList[i]->GetActor()->Death();
 		}
 
 		ChangeState(PlayerState::Damaged);
