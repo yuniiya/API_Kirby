@@ -6,6 +6,16 @@
 class GameEngineImage;
 class GameEngineCollision;
 
+enum class KirbyState
+{
+	Default,
+	Metal,
+	Ice,
+	Spark,
+
+	Max,
+};
+
 enum class PlayerState
 {
 	Idle,
@@ -119,6 +129,7 @@ private:
 
 	//void DoorCheck();
 	void WallCheck();
+	void MonsterColCheck();
 
 	void MovePixelCheck(float _x, float _y);
 	void HillPixelCheck();

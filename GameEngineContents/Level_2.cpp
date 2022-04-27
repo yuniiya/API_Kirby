@@ -12,6 +12,7 @@
 #include "WaddleDee.h"
 #include "BigWaddleDee.h"
 #include "Scarfy.h"
+#include "Pengy.h"
 
 Level_2::Level_2()
 {
@@ -70,6 +71,9 @@ void Level_2::Loading()
 	{
 		Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
 		scarfy->SetPosition({ 500.f, 400.f });
+
+		Pengy* pengy = CreateActor<Pengy>((int)ORDER::MONSTER, "Pengy");
+		pengy->SetPosition({ 700.f, 300.f });
 	}
 }
 

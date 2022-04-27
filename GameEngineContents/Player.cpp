@@ -444,6 +444,22 @@ void Player::WallCheck()
 	}
 }
 
+void Player::MonsterColCheck()
+{
+	std::vector<GameEngineCollision*> ColList;
+
+	if (true == PlayerCollision->CollisionResult("WaddleHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
+	{
+		for (size_t i = 0; i < ColList.size(); i++)
+		{
+			ColList[i]->Death();
+		}
+
+		ChangeState(PlayerState::Damaged);
+		return;
+	}
+}
+
 
 
 

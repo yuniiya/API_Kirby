@@ -189,3 +189,17 @@ void WaddleDee::WallPixelCheck(float _x, float _Speed)
 
 	SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
 }
+
+void WaddleDee::MonsterColCheck()
+{
+	std::vector<GameEngineCollision*> ColList;
+
+	if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
+	{
+		for (size_t i = 0; i < ColList.size(); i++)
+		{
+			// (엑터 제외한) 콜리전만 파괴 
+			ColList[i]->Death();
+		}
+	}
+}

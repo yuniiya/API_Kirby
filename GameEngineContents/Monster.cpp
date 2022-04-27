@@ -151,11 +151,7 @@ void Monster::Start()
 
 	// Skilled Left
 	{
-		// Pengy
-		MonsterAnimationRenderer->CreateAnimation("Pengy_Left.bmp", "Pengy_Idle_Left", 0, 0, 0.1f, false);
-		MonsterAnimationRenderer->CreateAnimation("Pengy_Left.bmp", "Pengy_Walk_Left", 1, 2, 0.1f, true);
-		MonsterAnimationRenderer->CreateAnimation("Pengy_Left.bmp", "Pengy_Attack_Left", 3, 5, 0.1f, true);
-		MonsterAnimationRenderer->CreateAnimation("Pengy_Left.bmp", "Pengy_Damaged_Left", 7, 7, 0.1f, false);
+	
 		
 		// Metalun
 
@@ -180,11 +176,7 @@ void Monster::Start()
 
 	// Skilled Right
 	{
-		// Pengy
-		MonsterAnimationRenderer->CreateAnimation("Pengy_Right.bmp", "Pengy_Idle_Right", 0, 0, 0.1f, false);
-		MonsterAnimationRenderer->CreateAnimation("Pengy_Right.bmp", "Pengy_Walk_Right", 1, 2, 0.1f, true);
-		MonsterAnimationRenderer->CreateAnimation("Pengy_Right.bmp", "Pengy_Attack_Right", 3, 5, 0.1f, true);
-		MonsterAnimationRenderer->CreateAnimation("Pengy_Right.bmp", "Pengy_Damaged_Right", 7, 7, 0.1f, false);
+
 
 		// Metalun
 

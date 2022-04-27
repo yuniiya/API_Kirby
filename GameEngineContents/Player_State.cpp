@@ -214,6 +214,9 @@ void Player::RunToStopUpdate()
 		return;
 	}
 
+
+
+
 	// 오르막, 내리막길 
 	//float4 RightDownkPos = GetPosition() + float4{ 0.f,20.f };
 	//float4 LeftUpPos = GetPosition() + float4{ -20.f,0.f };

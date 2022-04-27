@@ -78,14 +78,17 @@ void Kirby::GameInit()
 		BigWaddleLeft->CutCount(5, 2);
 		GameEngineImage* BigWaddleRight = GameEngineImageManager::GetInst()->Find("BigWaddleDee_Right.bmp");
 		BigWaddleRight->CutCount(5, 2);
-		GameEngineImage* SnooterLeft = GameEngineImageManager::GetInst()->Find("Snooter_Left.bmp");
-		SnooterLeft->CutCount(5, 4);
-		GameEngineImage* SnooterRight = GameEngineImageManager::GetInst()->Find("Snooter_Right.bmp");
-		SnooterRight->CutCount(5, 4);
+		//GameEngineImage* SnooterLeft = GameEngineImageManager::GetInst()->Find("Snooter_Left.bmp");
+		//SnooterLeft->CutCount(5, 4);
+		//GameEngineImage* SnooterRight = GameEngineImageManager::GetInst()->Find("Snooter_Right.bmp");
+		//SnooterRight->CutCount(5, 4);
 		GameEngineImage* ScarfyLeft = GameEngineImageManager::GetInst()->Find("Scarfy_Left.bmp");
 		ScarfyLeft->CutCount(5, 1);
 		GameEngineImage* ScarfyRight = GameEngineImageManager::GetInst()->Find("Scarfy_Right.bmp");
 		ScarfyRight->CutCount(5, 1);
+	}
+
+	{
 
 		GameEngineImage* PengyLeft = GameEngineImageManager::GetInst()->Find("Pengy_Left.bmp");
 		PengyLeft->CutCount(5, 2);
@@ -95,10 +98,6 @@ void Kirby::GameInit()
 		MetalunLeft->CutCount(5, 5);
 		GameEngineImage* MetalunRight = GameEngineImageManager::GetInst()->Find("Metalun_Right.bmp");
 		MetalunRight->CutCount(5, 5);
-		GameEngineImage* BoxinLeft = GameEngineImageManager::GetInst()->Find("Boxin_Left.bmp");
-		BoxinLeft->CutCount(5, 4);
-		GameEngineImage* BoxinRight = GameEngineImageManager::GetInst()->Find("Boxin_Right.bmp");
-		BoxinRight->CutCount(5, 4);
 
 		GameEngineImage* BossLeft = GameEngineImageManager::GetInst()->Find("Boss_Left.bmp");
 		BossLeft->CutCount(5, 7);

@@ -28,6 +28,7 @@ private:
 
 protected:
 	void WallPixelCheck(float _x, float _Speed);
+	void MonsterColCheck();
 
 protected:
 	void Start() override;
