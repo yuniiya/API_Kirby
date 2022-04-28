@@ -1,5 +1,9 @@
 #include "BossLevel.h"
 #include "Player.h"
+#include "MetalKirby.h"
+#include "IceKirby.h"
+#include "SparkKirby.h"
+
 #include "PlayUI.h"
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngine/GameEngine.h>

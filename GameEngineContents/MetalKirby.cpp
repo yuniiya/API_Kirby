@@ -24,7 +24,7 @@ MetalKirby::MetalKirby()
 	: PlayerAnimationRender(nullptr)
 	, CurSkill_(KirbySkill::Metal)
 	, Speed_(200.f)
-	, JumpPower_(700.f)
+	, JumpPower_(500.f)
 	, Gravity_(1800.f)
 	, StopTime_(1.f)
 	, DownTime_(0.5f)
@@ -73,7 +73,7 @@ void MetalKirby::Start()
 		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Idle_Left", 0, 1, 1.f, true);
 		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Down_Left", 2, 3, 1.f, true);
 		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Slide_Left", 18, 18, 0.3f, false);
-		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Walk_Left", 4, 16, 0.07f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Walk_Left", 4, 13, 0.09f, true);
 
 		// Jump
 		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Jump_Left", 23, 31, 0.03f, true);
@@ -97,7 +97,7 @@ void MetalKirby::Start()
 		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Transform_Left", 53, 53, 0.01f, false);
 
 		// Attack
-		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Attack_Left", 54, 60, 0.1f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Attack_Left", 56, 60, 0.1f, true);
 	}
 
 
@@ -106,7 +106,7 @@ void MetalKirby::Start()
 		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Idle_Right", 0, 1, 1.f, true);
 		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Down_Right", 2, 3, 1.f, true);
 		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Slide_Right", 18, 18, 0.3f, false);
-		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Walk_Right", 4, 16, 0.07f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Walk_Right", 4, 13, 0.09f, true);
 
 		// Jump
 		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Jump_Right", 23, 31, 0.03f, true);
@@ -130,7 +130,7 @@ void MetalKirby::Start()
 		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Transform_Right", 53, 53, 0.01f, false);
 
 		// Attack
-		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Attack_Right", 54, 60, 0.1f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Attack_Right", 56, 60, 0.1f, true);
 	}
 
 	AnimationName_ = "Idle_";
@@ -144,14 +144,13 @@ void MetalKirby::Update()
 {
 	ColMapUpdate();
 
-	//DoorPixelCheck();
+	DoorPixelCheck();
 
 	DirAnimationCheck();
 	PlayerStateUpdate();
 	MonsterColCheck();
 
 	DebugModeSwitch();
-	//DebugKirbySkillChange(CurSkill_);
 	DebugKirbySkillChange();
 
 	// 카메라 위치 고정
@@ -344,6 +343,12 @@ void MetalKirby::IdleUpdate()
 		return;
 	}
 
+	if (true == GameEngineInput::GetInst()->IsDown("Inhale"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
 	HillPixelCheck();
 }
 
@@ -470,10 +475,10 @@ void MetalKirby::JumpUpdate()
 	{
 		PlayerAnimationRender->PauseOff();
 
-		if (31 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
-		{
-			PlayerAnimationRender->PauseOn();
-		}
+		//if (31 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+		//{
+		//	PlayerAnimationRender->PauseOn();
+		//}
 	}
 
 	// 양옆 + 위 체크 
@@ -668,10 +673,60 @@ void MetalKirby::ExhaleUpdate()
 
 void MetalKirby::AttackUpdate()
 {
+	PlayerAnimationRender->PauseOn();
+
+	if (true == GameEngineInput::GetInst()->IsDown("Inhale"))
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		PlayerAnimationRender->PauseOff();
+
+		MoveDir.x = -0.5f;
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		PlayerAnimationRender->PauseOff();
+
+		MoveDir.x = 0.5f;
+	}
+	else if (false == IsMoveKey())
+	{
+		MoveDir.x = 0.0f;
+	}
+
+	SetMove(MoveDir);
+
+	MovePixelCheck(20.0f, 20.0f);
+
+	///////////////////////////////////////// 문제: 내리막길에서 속도 빨라지게 하고싶다 
+	// 오르막, 내리막길 
+	float4 CheckPos = { MoveDir.x, 1.f };
+	//float4 LeftUpPos = float4::UP;
+
+	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+	//int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + CheckPos);
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		// 땅에 닿아있는 동안은 계속 내려준다
+		while (RGB(0, 0, 0) == DownColor)
+		{
+			CheckPos.y += 1.f;
+			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+		}
+
+		MoveDir.x += 50.f * GameEngineTime::GetDeltaTime();
+		SetMove(CheckPos);
+	}
 }
 
 void MetalKirby::IdleStart()
 {
+	PlayerAnimationRender->PauseOff();
 	MoveDir = float4::ZERO;;
 
 	AnimationName_ = "Idle_";

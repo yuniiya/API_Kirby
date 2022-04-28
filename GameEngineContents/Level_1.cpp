@@ -9,6 +9,8 @@
 #include "Stage.h"
 #include "Player.h"
 #include "MetalKirby.h"
+#include "IceKirby.h"
+#include "SparkKirby.h"
 
 #include "ContentsEnum.h"
 #include "PlayUI.h"
@@ -35,6 +37,8 @@ void Level_1::Loading()
 	{
 		Player::MainPlayer = CreateActor<Player>((int)ORDER::PLAYER, "Player");
 		MetalKirby::MetalPlayer = CreateActor<MetalKirby>((int)ORDER::PLAYER, "MetalKirby");
+		//IceKirby::IcePlayer = CreateActor<IceKirby>((int)ORDER::PLAYER, "IceKirby");
+		SparkKirby::SparkPlayer = CreateActor<SparkKirby>((int)ORDER::PLAYER, "SparkKirby");
 
 		// UI 
 		PlayUI::MainUI = CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
@@ -132,14 +136,25 @@ void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	//Player::BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 
-	Player::MainPlayer->SetPosition({ 100.f, 520.f });
-	//Player::MainPlayer->SetPosition({ 1800.f, 420.f });
-	//Player::MainPlayer->SetPosition({ 5300.f, 450.f });
-	//Player::MainPlayer->SetPosition({ 2600.f, 200.f });
-	MetalKirby::MetalPlayer->SetPosition({ 100.f, 520.f });
+	{
+		Player::MainPlayer->SetPosition({ 100.f, 520.f });
+		//Player::MainPlayer->SetPosition({ 1800.f, 420.f });
+		//Player::MainPlayer->SetPosition({ 5300.f, 450.f });
+		//Player::MainPlayer->SetPosition({ 2600.f, 200.f });
 
-	Player::MainPlayer->MapScale(5753.f, 760.f);
-	MetalKirby::MetalPlayer->MapScale(5753.f, 760.f);
+		MetalKirby::MetalPlayer->SetPosition({ 100.f, 520.f });
+		//MetalKirby::MetalPlayer->SetPosition({ 2600.f, 200.f });
+
+		SparkKirby::SparkPlayer->SetPosition({ 100.f, 520.f });
+	}
+
+
+	{
+		Player::MainPlayer->MapScale(5753.f, 760.f);
+		MetalKirby::MetalPlayer->MapScale(5753.f, 760.f);
+		SparkKirby::SparkPlayer->MapScale(5753.f, 760.f);
+	}
+	
 }
 
 void Level_1::LevelChangeEnd(GameEngineLevel* _NextLevel)

@@ -314,7 +314,7 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Swallow_Left", 64, 69, 0.5f, true);
 
 		// Attack
-		//PlayerAnimationRender->CreateAnimation("Default_Attack_Leftt.bmp", "AttackStart_Leftt", 0, 1, 0.05f, true);
+		//PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "AttackStart_Left", 0, 1, 0.05f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Att_Left.bmp", "AttackStart_Left", 9, 11, 0.05f, true);	// ÀÌÆåÆ® ÀÖ´Â ver
 		PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "Attack_Left", 1, 1, 0.05f, false);
 		PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "AttackEnd_Left", 2, 3, 0.05f, true);

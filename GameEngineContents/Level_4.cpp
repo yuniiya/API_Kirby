@@ -6,6 +6,10 @@
 #include "BackGround.h"
 #include "Stage.h"
 #include "Player.h"
+#include "MetalKirby.h"
+#include "IceKirby.h"
+#include "SparkKirby.h"
+
 #include "ContentsEnum.h"
 #include "PlayUI.h"
 
