@@ -80,7 +80,8 @@ public:
 
 	void DebugModeSwitch();
 
-	void DebugKirbySkillChange(KirbySkill _Skill);
+	//void DebugKirbySkillChange(KirbySkill _Skill);
+	void DebugKirbySkillChange();
 
 protected:
 	KirbySkill CurSkill_;
@@ -101,7 +102,7 @@ protected:
 	void CameraFix();
 
 
-private:
+protected:
 	float Speed_;
 	float AccSpeed_;
 
@@ -133,7 +134,7 @@ private:
 
 	std::string CurrentLevel;
 
-private:
+protected:
 	// Ãæµ¹
 	GameEngineCollision* PlayerCollision;
 
@@ -160,7 +161,7 @@ private:
 	void Render() override;
 
 
-private:
+protected:
 	float4 MoveDir;
 	PlayerState CurState_;
 	PlayerState PrevState_;
@@ -178,7 +179,7 @@ protected:
 	void PlayerStateUpdate();
 	void DirAnimationCheck();
 
-private:
+protected:
 	virtual void IdleStart();
 	virtual void WalkStart();
 	virtual void RunStart();

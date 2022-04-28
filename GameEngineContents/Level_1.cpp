@@ -8,6 +8,8 @@
 #include "BackGround.h"
 #include "Stage.h"
 #include "Player.h"
+#include "MetalKirby.h"
+
 #include "ContentsEnum.h"
 #include "PlayUI.h"
 #include "Grass.h"
@@ -32,6 +34,7 @@ void Level_1::Loading()
 	if (nullptr == Player::MainPlayer)
 	{
 		Player::MainPlayer = CreateActor<Player>((int)ORDER::PLAYER, "Player");
+		MetalKirby::MetalPlayer = CreateActor<MetalKirby>((int)ORDER::PLAYER, "MetalKirby");
 
 		// UI 
 		PlayUI::MainUI = CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
@@ -80,14 +83,14 @@ void Level_1::Loading()
 
 	// ∏ÛΩ∫≈Õ
 	{
-		WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
-		Waddle->SetPosition({ 700.f, 400.f }); 
+	/*	WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 700.f, 400.f }); */
 
 	/*	WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
 		Waddle->SetPosition({ 1500.f, 400.f });*/
 
-		Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
-		Waddle->SetPosition({ 5200.f, 400.f });
+		//Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		//Waddle->SetPosition({ 5200.f, 400.f });
 
 		BigWaddleDee* BigWaddle = CreateActor<BigWaddleDee>((int)ORDER::MONSTER, "BigWaddleDee");
 		BigWaddle->SetPosition({ 2700.f, 400.f });
@@ -133,8 +136,10 @@ void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	//Player::MainPlayer->SetPosition({ 1800.f, 420.f });
 	//Player::MainPlayer->SetPosition({ 5300.f, 450.f });
 	//Player::MainPlayer->SetPosition({ 2600.f, 200.f });
+	MetalKirby::MetalPlayer->SetPosition({ 100.f, 520.f });
 
 	Player::MainPlayer->MapScale(5753.f, 760.f);
+	MetalKirby::MetalPlayer->MapScale(5753.f, 760.f);
 }
 
 void Level_1::LevelChangeEnd(GameEngineLevel* _NextLevel)

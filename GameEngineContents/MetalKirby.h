@@ -1,37 +1,6 @@
 #pragma once
 #include "Player.h"
 
-enum class PlayerState
-{
-	Idle,
-	Walk,
-	Run,
-	RunToStop,
-	Down,
-	Slide,
-	Jump,
-	Float,
-	Fall,
-	Inhale,
-	Exhale,
-	Full,
-	FullWalk,
-	FullJump,
-	Swallow,
-	Exhausted,
-	Attack,
-
-	Max,
-};
-
-enum class PlayerDir
-{
-	Left,
-	Right,
-	Down,
-	Max,
-};
-
 class GameEngineImage;
 class GameEngineCollision;
 
@@ -50,7 +19,7 @@ public:
 	MetalKirby& operator=(const MetalKirby& _Other) = delete;
 	MetalKirby& operator=(MetalKirby&& _Other) noexcept = delete;
 
-	void MapScale(float _x, float _y);
+	//void MapScale(float _x, float _y);
 
 	std::string GetCurrentLevelName()
 	{
@@ -58,27 +27,27 @@ public:
 		return CurrentLevel;
 	}
 
-	void DebugModeSwitch();
+	//void DebugModeSwitch();
 
-//	void DebugKirbySkillChange(KirbySkill _Skill);
-//
-//protected:
-//	KirbySkill CurSkill_;
-//
-//	void DefaultKirbyUpdate();
-//	void MetalKirbyUpdate();
-//	void IceKirbyUpdate();
-//	void SparkKirbyUpdate();
+	//void DebugKirbySkillChange(KirbySkill _Skill);
+
+protected:
+	KirbySkill CurSkill_;
+
+	//void DefaultKirbyUpdate();
+	//void MetalKirbyUpdate();
+	//void IceKirbyUpdate();
+	//void SparkKirbyUpdate();
 
 protected:
 	GameEngineRenderer* PlayerAnimationRender;
-	PlayerDir CurDir_;
-	PlayerDir InputDir_;
-	std::string AnimationName_;
-	std::string ChangeDirText_;
+	//PlayerDir CurDir_;
+	//PlayerDir InputDir_;
+	//std::string AnimationName_;
+	//std::string ChangeDirText_;
 
 
-	void CameraFix();
+	//void CameraFix();
 
 
 private:
@@ -104,32 +73,32 @@ private:
 	bool LongJump_;
 
 	// 스테이지 관련
-	float MapScaleX_;
-	float MapScaleY_;
+	//float MapScaleX_;
+	//float MapScaleY_;
 
-	GameEngineImage* MapColImage_;
+	//GameEngineImage* MapColImage_;
 
-	void ColMapUpdate();
+	//void ColMapUpdate();
 
-	std::string CurrentLevel;
+	//std::string CurrentLevel;
 
 private:
 	// 충돌
-	GameEngineCollision* PlayerCollision;
+	//GameEngineCollision* PlayerCollision;
 
-	void StagePixelCheck(float _Speed);
-	void DoorPixelCheck();
-	void DoorCheck(std::string ChangeLevelName_);
+	//void StagePixelCheck(float _Speed);
+	//void DoorPixelCheck();
+	//void DoorCheck(std::string ChangeLevelName_);
 
 	//void DoorCheck();
-	void WallCheck();
-	void MonsterColCheck();
-	void SwallowColCheck();
-	void AttackColCheck();
+	//void WallCheck();
+	//void MonsterColCheck();
+	//void SwallowColCheck();
+	//void AttackColCheck();
 
-	void MovePixelCheck(float _x, float _y);
-	void HillPixelCheck();
-	int BottomPixelColorCheck(float _y);
+	//void MovePixelCheck(float _x, float _y);
+	//void HillPixelCheck();
+	//int BottomPixelColorCheck(float _y);
 
 
 private:
@@ -145,18 +114,18 @@ private:
 	PlayerState CurState_;
 	PlayerState PrevState_;
 
-	bool IsMoveKey();
-	bool IsMoveKeyDown();
-	bool IsJumpKey();
+	//bool IsMoveKey();
+	//bool IsMoveKeyDown();
+	//bool IsJumpKey();
 
-	void Move();
-	void GravityOn();
+	//void Move();
+	//void GravityOn();
 
 
 protected:
 	void ChangeState(PlayerState _State);
 	void PlayerStateUpdate();
-	void DirAnimationCheck();
+	//void DirAnimationCheck();
 
 private:
 	void IdleStart() override;
@@ -182,25 +151,25 @@ private:
 
 
 	///////////////////////
-	//void IdleUpdate();
-	//void WalkUpdate();
-	//void RunUpdate();
-	//void RunToStopUpdate();
-	//void DownUpdate();
-	//void SlideUpdate();
+	void IdleUpdate() override;
+	void WalkUpdate() override;
+	void RunUpdate() override;
+	void RunToStopUpdate() override;
+	void DownUpdate() override;
+	void SlideUpdate() override;
 
 	void JumpUpdate() override;
 	void FallUpdate() override;
-	//void FloatUpdate();
+	void FloatUpdate() override;
 
-	//void InhaleUpdate();
-	//void FullUpdate();
-	//void FullWalkUpdate();
-	//void FullJumpUpdate();
+	void InhaleUpdate() override;
+	void FullUpdate() override;
+	void FullWalkUpdate() override;
+	void FullJumpUpdate() override;
 
-	//void ExhaleUpdate();
-	//void SwallowUpdate();
-	//void ExhaustedUpdate();
+	void ExhaleUpdate() override;
+	void SwallowUpdate() override;
+	void ExhaustedUpdate() override;
 
 	void AttackUpdate() override;
 

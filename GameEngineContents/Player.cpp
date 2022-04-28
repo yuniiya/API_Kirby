@@ -1,7 +1,7 @@
 #include "Player.h"
-//#include "MetalKirby.h"
-//#include "IceKirby.h"
-//#include "SparkKirby.h"
+#include "MetalKirby.h"
+#include "IceKirby.h"
+#include "SparkKirby.h"
 
 #include <GameEngine/GameEngine.h>
 #include <GameEngineBase/GameEngineWindow.h>
@@ -457,7 +457,7 @@ void Player::Update()
 
 	//WallCheck();
 
-
+	DebugKirbySkillChange();
 }
 
 void Player::Render()
@@ -785,114 +785,126 @@ void Player::DebugModeSwitch()
 	}
 }
 
-//void Player::DefaultKirbyUpdate()
-//{
-//	if (true == GameEngineInput::GetInst()->IsDown("Metal"))
-//	{
-//		MainPlayer->Off();
-//
-//		MetalKirby::MetalPlayer->SetPosition(GetPosition());
-//		MetalKirby::MetalPlayer->On();
-//	}
-//	else if (true == GameEngineInput::GetInst()->IsDown("Ice"))
-//	{
-//		MainPlayer->Off();
-//
-//		IceKirby::IcePlayer->On();
-//		IceKirby::IcePlayer->SetPosition(GetPosition());
-//	}
-//	else if (true == GameEngineInput::GetInst()->IsDown("Spark"))
-//	{
-//		MainPlayer->Off();
-//
-//		SparkKirby::SparkPlayer->On();
-//		SparkKirby::SparkPlayer->SetPosition(GetPosition());
-//	}
-//}
+void Player::DebugKirbySkillChange()
+{
+	if (true == GameEngineInput::GetInst()->IsDown("Default"))
+	{
+		DefaultKirbyUpdate();
+	}
+	else if (true == GameEngineInput::GetInst()->IsDown("Metal"))
+	{
+		MetalKirbyUpdate();
+	}
+	else if (true == GameEngineInput::GetInst()->IsDown("Ice"))
+	{
+		IceKirbyUpdate();
+	}
+	else if (true == GameEngineInput::GetInst()->IsDown("Spark"))
+	{
+		SparkKirbyUpdate();
+	}
+}
 
-//void Player::MetalKirbyUpdate()
-//{
-//	if (true == GameEngineInput::GetInst()->IsPress("Metal"))
-//	{
-//		if (nullptr != Player::MainPlayer)
-//		{
-//			Player::MainPlayer->Off();
-//		}
-//		else if (nullptr != IceKirby::IcePlayer)
-//		{
-//			IceKirby::IcePlayer->Off();
-//		}
-//		else if (nullptr != SparkKirby::SparkPlayer)
-//		{
-//			SparkKirby::SparkPlayer->Off();
-//		}
-//
-//		MetalKirby::MetalPlayer->On();
-//		MetalKirby::MetalPlayer->SetPosition(GetPosition());
-//	}
-//}
+void Player::DefaultKirbyUpdate()
+{
+	if (CurSkill_ == KirbySkill::Default)
+	{
+		return;
+	}
 
-//void Player::IceKirbyUpdate()
-//{
-//	if (true == GameEngineInput::GetInst()->IsDown("Ice"))
-//	{
-//		if (nullptr != Player::MainPlayer)
-//		{
-//			Player::MainPlayer->Off();
-//		}
-//		else if (nullptr != MetalKirby::MetalPlayer)
-//		{
-//			MetalKirby::MetalPlayer->Off();
-//		}
-//		else if (nullptr != SparkKirby::SparkPlayer)
-//		{
-//			SparkKirby::SparkPlayer->Off();
-//		}
-//
-//		IceKirby::IcePlayer->On();
-//		IceKirby::IcePlayer->SetPosition(GetPosition());
-//	}
-//}
-//
-//void Player::SparkKirbyUpdate()
-//{
-//	if (true == GameEngineInput::GetInst()->IsDown("Spark"))
-//	{
-//		if (nullptr != Player::MainPlayer)
-//		{
-//			Player::MainPlayer->Off();
-//		}
-//		else if (nullptr != IceKirby::IcePlayer)
-//		{
-//			IceKirby::IcePlayer->Off();
-//		}
-//		else if (nullptr != MetalKirby::MetalPlayer)
-//		{
-//			MetalKirby::MetalPlayer->Off();
-//		}
-//
-//		SparkKirby::SparkPlayer->On();
-//		SparkKirby::SparkPlayer->SetPosition(GetPosition());
-//	}
-//}
+	if (CurSkill_ == KirbySkill::Metal)
+	{
+		MetalKirby::MetalPlayer->Off();
+	}
+	else if (CurSkill_ == KirbySkill::Ice)
+	{
+		IceKirby::IcePlayer->Off();
+	}
+	else if (CurSkill_ == KirbySkill::Spark)
+	{
+		SparkKirby::SparkPlayer->Off();
+	}
 
-//void Player::DebugKirbySkillChange(KirbySkill _Skill)
-//{
-//	switch (_Skill)
-//	{
-//	case KirbySkill::Default:
-//		DefaultKirbyUpdate();
-//		break;
-//	case KirbySkill::Metal:
-//		MetalKirbyUpdate();
-//		break;
-//	case KirbySkill::Ice:
-//		IceKirbyUpdate();
-//		break;
-//	case KirbySkill::Spark:
-//		break;
-//	}
-//}
+	MainPlayer->SetPosition(GetPosition());
+	CurSkill_ = KirbySkill::Default;
+	MainPlayer->On();
+}
+
+void Player::MetalKirbyUpdate()
+{
+	if (CurSkill_ == KirbySkill::Metal)
+	{
+		return;
+	}
+
+	if (CurSkill_ == KirbySkill::Default)
+	{
+		MainPlayer->Off();
+	}
+	else if (CurSkill_ == KirbySkill::Ice)
+	{
+		IceKirby::IcePlayer->Off();
+	}
+	else if (CurSkill_ == KirbySkill::Spark)
+	{
+		SparkKirby::SparkPlayer->Off();
+	}
+
+	MetalKirby::MetalPlayer->SetPosition(GetPosition());
+	CurSkill_ = KirbySkill::Metal;
+	MetalKirby::MetalPlayer->On();
+}
+
+void Player::IceKirbyUpdate()
+{
+	if (CurSkill_ == KirbySkill::Ice)
+	{
+		return;
+	}
+
+	if (CurSkill_ == KirbySkill::Default)
+	{
+		MainPlayer->Off();
+	}
+	else if (CurSkill_ == KirbySkill::Metal)
+	{
+		MetalKirby::MetalPlayer->Off();
+	}
+	else if (CurSkill_ == KirbySkill::Spark)
+	{
+		SparkKirby::SparkPlayer->Off();
+	}
+
+	IceKirby::IcePlayer->SetPosition(GetPosition());
+	CurSkill_ = KirbySkill::Ice;
+	IceKirby::IcePlayer->On();
+}
+
+void Player::SparkKirbyUpdate()
+{
+	if (CurSkill_ == KirbySkill::Spark)
+	{
+		return;
+	}
+
+	if (CurSkill_ == KirbySkill::Default)
+	{
+		MainPlayer->Off();
+	}
+	else if (CurSkill_ == KirbySkill::Metal)
+	{
+		MetalKirby::MetalPlayer->Off();
+	}
+	else if (CurSkill_ == KirbySkill::Ice)
+	{
+		IceKirby::IcePlayer->Off();
+	}
+
+	SparkKirby::SparkPlayer->SetPosition(GetPosition());
+	CurSkill_ = KirbySkill::Spark;
+	SparkKirby::SparkPlayer->On();
+}
+
 
 
 // 충돌 -> 다음 스테이지로 이동
