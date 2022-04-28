@@ -107,8 +107,6 @@ protected:
 	float AccSpeed_;
 
 	float JumpPower_;
-	float JumpMaxHeight_;
-
 	float Gravity_;
 
 	// State 지속 시간
@@ -119,10 +117,6 @@ protected:
 	float InhaleTime_;
 	float FallTime_;
 
-	float JumpTimeL_;
-	float JumpTimeR_;
-
-	bool LongJump_;
 
 	// 스테이지 관련
 	float MapScaleX_;
@@ -144,7 +138,7 @@ protected:
 
 	//void DoorCheck();
 	void WallCheck();
-	void MonsterColCheck();
+	virtual void MonsterColCheck();
 	void SwallowColCheck();
 	void AttackColCheck();
 
@@ -177,7 +171,7 @@ protected:
 protected:
 	void ChangeState(PlayerState _State);
 	void PlayerStateUpdate();
-	void DirAnimationCheck();
+	virtual void DirAnimationCheck();
 
 protected:
 	virtual void IdleStart();

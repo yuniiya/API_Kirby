@@ -23,6 +23,11 @@ MetalKirby* MetalKirby::MetalPlayer = nullptr;
 MetalKirby::MetalKirby()
 	: PlayerAnimationRender(nullptr)
 	, CurSkill_(KirbySkill::Metal)
+	, Speed_(200.f)
+	, JumpPower_(700.f)
+	, Gravity_(1800.f)
+	, StopTime_(1.f)
+	, DownTime_(0.5f)
 {
 
 }
@@ -31,90 +36,22 @@ MetalKirby::~MetalKirby()
 
 }
 
-//void MetalKirby::ColMapUpdate()
-//{
-//	std::string CurrentLevel = GetLevel()->GetNameCopy();
-//
-//	if (nullptr == MapColImage_)
-//		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level1_ColMap.bmp");
-//
-//
-//	if ("Level_1" == CurrentLevel)
-//	{
-//		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level1_ColMap.bmp");
-//	}
-//	else if ("Level_2" == CurrentLevel)
-//	{
-//		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level2_ColMap.bmp");
-//		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level2_CDebugolMap.bmp");
-//	}
-//	else if ("Level_3" == CurrentLevel)
-//	{
-//		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level3_ColMap.bmp");
-//	}
-//	else if ("Level_4" == CurrentLevel)
-//	{
-//		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level4_ColMap.bmp");
-//	}
-//	else if ("TitleLevel" == CurrentLevel)
-//	{
-//		MapColImage_ = GameEngineImageManager::GetInst()->Find("Title_ColMap.bmp");
-//	}
-//	else if ("BossRoomLevel" == CurrentLevel)
-//	{
-//		MapColImage_ = GameEngineImageManager::GetInst()->Find("BossRoom_ColMap.bmp");
-//	}
-//	else if ("BossLevel" == CurrentLevel)
-//	{
-//		MapColImage_ = GameEngineImageManager::GetInst()->Find("BossLevel_ColMap.bmp");
-//	}
-//	else
-//		return;
-//}
+void MetalKirby::MonsterColCheck()
+{
+	std::vector<GameEngineCollision*> ColList;
 
-//void MetalKirby::StagePixelCheck(float _Speed)
-//{
-//}
-//
-//void MetalKirby::DoorPixelCheck()
-//{
-//}
-//
-//void MetalKirby::DoorCheck(std::string ChangeLevelName_)
-//{
-//}
-//
-//void MetalKirby::WallCheck()
-//{
-//}
-//
-//void MetalKirby::MonsterColCheck()
-//{
-//}
-//
-//void MetalKirby::SwallowColCheck()
-//{
-//}
-//
-//void MetalKirby::AttackColCheck()
-//{
-//}
-//
-//void MetalKirby::MovePixelCheck(float _x, float _y)
-//{
-//}
-//
-//void MetalKirby::HillPixelCheck()
-//{
-//}
-//
-//int MetalKirby::BottomPixelColorCheck(float _y)
-//{
-//	return 0;
-//}
+	if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
+	{
+		for (size_t i = 0; i < ColList.size(); i++)
+		{
+			ColList[i]->GetActor()->Death();
+		}
+	}
+}
 
 void MetalKirby::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	MetalPlayer = this;
 }
 
 void MetalKirby::Start()
@@ -131,106 +68,73 @@ void MetalKirby::Start()
 	// Walk_Right이미지의 0~9인덱스를 0.1초동안 재생 (true = 루프on)
 	//Render->SetPivotType(RenderPivot::BOT);
 
-	// Default Left
+	// Metal Left
 	{
 		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Idle_Left", 0, 1, 1.f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Down_Left", 2, 3, 1.f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Slide_Left", 4, 4, 0.3f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Walk_Left", 6, 15, 0.07f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Run_Left", 16, 23, 0.07f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "RunToStop_Left", 24, 24, 0.3f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "DamagedStart_Left", 70, 70, 0.08f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Damaged_Left", 71, 78, 0.04f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Down_Left", 2, 3, 1.f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Slide_Left", 18, 18, 0.3f, false);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Walk_Left", 4, 16, 0.07f, true);
 
-	//	// Full
-	//	//PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Full_Left", 42, 43, 1.f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Att_Left.bmp", "Full_Left", 2, 8, 0.05f, true);			// 이펙트 있는 ver
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "FullWalk_Left", 44, 56, 0.07f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "FullJump_Left", 57, 63, 0.03f, true);
+		// Jump
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Jump_Left", 23, 31, 0.03f, true);
 
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Swallow_Left", 64, 69, 0.5f, true);
+		// Fall
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Fall_Left", 31, 34, 0.2f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "FallToBounce_Left", 35, 39, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "BounceToIdle_Left", 29, 29, 0.2f, false);
 
-	//	// Attack
-	//	//PlayerAnimationRender->CreateAnimation("Default_Attack_Leftt.bmp", "AttackStart_Leftt", 0, 1, 0.05f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Att_Left.bmp", "AttackStart_Left", 9, 11, 0.05f, true);	// 이펙트 있는 ver
-	//	PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "Attack_Left", 1, 1, 0.05f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "AttackEnd_Left", 2, 3, 0.05f, true);
+		// Float
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Float_Left", 40, 44, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Float_Left_Loop", 45, 50, 0.1f, true);
 
-	//	// Inhale
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left", 30, 37, 0.1f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Inhale_Left_Loop", 36, 37, 0.1f, true);
+		// Exhale
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Exhale_Left", 51, 51, 0.01f, false);
 
-	//	PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Exhausted_Left", 38, 40, 0.15f, false);
+		// Enter
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Enter_Left", 19, 22, 0.01f, true);
 
-	//	// Jump
-	//	PlayerAnimationRender->CreateAnimation("Default_Jump_Left.bmp", "Jump_Left", 0, 8, 0.03f, false);
+		// Transform
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Transform_Left", 53, 53, 0.01f, false);
 
-	//	// Float
-	//	PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Float_Left", 0, 4, 0.05f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Float_Left_Loop", 5, 10, 0.1f, true);
-
-	//	// Exhale
-	//	PlayerAnimationRender->CreateAnimation("Default_Float_Left.bmp", "Exhale_Left", 3, 3, 0.01f, false);
-
-	//	// Fall
-	//	PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "Fall_Left", 0, 4, 0.2f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "FallToBounce_Left", 5, 11, 0.02f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "BounceToIdle_Left", 12, 12, 0.2f, false);
-
+		// Attack
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Attack_Left", 54, 60, 0.1f, true);
 	}
 
 
-	//// Default Right
-	//{
+	// Metal Right
+	{
 		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Idle_Right", 0, 1, 1.f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Down_Right", 2, 3, 1.f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Slide_Right", 4, 4, 0.3f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Walk_Right", 6, 15, 0.07f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Run_Right", 16, 23, 0.07f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "RunToStop_Right", 24, 24, 0.3f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "DamagedStart_Right", 70, 70, 0.08f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Damaged_Right", 71, 78, 0.04f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Down_Right", 2, 3, 1.f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Slide_Right", 18, 18, 0.3f, false);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Walk_Right", 4, 16, 0.07f, true);
 
-	//	// Full
-	//	//PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Full_Right", 42, 43, 1.f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Att_Right.bmp", "Full_Right", 2, 8, 0.05f, true);			// 이펙트 있는 ver
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "FullWalk_Right", 44, 56, 0.07f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "FullJump_Right", 57, 63, 0.03f, true);
+		// Jump
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Jump_Right", 23, 31, 0.03f, true);
 
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Swallow_Right", 64, 69, 0.5f, true);
+		// Fall
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Fall_Right", 31, 34, 0.2f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "FallToBounce_Right", 35, 39, 0.04f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "BounceToIdle_Right", 29, 29, 0.2f, false);
 
-	//	// Attack
-	//	//PlayerAnimationRender->CreateAnimation("Default_Attack_Right.bmp", "AttackStart_Right", 0, 1, 0.05f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Att_Right.bmp", "AttackStart_Right", 9, 11, 0.05f, true);	// 이펙트 있는 ver
-	//	PlayerAnimationRender->CreateAnimation("Default_Attack_Right.bmp", "Attack_Right", 1, 1, 0.05f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Attack_Right.bmp", "AttackEnd_Right", 2, 3, 0.05f, true);
+		// Float
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Float_Right", 40, 44, 0.02f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Float_Right_Loop", 45, 50, 0.1f, true);
 
-	//	// Inhale
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right", 30, 37, 0.1f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Inhale_Right_Loop", 36, 37, 0.1f, true);
+		// Exhale
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Exhale_Right", 51, 51, 0.01f, false);
 
-	//	PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Exhausted_Right", 38, 40, 0.15f, false);
+		// Enter
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Enter_Right", 19, 22, 0.01f, true);
 
-	//	// Jump
-	//	PlayerAnimationRender->CreateAnimation("Default_Jump_Right.bmp", "Jump_Right", 0, 8, 0.03f, false);
+		// Transform
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Transform_Right", 53, 53, 0.01f, false);
 
-	//	// Float
-	//	PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Float_Right", 0, 4, 0.05f, true);
-	//	PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Float_Right_Loop", 5, 10, 0.1f, true);
-
-	//	// Exhale
-	//	PlayerAnimationRender->CreateAnimation("Default_Float_Right.bmp", "Exhale_Right", 3, 3, 0.1f, false);
-
-	//	// Fall
-	//	PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 4, 0.15f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "FallToBounce_Right", 5, 11, 0.02f, false);
-	//	PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "BounceToIdle_Right", 12, 12, 0.2f, false);
-	//}
+		// Attack
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Attack_Right", 54, 60, 0.1f, true);
+	}
 
 	AnimationName_ = "Idle_";
-	//ChangeDirText_ = "Left";
 	PlayerAnimationRender->ChangeAnimation("Idle_Right");
-	//ChangeState(PlayerState::Idle);
 
 	Off();
 	MetalPlayer = this;
@@ -255,33 +159,6 @@ void MetalKirby::Update()
 
 }
 
-void MetalKirby::Render()
-{
-}
-
-//bool MetalKirby::IsMoveKey()
-//{
-//	return false;
-//}
-//
-//bool MetalKirby::IsMoveKeyDown()
-//{
-//	return false;
-//}
-//
-//bool MetalKirby::IsJumpKey()
-//{
-//	return false;
-//}
-//
-//void MetalKirby::Move()
-//{
-//}
-//
-//void MetalKirby::GravityOn()
-//{
-//}
-
 void MetalKirby::ChangeState(PlayerState _State)
 {
 
@@ -294,12 +171,6 @@ void MetalKirby::ChangeState(PlayerState _State)
 			break;
 		case PlayerState::Walk:
 			WalkStart();
-			break;
-		case PlayerState::Run:
-			RunStart();
-			break;
-		case PlayerState::RunToStop:
-			RunToStopStart();
 			break;
 		case PlayerState::Down:
 			DownStart();
@@ -316,23 +187,14 @@ void MetalKirby::ChangeState(PlayerState _State)
 		case PlayerState::Fall:
 			FallStart();
 			break; 
-		case PlayerState::Inhale:
-			InhaleStart();
+		case PlayerState::FallToBounce:
+			FallToBounceStart();
 			break;
-		case PlayerState::Full:
-			FullStart();
-			break;
-		case PlayerState::FullWalk:
-			FullWalkStart();
-			break;
-		case PlayerState::FullJump:
-			FullJumpStart();
+		case PlayerState::BounceToIdle:
+			BounceToIdleStart();
 			break;
 		case PlayerState::Exhale:
 			ExhaleStart();
-			break;
-		case PlayerState::Swallow:
-			SwallowStart();
 			break;
 		case PlayerState::Exhausted:
 			ExhaustedStart();
@@ -356,12 +218,6 @@ void MetalKirby::PlayerStateUpdate()
 	case PlayerState::Walk:
 		WalkUpdate();
 		break;
-	case PlayerState::Run:
-		RunUpdate();
-		break;
-	case PlayerState::RunToStop:
-		RunToStopUpdate();
-		break;
 	case PlayerState::Down:
 		DownUpdate();
 		break;
@@ -377,26 +233,14 @@ void MetalKirby::PlayerStateUpdate()
 	case PlayerState::Fall:
 		FallUpdate();
 		break;
-	case PlayerState::Inhale:
-		InhaleUpdate();
+	case PlayerState::FallToBounce:
+		FallToBounceUpdate();
 		break;
-	case PlayerState::Full:
-		FullUpdate();
-		break;
-	case PlayerState::FullWalk:
-		FullWalkUpdate();
-		break;
-	case PlayerState::FullJump:
-		FullJumpUpdate();
+	case PlayerState::BounceToIdle:
+		BounceToIdleUpdate();
 		break;
 	case PlayerState::Exhale:
 		ExhaleUpdate();
-		break;
-	case PlayerState::Swallow:
-		SwallowUpdate();
-		break;
-	case PlayerState::Exhausted:
-		ExhaustedUpdate();
 		break;
 	case PlayerState::Attack:
 		AttackUpdate();
@@ -404,140 +248,524 @@ void MetalKirby::PlayerStateUpdate()
 	}
 }
 
+void MetalKirby::DirAnimationCheck()
+{
+	std::string ChangeName;
+
+	PlayerDir CheckDir_ = CurDir_;
+	//ChangeDirText_ = "Right";
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		CheckDir_ = PlayerDir::Right;
+		ChangeDirText_ = "Right";
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		CheckDir_ = PlayerDir::Left;
+		ChangeDirText_ = "Left";
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("Down"))
+	{
+		if (CheckDir_ == PlayerDir::Left)
+		{
+			ChangeDirText_ = "Left";
+		}
+		else
+		{
+			ChangeDirText_ = "Right";
+		}
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	{
+		if (CheckDir_ == PlayerDir::Left)
+		{
+			ChangeDirText_ = "Left";
+		}
+		else
+		{
+			ChangeDirText_ = "Right";
+		}
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("JumpLeft"))
+	{
+		if (CheckDir_ == PlayerDir::Left)
+		{
+			ChangeDirText_ = "Left";
+		}
+		else
+		{
+			ChangeDirText_ = "Right";
+		}
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("JumpRight"))
+	{
+		if (CheckDir_ == PlayerDir::Left)
+		{
+			ChangeDirText_ = "Left";
+		}
+		else
+		{
+			ChangeDirText_ = "Right";
+		}
+	}
+
+	if (CheckDir_ != CurDir_)
+	{
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+		CurDir_ = CheckDir_;
+	}
+
+}
+
+void MetalKirby::IdleUpdate()
+{
+	if (true == IsMoveKey())
+	{
+		ChangeState(PlayerState::Walk);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("Down"))
+	{
+		ChangeState(PlayerState::Down);
+		return;
+	}
+
+	// 점프 
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	HillPixelCheck();
+}
+
+void MetalKirby::WalkUpdate()
+{
+	if (false == IsMoveKey())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsDown("Down"))
+	{
+		ChangeState(PlayerState::Down);
+		return;
+	}
+
+	// 점프 
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	Move();
+	StagePixelCheck(Speed_);
+
+	// 오르막, 내리막길 
+	HillPixelCheck();
+}
+
+void MetalKirby::DownUpdate()
+{
+	if (true == GameEngineInput::GetInst()->IsFree("Down"))
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+
+	DownTime_ -= GameEngineTime::GetDeltaTime();
+
+
+	if (true == IsMoveKey()
+		&& DownTime_ > 0)
+	{
+		ChangeState(PlayerState::Slide);
+		return;
+	}
+}
+
+void MetalKirby::SlideUpdate()
+{
+	// 감속
+	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
+
+	// 땅 밑으로는 못 가게
+	StagePixelCheck(Speed_);
+
+	// 문제: 애니메이션이 재생되는 동안 다른 방향으로 변경안되게
+
+	/////////////////////////////////////////////////////////// 슬라이딩 지속 시간 
+	SlidingTime_ -= GameEngineTime::GetDeltaTime();
+
+	if (SlidingTime_ < 0)
+	{
+		RunningTime_ = 0;
+
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+	// 오르막, 내리막길 
+	HillPixelCheck();
+}
+
+void MetalKirby::JumpUpdate()
+{
+	// 위로 이동
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+	float4 YPos = { 0.0f, MoveDir.y };
+
+	// 일정 높이 될 때까지 Pause
+	if (YPos.y = -200.f)
+	{
+		if (23 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+		{
+			PlayerAnimationRender->PauseOn();
+		}
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -200.0f, MoveDir.y };
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 200.0f, MoveDir.y };
+	}
+
+	// Float
+	YPos = { 0.0f, MoveDir.y };
+	if (YPos.y >= -100.f)
+	{
+		if (GameEngineInput::GetInst()->IsDown("JumpRight"))
+		{
+			ChangeState(PlayerState::Float);
+			return;
+		}
+		else if (GameEngineInput::GetInst()->IsDown("JumpLeft"))
+		{
+			ChangeState(PlayerState::Float);
+			return;
+		}
+	}
+
+
+	// 중력
+	MoveDir.y += 1.f * GameEngineTime::GetDeltaTime() * Gravity_;
+
+	YPos = { 0.0f, MoveDir.y };
+	if (YPos.y > -200.f)
+	{
+		PlayerAnimationRender->PauseOff();
+
+		if (31 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+		{
+			PlayerAnimationRender->PauseOn();
+		}
+	}
+
+	// 양옆 + 위 체크 
+	MovePixelCheck(20.0f, 20.0f);
+
+	// 바닥에 닿았다
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
+	{
+		MoveDir = float4::ZERO;
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+}
+
+void MetalKirby::FallUpdate()
+{
+	// 도중에 Jump키 누르면 Float으로 전환 
+	if (GameEngineInput::GetInst()->IsPress("JumpLeft"))
+	{
+		ChangeState(PlayerState::Float);
+		return;
+	}
+	else if (GameEngineInput::GetInst()->IsPress("JumpRight"))
+	{
+		ChangeState(PlayerState::Float);
+		return;
+	}
+
+	// 방향키를 누르면 해당 방향으로 x 이동
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -200.0f, MoveDir.y };
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 200.0f, MoveDir.y };
+	}
+
+	// MoveDir.x는 움직이지 않고 y만 가속한다 
+	MoveDir.y += 2000.f * GameEngineTime::GetDeltaTime();
+
+
+	// 땅에 닿지 않았다면 MoveDir.y로 가속하며 떨어진다 
+	if (RGB(0, 0, 0) != BottomPixelColorCheck(20.f))
+	{
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+	}
+	else
+	{
+		ChangeState(PlayerState::FallToBounce);
+		return;
+	}
+
+}
+
+void MetalKirby::FallToBounceUpdate()
+{
+	// 방향키를 누르면 해당 방향으로 x 이동
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -100.0f, MoveDir.y };
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 100.0f, MoveDir.y };
+	}
+
+	// 땅에 닿으면 위로 한 번 튕긴다
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
+	{
+		MoveDir.y = -50.f;
+	}
+
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+	// 튕겼으면 BounceToIdle로 전환
+	if (RGB(0, 0, 0) != BottomPixelColorCheck(35.f))
+	{
+		ChangeState(PlayerState::BounceToIdle);
+		return;
+	}
+}
+
+void MetalKirby::BounceToIdleUpdate()
+{
+	// 방향키를 누르면 해당 방향으로 x 이동
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -200.0f, MoveDir.y };
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 200.0f, MoveDir.y };
+	}
+
+	// MoveDir.x는 움직이지 않고 y만 가속한다 
+	MoveDir.y += 2000.f * GameEngineTime::GetDeltaTime();
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+	// 땅에 닿으면 Idle로 전환
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
+	{
+		MoveDir = float4::ZERO;
+
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+}
+
+void MetalKirby::FloatUpdate()
+{
+	// 공기 내뱉고 내려오기
+	if (GameEngineInput::GetInst()->IsDown("Inhale"))
+	{
+		if (true == IsJumpKey())
+		{
+			ChangeState(PlayerState::Float);
+			return;
+		}
+
+		ChangeState(PlayerState::Exhale);
+		return;
+	}
+
+	if (true == PlayerAnimationRender->IsEndAnimation())
+	{
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+	}
+
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -200.f, MoveDir.y };
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 200.f, MoveDir.y };
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+	}
+	else if (false == IsMoveKey())
+	{
+		MoveDir.x = 0.0f;
+	}
+
+	// 중력
+	if (false == IsJumpKey())
+	{
+		MoveDir.y = 200.f;
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+	}
+	else if (true == IsJumpKey())
+	{
+		MoveDir.y = -100.f;
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+	}
+
+	// 양 옆 + 위 픽셀 체크
+	MovePixelCheck(20.0f, 20.0f);
+
+	// Float상태로 바닥에 닿았다
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
+	{
+		MoveDir = float4::UP;
+		SetMove(MoveDir);
+	}
+}
+
+void MetalKirby::ExhaleUpdate()
+{
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		// 땅이랑 너무 가깝다 -> Idle
+		if (RGB(0, 0, 0) == BottomPixelColorCheck(100.f))
+		{
+			MoveDir = float4::ZERO;
+
+			ChangeState(PlayerState::Idle);
+			return;
+		}
+
+
+		// 땅에서 일정한 거리 떨어져 있으면 Fall로 전환
+		MoveDir.y += 900.f * GameEngineTime::GetDeltaTime();
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+}
+
+void MetalKirby::AttackUpdate()
+{
+}
+
 void MetalKirby::IdleStart()
 {
+	MoveDir = float4::ZERO;;
+
 	AnimationName_ = "Idle_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void MetalKirby::WalkStart()
 {
-}
+	Speed_ = 150.f;
 
-void MetalKirby::RunStart()
-{
-}
-
-void MetalKirby::RunToStopStart()
-{
+	AnimationName_ = "Walk_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void MetalKirby::DownStart()
 {
+	DownTime_ = 0.5f;
+
+	AnimationName_ = "Down_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void MetalKirby::SlideStart()
 {
+	Speed_ = 400.f;
+	SlidingTime_ = 1.2f;
+
+	if (true == GameEngineInput::GetInst()->IsDown("MoveLeft"))
+	{
+		MoveDir = float4::LEFT;
+
+	}
+	else if (true == GameEngineInput::GetInst()->IsDown("MoveRight"))
+	{
+		MoveDir = float4::RIGHT;
+	}
+
+	AnimationName_ = "Slide_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void MetalKirby::JumpStart()
 {
+	MoveDir = float4::UP * JumpPower_;
+	Gravity_ = 2000.f;
+
+	AnimationName_ = "Jump_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void MetalKirby::FallStart()
 {
+	MoveDir = float4::ZERO;
+
+	AnimationName_ = "Fall_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void MetalKirby::FallToBounceStart()
+{
+	Gravity_ = 0.0f;
+	MoveDir = float4::ZERO;
+
+	AnimationName_ = "FallToBounce_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void MetalKirby::BounceToIdleStart()
+{
+	MoveDir = float4::ZERO;
+
+	AnimationName_ = "BounceToIdle_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void MetalKirby::FloatStart()
 {
-}
+	Speed_ = 3.f;
+	Gravity_ = 500.f;
 
-void MetalKirby::InhaleStart()
-{
-}
+	PlayerAnimationRender->PauseOff();
 
-void MetalKirby::FullStart()
-{
-}
-
-void MetalKirby::FullWalkStart()
-{
-}
-
-void MetalKirby::FullJumpStart()
-{
+	AnimationName_ = "Float_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void MetalKirby::ExhaleStart()
 {
-}
-
-void MetalKirby::SwallowStart()
-{
-}
-
-void MetalKirby::ExhaustedStart()
-{
+	AnimationName_ = "Exhale_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void MetalKirby::AttackStart()
 {
-}
-
-void MetalKirby::IdleUpdate()
-{
-}
-
-void MetalKirby::WalkUpdate()
-{
-}
-
-void MetalKirby::RunUpdate()
-{
-}
-
-void MetalKirby::RunToStopUpdate()
-{
-}
-
-void MetalKirby::DownUpdate()
-{
-}
-
-void MetalKirby::SlideUpdate()
-{
-}
-
-void MetalKirby::JumpUpdate()
-{
-}
-
-void MetalKirby::FallUpdate()
-{
-}
-
-void MetalKirby::FloatUpdate()
-{
-}
-
-void MetalKirby::InhaleUpdate()
-{
-}
-
-void MetalKirby::FullUpdate()
-{
-}
-
-void MetalKirby::FullWalkUpdate()
-{
-}
-
-void MetalKirby::FullJumpUpdate()
-{
-}
-
-void MetalKirby::ExhaleUpdate()
-{
-}
-
-void MetalKirby::SwallowUpdate()
-{
-}
-
-void MetalKirby::ExhaustedUpdate()
-{
-}
-
-void MetalKirby::AttackUpdate()
-{
+	AnimationName_ = "Attack_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
