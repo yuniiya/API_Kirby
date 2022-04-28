@@ -17,6 +17,10 @@ Scarfy::~Scarfy()
 
 }
 
+void Scarfy::DamagedOn()
+{
+}
+
 void Scarfy::ChangeState(MonsterState _State)
 {
 	if (CurState_ != _State)
@@ -85,7 +89,7 @@ void Scarfy::DirCheck()
 void Scarfy::Start()
 {
 	// 히트 박스
-	MonsterCollision = CreateCollision("ScarfyHitBox", { 70, 70 });
+	MonsterCollision = CreateCollision("DefaultMonster", { 70, 70 });
 
 	AnimationRender = CreateRenderer();
 	AnimationRender->SetPivotType(RenderPivot::CENTER);

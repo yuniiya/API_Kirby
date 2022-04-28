@@ -68,7 +68,7 @@ void BigWaddleDee::MonsterStateUpdate()
 void BigWaddleDee::Start()
 {
 	// 히트 박스
-	MonsterCollision = CreateCollision("BigWaddleHitBox", { 110, 110 });
+	MonsterCollision = CreateCollision("DefaultMonster", { 110, 110 });
 
 	AnimationRender = CreateRenderer();
 	AnimationRender->SetPivotType(RenderPivot::CENTER);

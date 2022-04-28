@@ -1,4 +1,8 @@
 #include "Player.h"
+//#include "MetalKirby.h"
+//#include "IceKirby.h"
+//#include "SparkKirby.h"
+
 #include <GameEngine/GameEngine.h>
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngine/GameEngineImageManager.h>
@@ -8,11 +12,14 @@
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineSound.h>
-
 #include <GameEngine/GameEngineLevel.h>
+
 #include "Bullet.h"
 #include "Stage.h"
 #include "ContentsEnum.h"
+#include "Monster.h"
+#include "Scarfy.h"
+
 
 Player* Player::MainPlayer = nullptr;
 GameEngineSoundPlayer Player::BgmPlayer;
@@ -37,6 +44,7 @@ Player::Player()
 	, DownTime_(0.5f)
 	, InhaleTime_(2.5f)
 	, FallTime_(1.5f)
+	//, CurSkill_(KirbySkill::Default)
 
 {
 
@@ -417,6 +425,10 @@ void Player::Start()
 		//GameEngineInput::GetInst()->CreateKey("Copy", 'W');
 		// 능력을 카피한 상태에서 W : 스킬 해제
 
+		GameEngineInput::GetInst()->CreateKey("Default", 'Z');
+		GameEngineInput::GetInst()->CreateKey("Metal", 'X');
+		GameEngineInput::GetInst()->CreateKey("Ice", 'C');
+		GameEngineInput::GetInst()->CreateKey("Spark", 'V');
 	}
 	
 }
@@ -438,6 +450,7 @@ void Player::Update()
 	MonsterColCheck();
 
 	DebugModeSwitch();
+	//DebugKirbySkillChange(CurSkill_);
 
 	// 카메라 위치 고정
 	CameraFix();
@@ -467,6 +480,7 @@ void Player::ColMapUpdate()
 	else if ("Level_2" == CurrentLevel)
 	{
 		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level2_ColMap.bmp");
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level2_CDebugolMap.bmp");
 	}
 	else if ("Level_3" == CurrentLevel)
 	{
@@ -513,16 +527,24 @@ void Player::MonsterColCheck()
 {
 	std::vector<GameEngineCollision*> ColList;
 
-	if (true == PlayerCollision->CollisionResult("WaddleHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
+	if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
 	{
-		for (size_t i = 0; i < ColList.size(); i++)
+	/*	for (size_t i = 0; i < ColList.size(); i++)
 		{
 			ColList[i]->GetActor()->Death();
-		}
+		}*/
 
 		ChangeState(PlayerState::DamagedStart);
 		return;
 	}
+}
+
+void Player::SwallowColCheck()
+{
+}
+
+void Player::AttackColCheck()
+{
 }
 
 
@@ -647,7 +669,7 @@ void Player::DoorCheck(std::string ChangeLevelName_)
 {
 	int Color = MapColImage_->GetImagePixel(GetPosition());
 
-	if (RGB(0, 0, 255) == Color && true == GameEngineInput::GetInst()->IsDown("Down"))
+	if (RGB(0, 0, 255) == Color && true == GameEngineInput::GetInst()->IsDown("MoveUp"))
 	{
 		GameEngine::GetInst().ChangeLevel(ChangeLevelName_);
 	}
@@ -754,6 +776,7 @@ void Player::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	MainPlayer = this;
 }
 
+//////////////////////////////////////////////////////////////////////// 디버그용
 void Player::DebugModeSwitch()
 {
 	if (true == GameEngineInput::GetInst()->IsDown("DebugMode"))
@@ -761,6 +784,115 @@ void Player::DebugModeSwitch()
 		GetLevel()->IsDebugModeSwitch();
 	}
 }
+
+//void Player::DefaultKirbyUpdate()
+//{
+//	if (true == GameEngineInput::GetInst()->IsDown("Metal"))
+//	{
+//		MainPlayer->Off();
+//
+//		MetalKirby::MetalPlayer->SetPosition(GetPosition());
+//		MetalKirby::MetalPlayer->On();
+//	}
+//	else if (true == GameEngineInput::GetInst()->IsDown("Ice"))
+//	{
+//		MainPlayer->Off();
+//
+//		IceKirby::IcePlayer->On();
+//		IceKirby::IcePlayer->SetPosition(GetPosition());
+//	}
+//	else if (true == GameEngineInput::GetInst()->IsDown("Spark"))
+//	{
+//		MainPlayer->Off();
+//
+//		SparkKirby::SparkPlayer->On();
+//		SparkKirby::SparkPlayer->SetPosition(GetPosition());
+//	}
+//}
+
+//void Player::MetalKirbyUpdate()
+//{
+//	if (true == GameEngineInput::GetInst()->IsPress("Metal"))
+//	{
+//		if (nullptr != Player::MainPlayer)
+//		{
+//			Player::MainPlayer->Off();
+//		}
+//		else if (nullptr != IceKirby::IcePlayer)
+//		{
+//			IceKirby::IcePlayer->Off();
+//		}
+//		else if (nullptr != SparkKirby::SparkPlayer)
+//		{
+//			SparkKirby::SparkPlayer->Off();
+//		}
+//
+//		MetalKirby::MetalPlayer->On();
+//		MetalKirby::MetalPlayer->SetPosition(GetPosition());
+//	}
+//}
+
+//void Player::IceKirbyUpdate()
+//{
+//	if (true == GameEngineInput::GetInst()->IsDown("Ice"))
+//	{
+//		if (nullptr != Player::MainPlayer)
+//		{
+//			Player::MainPlayer->Off();
+//		}
+//		else if (nullptr != MetalKirby::MetalPlayer)
+//		{
+//			MetalKirby::MetalPlayer->Off();
+//		}
+//		else if (nullptr != SparkKirby::SparkPlayer)
+//		{
+//			SparkKirby::SparkPlayer->Off();
+//		}
+//
+//		IceKirby::IcePlayer->On();
+//		IceKirby::IcePlayer->SetPosition(GetPosition());
+//	}
+//}
+//
+//void Player::SparkKirbyUpdate()
+//{
+//	if (true == GameEngineInput::GetInst()->IsDown("Spark"))
+//	{
+//		if (nullptr != Player::MainPlayer)
+//		{
+//			Player::MainPlayer->Off();
+//		}
+//		else if (nullptr != IceKirby::IcePlayer)
+//		{
+//			IceKirby::IcePlayer->Off();
+//		}
+//		else if (nullptr != MetalKirby::MetalPlayer)
+//		{
+//			MetalKirby::MetalPlayer->Off();
+//		}
+//
+//		SparkKirby::SparkPlayer->On();
+//		SparkKirby::SparkPlayer->SetPosition(GetPosition());
+//	}
+//}
+
+//void Player::DebugKirbySkillChange(KirbySkill _Skill)
+//{
+//	switch (_Skill)
+//	{
+//	case KirbySkill::Default:
+//		DefaultKirbyUpdate();
+//		break;
+//	case KirbySkill::Metal:
+//		MetalKirbyUpdate();
+//		break;
+//	case KirbySkill::Ice:
+//		IceKirbyUpdate();
+//		break;
+//	case KirbySkill::Spark:
+//		break;
+//	}
+//}
 
 
 // 충돌 -> 다음 스테이지로 이동

@@ -6,7 +6,7 @@
 class GameEngineImage;
 class GameEngineCollision;
 
-enum class KirbyState
+enum class KirbySkill
 {
 	Default,
 	Metal,
@@ -80,6 +80,15 @@ public:
 
 	void DebugModeSwitch();
 
+	void DebugKirbySkillChange(KirbySkill _Skill);
+
+protected:
+	KirbySkill CurSkill_;
+
+	void DefaultKirbyUpdate();
+	void MetalKirbyUpdate();
+	void IceKirbyUpdate();
+	void SparkKirbyUpdate();
 
 protected:
 	GameEngineRenderer* PlayerAnimationRender;
@@ -135,6 +144,8 @@ private:
 	//void DoorCheck();
 	void WallCheck();
 	void MonsterColCheck();
+	void SwallowColCheck();
+	void AttackColCheck();
 
 	void MovePixelCheck(float _x, float _y);
 	void HillPixelCheck();
@@ -168,62 +179,62 @@ protected:
 	void DirAnimationCheck();
 
 private:
-	void IdleStart();
-	void WalkStart();
-	void RunStart();
-	void RunToStopStart();
-	void DownStart();
-	void SlideStart();
+	virtual void IdleStart();
+	virtual void WalkStart();
+	virtual void RunStart();
+	virtual void RunToStopStart();
+	virtual void DownStart();
+	virtual void SlideStart();
 
-	void JumpStart();
-	void FallStart();
-	void FallToBounceStart();
-	void BounceToIdleStart();
-	void FloatStart();
+	virtual void JumpStart();
+	virtual void FallStart();
+	virtual void FallToBounceStart();
+	virtual void BounceToIdleStart();
+	virtual void FloatStart();
 
-	void InhaleStart();
-	void FullStart();
-	void FullWalkStart();
-	void FullJumpStart();
-	void ExhaleStart();
-	void SwallowStart();
-	void ExhaustedStart();
+	virtual void InhaleStart();
+	virtual void FullStart();
+	virtual void FullWalkStart();
+	virtual void FullJumpStart();
+	virtual void ExhaleStart();
+	virtual void SwallowStart();
+	virtual void ExhaustedStart();
 
-	void AttackStartStart();
-	void AttackStart();
-	void AttackEndStart();
-	void DamagedStartStart();
-	void DamagedStart();
+	virtual void AttackStartStart();
+	virtual void AttackStart();
+	virtual void AttackEndStart();
+	virtual void DamagedStartStart();
+	virtual void DamagedStart();
 
 
 	///////////////////////
-	void IdleUpdate();
-	void WalkUpdate();
-	void RunUpdate();
-	void RunToStopUpdate();
-	void DownUpdate();
-	void SlideUpdate();
+	virtual void IdleUpdate();
+	virtual void WalkUpdate();
+	virtual void RunUpdate();
+	virtual void RunToStopUpdate();
+	virtual void DownUpdate();
+	virtual void SlideUpdate();
 
-	void JumpUpdate();
-	void FallUpdate();
-	void FallToBounceUpdate();
-	void BounceToIdleUpdate();
-	void FloatUpdate();
+	virtual void JumpUpdate();
+	virtual void FallUpdate();
+	virtual void FallToBounceUpdate();
+	virtual void BounceToIdleUpdate();
+	virtual void FloatUpdate();
 
-	void InhaleUpdate();
-	void FullUpdate();
-	void FullWalkUpdate();
-	void FullJumpUpdate();
+	virtual void InhaleUpdate();
+	virtual void FullUpdate();
+	virtual void FullWalkUpdate();
+	virtual void FullJumpUpdate();
 
-	void ExhaleUpdate();
-	void SwallowUpdate();
-	void ExhaustedUpdate();
+	virtual void ExhaleUpdate();
+	virtual void SwallowUpdate();
+	virtual void ExhaustedUpdate();
 
-	void AttackStartUpdate();
-	void AttackUpdate();
-	void AttackEndUpdate();
-	void DamagedStartUpdate();
-	void DamagedUpdate();
+	virtual void AttackStartUpdate();
+	virtual void AttackUpdate();
+	virtual void AttackEndUpdate();
+	virtual void DamagedStartUpdate();
+	virtual void DamagedUpdate();
 	
 
 };

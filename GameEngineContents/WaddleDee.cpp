@@ -68,7 +68,7 @@ void WaddleDee::MonsterStateUpdate()
 void WaddleDee::Start()
 {
 	// 히트 박스
-	MonsterCollision = CreateCollision("WaddleHitBox", { 70, 70 });
+	MonsterCollision = CreateCollision("DefaultMonster", { 70, 70 });
 
 
 	AnimationRender = CreateRenderer();
@@ -98,7 +98,7 @@ void WaddleDee::Update()
 	//DirAnimationCheck();
 	MonsterStateUpdate();
 
-	//MonsterColCheck();
+	MonsterColCheck();
 	// 항상 땅에 붙어있도록 체크
 	GroundPixelCheck();
 }
@@ -119,10 +119,12 @@ void WaddleDee::WalkUpdate()
 
 void WaddleDee::SwallowedUpdate()
 {
+
 }
 
 void WaddleDee::DamagedUpdate()
 {
+
 }
 
 void WaddleDee::WalkStart()
@@ -197,10 +199,13 @@ void WaddleDee::MonsterColCheck()
 
 	if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
 	{
-		for (size_t i = 0; i < ColList.size(); i++)
-		{
-			// (엑터 제외한) 콜리전만 파괴 
-			ColList[i]->GetActor()->Death();
-		}
+		//for (size_t i = 0; i < ColList.size(); i++)
+		//{
+		//	// (엑터 제외한) 콜리전만 파괴 
+		//	ColList[i]->GetActor()->Death();
+		//}
+
+		ChangeState(MonsterState::Damaged);
+		return;
 	}
 }

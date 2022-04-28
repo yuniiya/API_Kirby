@@ -17,6 +17,9 @@ public:
 private:
 	float Speed_;
 
+public:
+	void DamagedOn() override;
+
 protected:
 	GameEngineRenderer* AnimationRender;
 

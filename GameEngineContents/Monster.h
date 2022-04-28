@@ -41,6 +41,9 @@ public:
 	Monster& operator=(const Monster& _Other) = delete;
 	Monster& operator=(Monster&& _Other) noexcept = delete;
 
+public:
+	virtual void DamagedOn();
+
 protected:
 	GameEngineRenderer* MonsterAnimationRenderer;
 

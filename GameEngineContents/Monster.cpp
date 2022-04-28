@@ -19,6 +19,10 @@ Monster::~Monster()
 
 }
 
+void Monster::DamagedOn()
+{
+}
+
 void Monster::GravityOn()
 {
 	MoveDir.y = 1.f * GameEngineTime::GetDeltaTime() * Gravity_;

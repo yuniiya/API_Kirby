@@ -557,21 +557,26 @@ void Player::DamagedStartUpdate()
 {
 	if (CurDir_ == PlayerDir::Right)
 	{
-		MoveDir.x = -1.2f;
+		MoveDir.x = -0.5f;
 	}
 	else if (CurDir_ == PlayerDir::Left)
 	{
-		MoveDir.x = 1.2f;
+		MoveDir.x = 0.5f;
 	}
 
+	SetMove(MoveDir);
 
-	if (1.9f <= GetAccTime())
-	{
-		ReSetAccTime();
 
-		ChangeState(PlayerState::Damaged);
-		return;
-	}
+	ChangeState(PlayerState::Damaged);
+	return;
+
+	//if (1.8f <= GetAccTime())
+	//{
+	//	ReSetAccTime();
+
+	//	ChangeState(PlayerState::Damaged);
+	//	return;
+	//}
 }
 
 void Player::DamagedUpdate()

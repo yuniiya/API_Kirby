@@ -65,9 +65,6 @@
     <ClCompile Include="Scarfy.cpp">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClCompile>
-    <ClCompile Include="FighterKirby.cpp">
-      <Filter>Actor\Play\Kirby</Filter>
-    </ClCompile>
     <ClCompile Include="IceKirby.cpp">
       <Filter>Actor\Play\Kirby</Filter>
     </ClCompile>
@@ -109,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="Sparky.cpp">
       <Filter>Actor\Play\Monster\Skilled</Filter>
+    </ClCompile>
+    <ClCompile Include="SparkKirby.cpp">
+      <Filter>Actor\Play\Kirby</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -174,9 +174,6 @@
     <ClInclude Include="Scarfy.h">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClInclude>
-    <ClInclude Include="FighterKirby.h">
-      <Filter>Actor\Play\Kirby</Filter>
-    </ClInclude>
     <ClInclude Include="IceKirby.h">
       <Filter>Actor\Play\Kirby</Filter>
     </ClInclude>
@@ -218,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="Sparky.h">
       <Filter>Actor\Play\Monster\Skilled</Filter>
+    </ClInclude>
+    <ClInclude Include="SparkKirby.h">
+      <Filter>Actor\Play\Kirby</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

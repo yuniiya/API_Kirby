@@ -4,6 +4,8 @@
 class IceKirby : public Player
 {
 public:
+	static IceKirby* IcePlayer;
+
 	// constrcuter destructer
 	IceKirby();
 	~IceKirby();
