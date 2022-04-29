@@ -101,8 +101,18 @@ void Level_2::Update()
 
 void Level_2::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
-	Player::MainPlayer->SetPosition({ 100.f, 490.f });
-	Player::MainPlayer->MapScale(5376.f, 768.f);
+	{
+		Player::MainPlayer->SetPosition({ 100.f, 490.f });
+		MetalKirby::MetalPlayer->SetPosition({ 100.f, 490.f });
+		SparkKirby::SparkPlayer->SetPosition({ 100.f, 490.f });
+
+	}
+
+	{
+		Player::MainPlayer->MapScale(5376.f, 768.f);
+		MetalKirby::MetalPlayer->MapScale(5376.f, 768.f);
+		SparkKirby::SparkPlayer->MapScale(5376.f, 768.f);
+	}
 }
 
 void Level_2::LevelChangeEnd(GameEngineLevel* _NextLevel)
@@ -110,6 +120,8 @@ void Level_2::LevelChangeEnd(GameEngineLevel* _NextLevel)
 	if (_NextLevel->GetNameCopy() != "TitleLevel")
 	{
 		Player::MainPlayer->NextLevelOn();
+		MetalKirby::MetalPlayer->NextLevelOn();
+		SparkKirby::SparkPlayer->NextLevelOn();
 		PlayUI::MainUI->NextLevelOn();
 	}
 

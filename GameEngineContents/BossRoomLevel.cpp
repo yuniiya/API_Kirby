@@ -70,8 +70,18 @@ void BossRoomLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	Player::BgmPlayer.Stop();
 	Player::BgmPlayer = GameEngineSound::SoundPlayControl("BossRoom.mp3");
 
-	Player::MainPlayer->SetPosition({ 100.f, 500.f });
-	Player::MainPlayer->MapScale(1024.f, 768.f);
+	{
+		Player::MainPlayer->SetPosition({ 100.f, 500.f });
+		MetalKirby::MetalPlayer->SetPosition({ 100.f, 500.f });
+		SparkKirby::SparkPlayer->SetPosition({ 100.f, 500.f });
+	}
+	
+	{
+		Player::MainPlayer->MapScale(1024.f, 768.f);
+		MetalKirby::MetalPlayer->MapScale(1024.f, 768.f);
+		SparkKirby::SparkPlayer->MapScale(1024.f, 768.f);
+	}
+	
 }
 
 void BossRoomLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
@@ -79,6 +89,8 @@ void BossRoomLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
 	if (_NextLevel->GetNameCopy() != "TitleLevel")
 	{
 		Player::MainPlayer->NextLevelOn();
+		MetalKirby::MetalPlayer->NextLevelOn();
+		SparkKirby::SparkPlayer->NextLevelOn();
 		PlayUI::MainUI->NextLevelOn();
 	}
 }

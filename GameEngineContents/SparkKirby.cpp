@@ -142,7 +142,7 @@ void SparkKirby::Update()
 {
 	ColMapUpdate();
 
-	DoorPixelCheck();
+	//DoorPixelCheck();
 
 	DirAnimationCheck();
 	PlayerStateUpdate();

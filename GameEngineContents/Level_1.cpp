@@ -162,6 +162,8 @@ void Level_1::LevelChangeEnd(GameEngineLevel* _NextLevel)
 	if (_NextLevel->GetNameCopy() != "TitleLevel")
 	{
 		Player::MainPlayer->NextLevelOn();
+		MetalKirby::MetalPlayer->NextLevelOn();
+		SparkKirby::SparkPlayer->NextLevelOn();
 		PlayUI::MainUI->NextLevelOn();
 	}
 }

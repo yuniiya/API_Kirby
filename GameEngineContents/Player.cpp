@@ -479,7 +479,6 @@ void Player::ColMapUpdate()
 	else if ("Level_2" == CurrentLevel)
 	{
 		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level2_ColMap.bmp");
-		MapColImage_ = GameEngineImageManager::GetInst()->Find("Level2_CDebugolMap.bmp");
 	}
 	else if ("Level_3" == CurrentLevel)
 	{
