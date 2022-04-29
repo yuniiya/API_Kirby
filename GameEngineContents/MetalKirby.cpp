@@ -58,12 +58,12 @@ void MetalKirby::Start()
 {
 	//SetScale({ 1000, 1000 });
 
-	PlayerCollision = CreateCollision("PlayerHitBox", { 70, 70 });
+	PlayerCollision = CreateCollision("PlayerHitBox", { 70, 70 }, {});
 
 	// 애니메이션을 하나라도 만들면 애니메이션이 재생된다.
 	PlayerAnimationRender = CreateRenderer();
 	PlayerAnimationRender->SetPivotType(RenderPivot::BOT);
-	PlayerAnimationRender->SetPivot({ 0.f, 210.f });
+	PlayerAnimationRender->SetPivot({ 0.f, 250.f });
 
 	// Walk_Right이미지의 0~9인덱스를 0.1초동안 재생 (true = 루프on)
 	//Render->SetPivotType(RenderPivot::BOT);
@@ -76,28 +76,28 @@ void MetalKirby::Start()
 		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Walk_Left", 4, 13, 0.09f, true);
 
 		// Jump
-		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Jump_Left", 23, 31, 0.03f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Jump_Left", 24, 31, 0.03f, true);
 
 		// Fall
-		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Fall_Left", 31, 34, 0.2f, true);
-		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "FallToBounce_Left", 35, 39, 0.05f, true);
-		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "BounceToIdle_Left", 29, 29, 0.2f, false);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Fall_Left", 31, 35, 0.2f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "FallToBounce_Left", 36, 40, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "BounceToIdle_Left", 30, 30, 0.2f, false);
 
 		// Float
-		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Float_Left", 40, 44, 0.05f, true);
-		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Float_Left_Loop", 45, 50, 0.1f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Float_Left", 41, 45, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Float_Left_Loop", 46, 51, 0.1f, true);
 
 		// Exhale
-		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Exhale_Left", 51, 51, 0.01f, false);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Exhale_Left", 52, 52, 0.01f, false);
 
 		// Enter
-		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Enter_Left", 19, 22, 0.01f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Enter_Left", 20, 23, 0.01f, true);
 
 		// Transform
 		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Transform_Left", 53, 53, 0.01f, false);
 
 		// Attack
-		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Attack_Left", 56, 60, 0.1f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Left.bmp", "Attack_Left", 55, 61, 0.1f, true);
 	}
 
 
@@ -109,28 +109,28 @@ void MetalKirby::Start()
 		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Walk_Right", 4, 13, 0.09f, true);
 
 		// Jump
-		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Jump_Right", 23, 31, 0.03f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Jump_Right", 24, 31, 0.03f, true);
 
 		// Fall
-		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Fall_Right", 31, 34, 0.2f, true);
-		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "FallToBounce_Right", 35, 39, 0.04f, true);
-		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "BounceToIdle_Right", 29, 29, 0.2f, false);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Fall_Right", 32, 35, 0.2f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "FallToBounce_Right", 36, 40, 0.04f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "BounceToIdle_Right", 30, 30, 0.2f, true);
 
 		// Float
-		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Float_Right", 40, 44, 0.02f, true);
-		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Float_Right_Loop", 45, 50, 0.1f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Float_Right", 41, 45, 0.02f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Float_Right_Loop", 46, 51, 0.1f, true);
 
 		// Exhale
-		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Exhale_Right", 51, 51, 0.01f, false);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Exhale_Right", 52, 52, 0.01f, false);
 
 		// Enter
-		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Enter_Right", 19, 22, 0.01f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Enter_Right", 20, 23, 0.01f, true);
 
 		// Transform
 		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Transform_Right", 53, 53, 0.01f, false);
 
 		// Attack
-		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Attack_Right", 56, 60, 0.1f, true);
+		PlayerAnimationRender->CreateAnimation("Metal_Right.bmp", "Attack_Right", 55, 61, 0.1f, true);
 	}
 
 	AnimationName_ = "Idle_";
@@ -435,7 +435,7 @@ void MetalKirby::JumpUpdate()
 	// 일정 높이 될 때까지 Pause
 	if (YPos.y = -200.f)
 	{
-		if (23 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+		if (24 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
 		{
 			PlayerAnimationRender->PauseOn();
 		}

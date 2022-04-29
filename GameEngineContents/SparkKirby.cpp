@@ -21,7 +21,8 @@
 SparkKirby* SparkKirby::SparkPlayer = nullptr;
 
 SparkKirby::SparkKirby()
-	: Speed_(350.0f)
+	: CurSkill_(KirbySkill::Spark)
+	, Speed_(350.0f)
 	, JumpPower_(1000.f)
 	, Gravity_(1500.f)
 	, StopTime_(1.f)
@@ -67,7 +68,7 @@ void SparkKirby::Start()
 	// 애니메이션을 하나라도 만들면 애니메이션이 재생된다.
 	PlayerAnimationRender = CreateRenderer();
 	PlayerAnimationRender->SetPivotType(RenderPivot::BOT);
-	PlayerAnimationRender->SetPivot({ 0.f, 210.f });
+	PlayerAnimationRender->SetPivot({ -4.f, 250.f });
 
 	// Left
 	{
@@ -142,7 +143,7 @@ void SparkKirby::Update()
 {
 	ColMapUpdate();
 
-	//DoorPixelCheck();
+	DoorPixelCheck();
 
 	DirAnimationCheck();
 	PlayerStateUpdate();
@@ -340,6 +341,442 @@ void SparkKirby::DirAnimationCheck()
 }
 
 
+void SparkKirby::IdleUpdate()
+{
+	RunningTime_ -= GameEngineTime::GetDeltaTime();
+
+	if (true == IsMoveKey()
+		&& RunningTime_ < 0)
+		// 연속키를 누른적이 없사
+	{
+		InputDir_ = CurDir_;
+
+		ChangeState(PlayerState::Walk);
+		return;
+	}
+	else if (true == IsMoveKey()
+		&& RunningTime_ > 0)
+	{
+		if (InputDir_ == CurDir_)
+		{
+			ChangeState(PlayerState::Run);
+			return;
+		}
+		else
+		{
+			ChangeState(PlayerState::Walk);
+			return;
+		}
+
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("Down"))
+	{
+		ChangeState(PlayerState::Down);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	{
+		ChangeState(PlayerState::AttackStart);
+		return;
+	}
+
+	// 점프 
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	// 오르막, 내리막길 
+	float4 RightDownkPos = GetPosition() + float4{ 0.f,20.f };
+	float4 LeftUpPos = GetPosition() + float4{ -20.f,0.f };
+
+	int DownColor = MapColImage_->GetImagePixel(RightDownkPos);
+	int UpColor = MapColImage_->GetImagePixel(LeftUpPos);
+
+
+	float4 XMove = { MoveDir.x, 0.0f };
+	float4 YMove = { 0.0f, MoveDir.y };
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		SetMove(float4::DOWN);
+	}
+	else if (RGB(0, 0, 0) != UpColor)
+	{
+		SetMove(YMove);
+	}
+
+
+}
+
+void SparkKirby::WalkUpdate()
+{
+	RunningTime_ = 0.1f;
+
+	if (false == IsMoveKey())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsDown("Down"))
+	{
+		ChangeState(PlayerState::Down);
+		return;
+	}
+
+	// 점프 
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	{
+		ChangeState(PlayerState::AttackStart);
+		return;
+	}
+
+	Move();
+	StagePixelCheck(Speed_);
+
+	// 오르막, 내리막길 
+	HillPixelCheck();
+}
+
+void SparkKirby::RunUpdate()
+{
+	if (false == IsMoveKey())
+	{
+		ChangeState(PlayerState::RunToStop);
+		return;
+	}
+
+	// 점프 
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	Move();
+	StagePixelCheck(500.f);
+
+
+
+	// 오르막, 내리막길 
+	HillPixelCheck();
+}
+
+void SparkKirby::RunToStopUpdate()
+{
+	// 이동 시 미래 위치 픽셀 체크
+	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
+	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;
+	int Color = MapColImage_->GetImagePixel(CheckPos);
+
+	if (RGB(0, 0, 0) != Color)
+	{
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
+	}
+
+	////////////////////////////////////////////////// Stop 지속 시간
+	StopTime_ -= GameEngineTime::GetDeltaTime();
+
+	if (StopTime_ < 0)
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+	// 오르막, 내리막길 
+	HillPixelCheck();
+
+}
+
+void SparkKirby::DownUpdate()
+{
+	if (true == GameEngineInput::GetInst()->IsFree("Down"))
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+
+	DownTime_ -= GameEngineTime::GetDeltaTime();
+
+
+	if (true == IsMoveKey()
+		&& DownTime_ > 0)
+	{
+		ChangeState(PlayerState::Slide);
+		return;
+	}
+}
+
+void SparkKirby::SlideUpdate()
+{
+	// 감속
+	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
+
+	// 땅 밑으로는 못 가게
+	StagePixelCheck(Speed_);
+
+	// 문제: 애니메이션이 재생되는 동안 다른 방향으로 변경안되게
+
+	/////////////////////////////////////////////////////////// 슬라이딩 지속 시간 
+	SlidingTime_ -= GameEngineTime::GetDeltaTime();
+
+	if (SlidingTime_ < 0)
+	{
+		RunningTime_ = 0;
+
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+	// 오르막, 내리막길 
+	HillPixelCheck();
+}
+
+void SparkKirby::JumpUpdate()
+{
+	// 위로 이동
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+	float4 YPos = { 0.0f, MoveDir.y };
+
+	// 일정 높이 될 때까지 Pause
+	if (YPos.y = -500.f)
+	{
+		if (0 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+		{
+			PlayerAnimationRender->PauseOn();
+		}
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -300.0f, MoveDir.y };
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 300.0f, MoveDir.y };
+	}
+
+	// Float
+	YPos = { 0.0f, MoveDir.y };
+	if (YPos.y >= -300.f)
+	{
+		if (GameEngineInput::GetInst()->IsDown("JumpRight"))
+		{
+			ChangeState(PlayerState::Float);
+			return;
+		}
+		else if (GameEngineInput::GetInst()->IsDown("JumpLeft"))
+		{
+			ChangeState(PlayerState::Float);
+			return;
+		}
+	}
+
+
+	// 중력
+	GravityOn();
+
+	YPos = { 0.0f, MoveDir.y };
+	if (YPos.y > -500.f)
+	{
+		PlayerAnimationRender->PauseOff();
+	}
+
+	// 양옆 + 위 체크 
+	MovePixelCheck(20.0f, 20.0f);
+
+	// 바닥에 닿았다
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
+	{
+		MoveDir = float4::ZERO;
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+	//else if (RGB(0, 0, 0) != BottomPixelColorCheck(400.f))
+	//{
+	//	ChangeState(PlayerState::Fall);
+	//	return;
+	//}
+}
+
+void SparkKirby::FloatUpdate()
+{
+	// 공기 내뱉고 내려오기
+	if (GameEngineInput::GetInst()->IsDown("Inhale"))
+	{
+		if (true == IsJumpKey())
+		{
+			ChangeState(PlayerState::Float);
+			return;
+		}
+
+		ChangeState(PlayerState::Exhale);
+		return;
+	}
+
+	if (true == PlayerAnimationRender->IsEndAnimation())
+	{
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+	}
+
+	// Float상태에서 이동
+	//MoveDir = float4::ZERO;
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -200.f, MoveDir.y };
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 200.f, MoveDir.y };
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+	}
+	else if (false == IsMoveKey())
+	{
+		MoveDir.x = 0.0f;
+	}
+
+	// 중력
+	if (false == IsJumpKey())
+	{
+		MoveDir.y = 100.f;
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+	}
+	else if (true == IsJumpKey())
+	{
+		MoveDir.y = -200.f;
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+	}
+
+	// 양 옆 + 위 픽셀 체크
+	MovePixelCheck(20.0f, 20.0f);
+
+	// Float상태로 바닥에 닿았다
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
+	{
+		MoveDir = float4::UP;
+		SetMove(MoveDir);
+	}
+}
+
+void SparkKirby::FallUpdate()
+{
+	// 도중에 Jump키 누르면 Float으로 전환 
+	if (GameEngineInput::GetInst()->IsPress("JumpLeft"))
+	{
+		ChangeState(PlayerState::Float);
+		return;
+	}
+	else if (GameEngineInput::GetInst()->IsPress("JumpRight"))
+	{
+		ChangeState(PlayerState::Float);
+		return;
+	}
+
+	// 방향키를 누르면 해당 방향으로 x 이동
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -200.0f, MoveDir.y };
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 200.0f, MoveDir.y };
+	}
+
+	// MoveDir.x는 움직이지 않고 y만 가속한다 
+	MoveDir.y += 1500.f * GameEngineTime::GetDeltaTime();
+
+
+	// 땅에 닿지 않았다면 MoveDir.y로 가속하며 떨어진다 
+	if (RGB(0, 0, 0) != BottomPixelColorCheck(20.f))
+	{
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+	}
+	else
+	{
+		ChangeState(PlayerState::FallToBounce);
+		return;
+	}
+
+}
+
+void SparkKirby::FallToBounceUpdate()
+{
+	// 방향키를 누르면 해당 방향으로 x 이동
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -300.0f, MoveDir.y };
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 300.0f, MoveDir.y };
+	}
+
+	// 땅에 닿으면 위로 한 번 튕긴다
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
+	{
+		MoveDir.y = -400.f;
+	}
+
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+	// 튕겼으면 BounceToIdle로 전환
+	if (RGB(0, 0, 0) != BottomPixelColorCheck(130.f))
+	{
+		ChangeState(PlayerState::BounceToIdle);
+		return;
+	}
+}
+
+void SparkKirby::BounceToIdleUpdate()
+{
+	// 방향키를 누르면 해당 방향으로 x 이동
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -300.0f, MoveDir.y };
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 300.0f, MoveDir.y };
+	}
+
+	// MoveDir.x는 움직이지 않고 y만 가속한다 
+	MoveDir.y += 1300.f * GameEngineTime::GetDeltaTime();
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+	// 땅에 닿으면 Idle로 전환
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
+	{
+		MoveDir = float4::ZERO;
+
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+}
+
+void SparkKirby::ExhaustedUpdate()
+{
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+}
+
 void SparkKirby::AttackStartUpdate()
 {
 }
@@ -490,3 +927,4 @@ void SparkKirby::AttackEndStart()
 	AnimationName_ = "AttackEnd_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
+

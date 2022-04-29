@@ -555,6 +555,18 @@ void Player::AttackEndUpdate()
 
 void Player::DamagedStartUpdate()
 {
+	//PlayerAnimationRender->PauseOn();
+
+	//float Time = 0.0f;
+
+	//Time += GameEngineTime::GetDeltaTime();
+
+	//if (1.f >= Time)
+	//{
+	//	ChangeState(PlayerState::Damaged);
+	//	return;
+	//}
+
 	if (CurDir_ == PlayerDir::Right)
 	{
 		MoveDir.x = -0.5f;
@@ -577,10 +589,13 @@ void Player::DamagedStartUpdate()
 	//	ChangeState(PlayerState::Damaged);
 	//	return;
 	//}
+
+	
 }
 
 void Player::DamagedUpdate()
 {
+	//PlayerAnimationRender->PauseOff();
 
 	if (CurDir_ == PlayerDir::Right)
 	{
@@ -590,10 +605,22 @@ void Player::DamagedUpdate()
 	{
 		MoveDir.x = 1.2f;
 	}
+	
+	int LeftCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.f, 0.f });
+	int RightCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.f, 0.f });
+
+	float4 Pos = MoveDir;
+
+	if (RGB(0, 0, 0) == LeftCheck)
+	{
+		MoveDir.x = 1.f;
+	}
+	else if (RGB(0, 0, 0) == RightCheck)
+	{
+		MoveDir.x = -1.f;
+	}
 
 	SetMove(MoveDir);
-
-
 
 	if (PlayerAnimationRender->IsEndAnimation())
 	{

@@ -19,6 +19,12 @@ public:
 	SparkKirby& operator=(const SparkKirby& _Other) = delete;
 	SparkKirby& operator=(SparkKirby&& _Other) noexcept = delete;
 
+	std::string GetCurrentLevelName()
+	{
+		CurrentLevel = GetLevel()->GetNameCopy();
+		return CurrentLevel;
+	}
+
 protected:
 	KirbySkill CurSkill_;
 
@@ -78,8 +84,23 @@ protected:
 
 
 	/////////////////////////////////
+	void IdleUpdate() override;
+	void WalkUpdate() override;
+	void RunUpdate() override;
+	void RunToStopUpdate() override;
+	void DownUpdate() override;
+	void SlideUpdate() override;
+
+	void JumpUpdate() override;
+	void FallUpdate() override;
+	void FallToBounceUpdate() override;
+	void BounceToIdleUpdate() override;
+	void FloatUpdate();
+	void ExhaustedUpdate() override;
+
+
 	void AttackStartUpdate() override;
-	void AttackUpdate() override;;
-	void AttackEndUpdate() override;;
+	void AttackUpdate() override;
+	void AttackEndUpdate() override;
 
 };
