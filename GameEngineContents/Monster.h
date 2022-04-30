@@ -42,7 +42,12 @@ public:
 	Monster& operator=(Monster&& _Other) noexcept = delete;
 
 public:
-	virtual void DamagedOn();
+	bool IsDamaged;
+
+	void DamagedOn()
+	{
+		IsDamaged = true;
+	}
 
 protected:
 	GameEngineRenderer* MonsterAnimationRenderer;

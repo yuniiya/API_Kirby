@@ -19,9 +19,6 @@ Monster::~Monster()
 
 }
 
-void Monster::DamagedOn()
-{
-}
 
 void Monster::GravityOn()
 {

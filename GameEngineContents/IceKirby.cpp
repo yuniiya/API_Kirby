@@ -41,10 +41,11 @@ void IceKirby::MonsterColCheck()
 
 	if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
 	{
-		for (size_t i = 0; i < ColList.size(); i++)
-		{
-			ColList[i]->GetActor()->Death();
-		}
+		IcePlayer->Off();
+
+		MainPlayer->SetPosition(GetPosition());
+		CurSkill_ = KirbySkill::Default;
+		MainPlayer->On();
 	}
 }
 

@@ -282,9 +282,9 @@ void Player::PlayerStateUpdate()
 
 void Player::Start()
 {
-	//SetScale({ 1000, 1000 });
-
 	PlayerCollision = CreateCollision("PlayerHitBox", { 70, 70 });
+	InhaleCollision = CreateCollision("InhaleCol", { 100, 100 });
+	InhaleCollision->Off();
 
 	// 애니메이션을 하나라도 만들면 애니메이션이 재생된다.
 	PlayerAnimationRender = CreateRenderer();
@@ -580,7 +580,7 @@ void Player::DirAnimationCheck()
 	}
 
 	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
-	{
+	{	
 		if (CheckDir_ == PlayerDir::Left)
 		{
 			ChangeDirText_ = "Left";
@@ -590,6 +590,7 @@ void Player::DirAnimationCheck()
 			ChangeDirText_ = "Right";
 		}
 	}
+
 
 	if (true == GameEngineInput::GetInst()->IsPress("JumpLeft"))
 	{

@@ -5,6 +5,7 @@
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngineBase/GameEngineTime.h>
 #include <GameEngine/GameEngineRenderer.h>
+#include <GameEngine/GameEngineCollision.h>
 
 #include <GameEngine/GameEngineLevel.h> // 레벨을 통해서
 #include "Bullet.h" // 총알을 만들고 싶다.
@@ -564,6 +565,23 @@ void Player::BounceToIdleUpdate()
 
 void Player::InhaleUpdate()
 {
+	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	{
+		if (CurDir_ == PlayerDir::Left)
+		{
+			InhalePos.x = -90.f;
+			
+		}
+		else
+		{
+			InhalePos.x = 90.f;
+		}
+
+		InhaleCollision->SetPivot({ InhalePos });
+		InhaleCollision->On();
+	}
+
+
 	InhaleTime_ -= GameEngineTime::GetDeltaTime();
 
 	if (PlayerAnimationRender->IsEndAnimation())
@@ -574,6 +592,7 @@ void Player::InhaleUpdate()
 	// 2.5초 후 Exhausted
 	if (InhaleTime_ <= 0)
 	{
+		InhaleCollision->Off();
 		ChangeState(PlayerState::Exhausted);
 		return;
 	}
@@ -581,6 +600,7 @@ void Player::InhaleUpdate()
 	// 키에서 손 뗐을 때 -> Idle
 	if(GameEngineInput::GetInst()->IsUp("Inhale"))
 	{
+		InhaleCollision->Off();
 		ChangeState(PlayerState::Idle);
 		return;
 	}
@@ -588,6 +608,7 @@ void Player::InhaleUpdate()
 	// 걷기
 	if (true == IsMoveKey())
 	{
+		InhaleCollision->Off();
 		ChangeState(PlayerState::Walk);
 		return;
 	}
@@ -595,6 +616,7 @@ void Player::InhaleUpdate()
 	// 점프
 	if (true == IsJumpKey())
 	{
+		InhaleCollision->Off();
 		ChangeState(PlayerState::Jump);
 		return;
 	}

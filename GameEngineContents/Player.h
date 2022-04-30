@@ -131,6 +131,9 @@ protected:
 protected:
 	// Ãæµ¹
 	GameEngineCollision* PlayerCollision;
+	GameEngineCollision* InhaleCollision;
+
+	float4 InhalePos;
 
 	void StagePixelCheck(float _Speed);
 	void DoorPixelCheck();

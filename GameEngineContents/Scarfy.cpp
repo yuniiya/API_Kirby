@@ -17,10 +17,6 @@ Scarfy::~Scarfy()
 
 }
 
-void Scarfy::DamagedOn()
-{
-}
-
 void Scarfy::ChangeState(MonsterState _State)
 {
 	if (CurState_ != _State)

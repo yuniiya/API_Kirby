@@ -44,7 +44,7 @@ void MetalKirby::MonsterColCheck()
 	{
 		for (size_t i = 0; i < ColList.size(); i++)
 		{
-			ColList[i]->GetActor()->Death();
+			ColList[i]->Death();
 		}
 	}
 }

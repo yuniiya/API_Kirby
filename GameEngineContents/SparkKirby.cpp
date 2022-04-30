@@ -46,12 +46,7 @@ void SparkKirby::MonsterColCheck()
 		MainPlayer->SetPosition(GetPosition());
 		CurSkill_ = KirbySkill::Default;
 		MainPlayer->On();
-
-		ChangeState(PlayerState::DamagedStart);
-		return;
 	}
-
-	
 }
 
 void SparkKirby::AttackColCheck()
