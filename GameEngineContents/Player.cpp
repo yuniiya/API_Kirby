@@ -306,12 +306,12 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Damaged_Left", 70, 78, 0.04f, true);
 
 		// Full
-		//PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Full_Left", 42, 43, 1.f, true);
-		PlayerAnimationRender->CreateAnimation("Default_Att_Left.bmp", "Full_Left", 2, 8, 0.05f, true);			// ÀÌÆåÆ® ÀÖ´Â ver
-		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "FullWalk_Left", 44, 56, 0.07f, true);
-		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "FullJump_Left", 57, 63, 0.03f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Full_Left", 42, 43, 0.5f, false);
+		//PlayerAnimationRender->CreateAnimation("Default_Att_Left.bmp", "Full_Left", 2, 8, 0.08f, false);			// ÀÌÆåÆ® ÀÖ´Â ver
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "FullWalk_Left", 44, 56, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "FullJump_Left", 57, 63, 0.03f, false);
 
-		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Swallow_Left", 64, 69, 0.5f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Swallow_Left", 64, 69, 0.05f, false);
 
 		// Attack
 		//PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "AttackStart_Left", 0, 1, 0.05f, true);
@@ -355,12 +355,12 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Damaged_Right", 71, 78, 0.04f, true);
 
 		// Full
-		//PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Full_Right", 42, 43, 1.f, true);
-		PlayerAnimationRender->CreateAnimation("Default_Att_Right.bmp", "Full_Right", 2, 8, 0.05f, true);			// ÀÌÆåÆ® ÀÖ´Â ver
-		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "FullWalk_Right", 44, 56, 0.07f, true);
-		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "FullJump_Right", 57, 63, 0.03f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Full_Right", 42, 43, 0.5f, false);
+		//PlayerAnimationRender->CreateAnimation("Default_Att_Right.bmp", "Full_Right", 2, 8, 0.08f, false);			// ÀÌÆåÆ® ÀÖ´Â ver
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "FullWalk_Right", 44, 56, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "FullJump_Right", 57, 63, 0.03f, false);
 
-		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Swallow_Right", 64, 69, 0.5f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Swallow_Right", 64, 69, 0.05f, false);
 
 		// Attack
 		//PlayerAnimationRender->CreateAnimation("Default_Attack_Right.bmp", "AttackStart_Right", 0, 1, 0.05f, true);
@@ -446,7 +446,7 @@ void Player::Update()
 
 	DirAnimationCheck();
 	PlayerStateUpdate();
-	MonsterColCheck();
+	//MonsterColCheck();
 
 	DebugModeSwitch();
 	//DebugKirbySkillChange(CurSkill_);
@@ -534,11 +534,25 @@ void Player::MonsterColCheck()
 
 		ChangeState(PlayerState::DamagedStart);
 		return;
+		
 	}
 }
 
-void Player::SwallowColCheck()
+void Player::InhaleColCheck()
 {
+	std::vector<GameEngineCollision*> ColList;
+
+	if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
+	{
+		/*	for (size_t i = 0; i < ColList.size(); i++)
+			{
+				ColList[i]->GetActor()->Death();
+			}*/
+
+		ChangeState(PlayerState::Full);
+		return;
+
+	}
 }
 
 void Player::AttackColCheck()

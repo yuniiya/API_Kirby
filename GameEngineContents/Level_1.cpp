@@ -87,8 +87,8 @@ void Level_1::Loading()
 
 	// ∏ÛΩ∫≈Õ
 	{
-		//WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
-		//Waddle->SetPosition({ 700.f, 400.f }); 
+		WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 700.f, 400.f }); 
 
 	/*	WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
 		Waddle->SetPosition({ 1500.f, 400.f });*/
@@ -100,8 +100,8 @@ void Level_1::Loading()
 		BigWaddle->SetPosition({ 2700.f, 400.f });
 
 
-		Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
-		scarfy->SetPosition({1300.f, 300.f});
+	//	Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
+	//	scarfy->SetPosition({1300.f, 300.f});
 	}
 	
 

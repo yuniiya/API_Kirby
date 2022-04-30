@@ -142,7 +142,7 @@ protected:
 	//void DoorCheck();
 	void WallCheck();
 	virtual void MonsterColCheck();
-	void SwallowColCheck();
+	void InhaleColCheck();
 	void AttackColCheck();
 
 	void MovePixelCheck(float _x, float _y);

@@ -12,6 +12,7 @@
 
 void Player::IdleUpdate()
 {
+	MonsterColCheck();
 	RunningTime_ -= GameEngineTime::GetDeltaTime();
 
 	if (true == IsMoveKey()
@@ -83,6 +84,7 @@ void Player::IdleUpdate()
 
 void Player::WalkUpdate()
 {
+	MonsterColCheck();
 	RunningTime_ = 0.1f;
 
 	if (false == IsMoveKey())
@@ -155,6 +157,7 @@ void Player::WalkUpdate()
 
 void Player::RunUpdate()
 {
+	MonsterColCheck();
 	if (false == IsMoveKey())
 	{
 		ChangeState(PlayerState::RunToStop);
@@ -233,6 +236,7 @@ void Player::RunUpdate()
 
 void Player::RunToStopUpdate()
 {
+	MonsterColCheck();
 	// 이동 시 미래 위치 픽셀 체크
 	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
 	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;
@@ -259,6 +263,7 @@ void Player::RunToStopUpdate()
 
 void Player::DownUpdate()
 {
+	MonsterColCheck();
 	if (true == GameEngineInput::GetInst()->IsFree("Down"))
 	{
 		ChangeState(PlayerState::Idle);
@@ -340,6 +345,7 @@ void Player::SlideUpdate()
 
 void Player::JumpUpdate()
 {
+	MonsterColCheck();
 	// 위로 이동
 	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
@@ -408,6 +414,7 @@ void Player::JumpUpdate()
 
 void Player::FloatUpdate()
 {
+	MonsterColCheck();
 	// 공기 내뱉고 내려오기
 	if (GameEngineInput::GetInst()->IsDown("Inhale"))
 	{
@@ -469,6 +476,7 @@ void Player::FloatUpdate()
 
 void Player::FallUpdate()
 {
+	MonsterColCheck();
 	// 도중에 Jump키 누르면 Float으로 전환 
 	if (GameEngineInput::GetInst()->IsPress("JumpLeft"))
 	{
@@ -510,6 +518,7 @@ void Player::FallUpdate()
 
 void Player::FallToBounceUpdate()
 {
+	MonsterColCheck();
 	// 방향키를 누르면 해당 방향으로 x 이동
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
@@ -538,6 +547,7 @@ void Player::FallToBounceUpdate()
 
 void Player::BounceToIdleUpdate()
 {
+	MonsterColCheck();
 	// 방향키를 누르면 해당 방향으로 x 이동
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
@@ -579,6 +589,8 @@ void Player::InhaleUpdate()
 
 		InhaleCollision->SetPivot({ InhalePos });
 		InhaleCollision->On();
+
+		InhaleColCheck();
 	}
 
 
@@ -624,18 +636,100 @@ void Player::InhaleUpdate()
 
 void Player::FullUpdate()
 {
+	if (true == GameEngineInput::GetInst()->IsPress("Down"))
+	{
+		ChangeState(PlayerState::Swallow);
+		return;
+	}
+
+	if (true == IsMoveKey())
+	{
+		ChangeState(PlayerState::FullWalk);
+		return;
+	}
+
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::FullJump);
+		return;
+	}
 }
 
 void Player::FullWalkUpdate()
 {
+	MonsterColCheck();
+	RunningTime_ = 0.1f;
+
+	if (false == IsMoveKey())
+	{
+		ChangeState(PlayerState::Full);
+		return;
+	}
+
+	// 점프 
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::FullJump);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	{
+		ChangeState(PlayerState::AttackStart);
+		return;
+	}
+
+	Move();
+	StagePixelCheck(Speed_);
+
+	// 오르막, 내리막길 
+	//HillPixelCheck();
+	float4 CheckPos = float4::DOWN;
+	float4 LeftUpPos = float4::UP;
+	float4 RightUpPos = float4::UP;
+
+	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
+	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		// 땅에 닿아있는 동안은 계속 내려준다
+		while (RGB(0, 0, 0) == DownColor)
+		{
+			CheckPos += float4::DOWN;
+			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+		}
+		SetMove(CheckPos);
+	}
+	else if (RGB(0, 0, 0) == LeftColor)
+	{
+		while (RGB(0, 0, 0) != LeftColor)
+		{
+			LeftUpPos += float4::UP;
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
+		}
+		SetMove(LeftUpPos);
+	}
+	else if (RGB(0, 0, 0) == RightColor)
+	{
+		while (RGB(0, 0, 0) != RightColor)
+		{
+			RightUpPos += float4::UP;
+			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
+		}
+		SetMove(RightUpPos);
+	}
 }
 
 void Player::FullJumpUpdate()
 {
+	MonsterColCheck();
 }
 
 void Player::ExhaleUpdate()
 {
+	MonsterColCheck();
 	if (PlayerAnimationRender->IsEndAnimation())
 	{
 		// 땅이랑 너무 가깝다 -> Idle
@@ -659,10 +753,16 @@ void Player::ExhaleUpdate()
 
 void Player::SwallowUpdate()
 {
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 
 void Player::ExhaustedUpdate()
 {
+	MonsterColCheck();
 	if (PlayerAnimationRender->IsEndAnimation())
 	{
 		ChangeState(PlayerState::Idle);
@@ -728,7 +828,6 @@ void Player::DamagedStartUpdate()
 
 void Player::DamagedUpdate()
 {
-	//PlayerAnimationRender->PauseOff();
 
 	if (CurDir_ == PlayerDir::Right)
 	{

@@ -1,5 +1,6 @@
 #include "WaddleDee.h"
 #include "Monster.h"
+#include "Player.h"
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineImageManager.h>
@@ -119,12 +120,33 @@ void WaddleDee::WalkUpdate()
 
 void WaddleDee::SwallowedUpdate()
 {
+	float4 PlayerPos = Player::MainPlayer->GetPosition();
+	float4 MonsterPos = GetPosition();
+
+	// 플레이어가 몬스터 왼쪽에 있다
+	if (PlayerPos.x < MonsterPos.x)
+	{
+		MoveDir.x += -0.08f * GameEngineTime::GetDeltaTime();
+	}
+	else if (PlayerPos.x > MonsterPos.x)
+	{
+		// 몬스터 오른쪽에 있다
+		MoveDir.x += 0.08f * GameEngineTime::GetDeltaTime();
+	}
+
+	SetMove(MoveDir);
 
 }
 
 void WaddleDee::DamagedUpdate()
 {
+	float Time = 0.0f;
+	Time += GameEngineTime::GetDeltaTime();
 
+	if (1.f >= Time)
+	{
+		Death();
+	}
 }
 
 void WaddleDee::WalkStart()
@@ -207,5 +229,19 @@ void WaddleDee::MonsterColCheck()
 
 		ChangeState(MonsterState::Damaged);
 		return;
+	}
+
+	std::vector<GameEngineCollision*> SwallowColList;
+
+	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))
+	{
+		for (size_t i = 0; i < SwallowColList.size(); i++)
+		{
+			// (엑터 제외한) 콜리전만 파괴 
+
+			ChangeState(MonsterState::Swallowed);
+			return;
+		}
+
 	}
 }
