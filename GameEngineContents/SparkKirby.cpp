@@ -99,7 +99,7 @@ void SparkKirby::Start()
 
 		// Attack
 		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "AttackStart_Left", 138, 138, 0.05f, false);
-		PlayerAnimationRender->CreateAnimation("Spark_Attack.bmp", "Attack_Left", 0, 4, 0.02f, true);
+		PlayerAnimationRender->CreateAnimation("Spark_Attack.bmp", "Attack_Left", 0, 3, 0.02f, true);
 	}
 
 
@@ -130,7 +130,7 @@ void SparkKirby::Start()
 
 		// Attack
 		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "AttackStart_Right", 138, 138, 0.05f, false);
-		PlayerAnimationRender->CreateAnimation("Spark_Attack.bmp", "Attack_Right", 0, 4, 0.02f, true);
+		PlayerAnimationRender->CreateAnimation("Spark_Attack.bmp", "Attack_Right", 0, 3, 0.02f, true);
 	}
 
 	AnimationName_ = "Idle_";
@@ -380,7 +380,7 @@ void SparkKirby::IdleUpdate()
 
 	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
 	{
-		ChangeState(PlayerState::Inhale);
+		ChangeState(PlayerState::AttackStart);
 		return;
 	}
 
@@ -885,14 +885,29 @@ void SparkKirby::ExhaleUpdate()
 
 void SparkKirby::AttackStartUpdate()
 {
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
 }
 
 void SparkKirby::AttackUpdate()
 {
+	if (true == GameEngineInput::GetInst()->IsFree("Inhale"))
+	{
+		ChangeState(PlayerState::AttackEnd);
+		return;
+	}
 }
 
 void SparkKirby::AttackEndUpdate()
 {
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 
 void SparkKirby::IdleStart()
@@ -1030,7 +1045,7 @@ void SparkKirby::AttackStart()
 
 void SparkKirby::AttackEndStart()
 {
-	AnimationName_ = "AttackEnd_";
+	AnimationName_ = "AttackStart_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 

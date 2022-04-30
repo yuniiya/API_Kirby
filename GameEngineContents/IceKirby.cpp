@@ -62,7 +62,7 @@ void IceKirby::Start()
 	// 애니메이션을 하나라도 만들면 애니메이션이 재생된다.
 	PlayerAnimationRender = CreateRenderer();
 	PlayerAnimationRender->SetPivotType(RenderPivot::BOT);
-	PlayerAnimationRender->SetPivot({ 0.f, 250.f });
+	PlayerAnimationRender->SetPivot({ -4.f, 250.f });
 
 	// Walk_Right이미지의 0~9인덱스를 0.1초동안 재생 (true = 루프on)
 	//Render->SetPivotType(RenderPivot::BOT);
@@ -90,8 +90,8 @@ void IceKirby::Start()
 
 		// Attack
 		//PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "AttackStart_Left", 0, 1, 0.05f, true);
-		PlayerAnimationRender->CreateAnimation("Ice_Left.bmp", "AttackStart_Left", 93, 98, 0.05f, false);
-		PlayerAnimationRender->CreateAnimation("Ice_Left.bmp", "Attack_Left", 99, 100, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Ice_Left.bmp", "AttackStart_Left", 93, 98, 0.06f, false);
+		PlayerAnimationRender->CreateAnimation("Ice_Left.bmp", "Attack_Left", 99, 100, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Ice_Left.bmp", "AttackEnd_Left", 101, 102, 0.05f, false);
 	}
 
@@ -119,8 +119,8 @@ void IceKirby::Start()
 
 		// Attack
 		//PlayerAnimationRender->CreateAnimation("Default_Attack_Left.bmp", "AttackStart_Left", 0, 1, 0.05f, true);
-		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "AttackStart_Right", 93, 98, 0.05f, false);
-		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "Attack_Right", 99, 100, 0.05f, true);
+		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "AttackStart_Right", 93, 98, 0.06f, false);
+		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "Attack_Right", 99, 100, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "AttackEnd_Right", 101, 102, 0.05f, false);
 	}
 	
@@ -374,7 +374,7 @@ void IceKirby::IdleUpdate()
 
 	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
 	{
-		ChangeState(PlayerState::Inhale);
+		ChangeState(PlayerState::AttackStart);
 		return;
 	}
 
@@ -433,7 +433,7 @@ void IceKirby::WalkUpdate()
 
 	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
 	{
-		ChangeState(PlayerState::Inhale);
+		ChangeState(PlayerState::AttackStart);
 		return;
 	}
 
@@ -916,14 +916,29 @@ void IceKirby::ExhaleUpdate()
 
 void IceKirby::AttackStartUpdate()
 {
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
 }
 
 void IceKirby::AttackUpdate()
 {
+	if (true == GameEngineInput::GetInst()->IsFree("Inhale"))
+	{
+		ChangeState(PlayerState::AttackEnd);
+		return;
+	}
 }
 
 void IceKirby::AttackEndUpdate()
 {
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 
 
