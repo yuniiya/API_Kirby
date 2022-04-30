@@ -76,7 +76,7 @@ protected:
 	void FallToBounceStart() override;
 	void BounceToIdleStart() override;
 	void FloatStart() override;
-	void ExhaustedStart() override;
+	void ExhaleStart() override;
 
 	void AttackStartStart() override;
 	void AttackStart() override;
@@ -96,7 +96,7 @@ protected:
 	void FallToBounceUpdate() override;
 	void BounceToIdleUpdate() override;
 	void FloatUpdate();
-	void ExhaustedUpdate() override;
+	void ExhaleUpdate() override;
 
 
 	void AttackStartUpdate() override;

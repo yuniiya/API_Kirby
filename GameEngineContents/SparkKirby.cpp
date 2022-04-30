@@ -46,10 +46,12 @@ void SparkKirby::MonsterColCheck()
 		MainPlayer->SetPosition(GetPosition());
 		CurSkill_ = KirbySkill::Default;
 		MainPlayer->On();
+
+		ChangeState(PlayerState::DamagedStart);
+		return;
 	}
 
-	ChangeState(PlayerState::DamagedStart);
-	return;
+	
 }
 
 void SparkKirby::AttackColCheck()
@@ -75,14 +77,14 @@ void SparkKirby::Start()
 		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Idle_Left", 0, 7, 0.3f, true);
 		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Down_Left", 8, 15, 0.3f, true);
 		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Slide_Left", 17, 19, 0.07f, true);
-		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Jump_Left", 20, 29, 0.03f, true);
-		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Walk_Left", 31, 50, 0.03f, true);
-		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Run_Left", 51, 58, 0.2f, true);
-		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "RunToStop_Left", 59, 60, 0.03f, true);
+		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Jump_Left", 20, 29, 0.03f, false);
+		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Walk_Left", 31, 50, 0.033f, true);
+		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Run_Left", 51, 58, 0.06f, true);
+		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "RunToStop_Left", 59, 59, 0.06f, true);
 
 		// Float
 		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Float_Left", 61, 65, 0.05f, true);
-		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Float_Left_Loop", 66, 94, 0.02f, true);
+		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Float_Left_Loop", 66, 91, 0.06f, true);
 
 		// Exhale
 		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Exhale_Left", 95, 96, 0.05f, true);
@@ -106,14 +108,14 @@ void SparkKirby::Start()
 		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Idle_Right", 0, 7, 0.3f, true);
 		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Down_Right", 8, 15, 0.3f, true);
 		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Slide_Right", 17, 19, 0.07f, true);
-		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Jump_Right", 20, 29, 0.03f, true);
-		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Walk_Right", 31, 50, 0.03f, true);
-		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Run_Right", 51, 58, 0.2f, true);
-		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "RunToStop_Right", 59, 60, 0.03f, true);
+		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Jump_Right", 20, 29, 0.03f, false);
+		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Walk_Right", 31, 50, 0.033f, true);
+		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Run_Right", 51, 58, 0.06f, true);
+		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "RunToStop_Right", 59, 59, 0.09f, true);
 
 		// Float
 		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Float_Right", 61, 65, 0.05f, true);
-		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Float_Right_Loop", 66, 94, 0.02f, true);
+		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Float_Right_Loop", 66, 91, 0.06f, true);
 
 		// Exhale
 		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Exhale_Right", 95, 96, 0.05f, true);
@@ -196,8 +198,8 @@ void SparkKirby::ChangeState(PlayerState _State)
 		case PlayerState::BounceToIdle:
 			BounceToIdleStart();
 			break;
-		case PlayerState::Exhausted:
-			ExhaustedStart();
+		case PlayerState::Exhale:
+			ExhaleStart();
 			break;
 		case PlayerState::AttackStart:
 			AttackStartStart();
@@ -251,8 +253,8 @@ void SparkKirby::PlayerStateUpdate()
 	case PlayerState::BounceToIdle:
 		BounceToIdleUpdate();
 		break;
-	case PlayerState::Exhausted:
-		ExhaustedUpdate();
+	case PlayerState::Exhale:
+		ExhaleUpdate();
 		break;
 	case PlayerState::AttackStart:
 		AttackStartUpdate();
@@ -378,7 +380,7 @@ void SparkKirby::IdleUpdate()
 
 	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
 	{
-		ChangeState(PlayerState::AttackStart);
+		ChangeState(PlayerState::Inhale);
 		return;
 	}
 
@@ -437,7 +439,7 @@ void SparkKirby::WalkUpdate()
 
 	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
 	{
-		ChangeState(PlayerState::AttackStart);
+		ChangeState(PlayerState::Inhale);
 		return;
 	}
 
@@ -445,7 +447,43 @@ void SparkKirby::WalkUpdate()
 	StagePixelCheck(Speed_);
 
 	// 오르막, 내리막길 
-	HillPixelCheck();
+	//HillPixelCheck();
+	float4 CheckPos = float4::DOWN;
+	float4 LeftUpPos = float4::UP;
+	float4 RightUpPos = float4::UP;
+
+	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
+	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		// 땅에 닿아있는 동안은 계속 내려준다
+		while (RGB(0, 0, 0) == DownColor)
+		{
+			CheckPos += float4::DOWN;
+			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+		}
+		SetMove(CheckPos);
+	}
+	else if (RGB(0, 0, 0) == LeftColor)
+	{
+		while (RGB(0, 0, 0) != LeftColor)
+		{
+			LeftUpPos += float4::UP;
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
+		}
+		SetMove(LeftUpPos);
+	}
+	else if (RGB(0, 0, 0) == RightColor)
+	{
+		while (RGB(0, 0, 0) != RightColor)
+		{
+			RightUpPos += float4::UP;
+			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
+		}
+		SetMove(RightUpPos);
+	}
 }
 
 void SparkKirby::RunUpdate()
@@ -469,7 +507,61 @@ void SparkKirby::RunUpdate()
 
 
 	// 오르막, 내리막길 
-	HillPixelCheck();
+	//HillPixelCheck();
+	float4 CheckPos = float4::DOWN;
+	float4 LeftUpPos = float4::UP;
+	float4 RightUpPos = float4::UP;
+
+	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
+	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		// 땅에 닿아있는 동안은 계속 내려준다
+		while (RGB(0, 0, 0) == DownColor)
+		{
+			CheckPos += float4::DOWN;
+			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+		}
+		SetMove(CheckPos);
+	}
+	else if (RGB(0, 0, 0) == LeftColor)
+	{
+		while (RGB(0, 0, 0) != LeftColor)
+		{
+			LeftUpPos += float4::UP;
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
+		}
+		SetMove(LeftUpPos);
+	}
+	else if (RGB(0, 0, 0) == RightColor)
+	{
+		while (RGB(0, 0, 0) != RightColor)
+		{
+			RightUpPos += float4::UP;
+			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
+		}
+		SetMove(RightUpPos);
+	}
+
+	// 속력 제한
+	//if (1.f <= MoveDir.Len2D())
+	//{
+	//	MoveDir.Range2D(1.f);
+	//}
+
+	// 아무런 키가 눌리지 않으면 점점 감속한다
+	//if (false == IsMoveKey())
+	//{
+	//	MoveDir += -MoveDir * GameEngineTime::GetDeltaTime();
+
+	//	if (0.005f >= MoveDir.Len2D())
+	//	{
+	//		MoveDir = float4::ZERO;
+	//		return;
+	//	}
+
 }
 
 void SparkKirby::RunToStopUpdate()
@@ -768,11 +860,25 @@ void SparkKirby::BounceToIdleUpdate()
 
 }
 
-void SparkKirby::ExhaustedUpdate()
+void SparkKirby::ExhaleUpdate()
 {
 	if (PlayerAnimationRender->IsEndAnimation())
 	{
-		ChangeState(PlayerState::Idle);
+		// 땅이랑 너무 가깝다 -> Idle
+		if (RGB(0, 0, 0) == BottomPixelColorCheck(150.f))
+		{
+			MoveDir = float4::ZERO;
+
+			ChangeState(PlayerState::Idle);
+			return;
+		}
+
+
+		// 땅에서 일정한 거리 떨어져 있으면 Fall로 전환
+		MoveDir.y += 900.f * GameEngineTime::GetDeltaTime();
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+		ChangeState(PlayerState::Fall);
 		return;
 	}
 }
@@ -904,9 +1010,9 @@ void SparkKirby::BounceToIdleStart()
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
-void SparkKirby::ExhaustedStart()
+void SparkKirby::ExhaleStart()
 {
-	AnimationName_ = "Exhausted_";
+	AnimationName_ = "Exhale_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 

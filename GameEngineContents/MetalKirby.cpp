@@ -702,13 +702,12 @@ void MetalKirby::AttackUpdate()
 
 	MovePixelCheck(20.0f, 20.0f);
 
-	///////////////////////////////////////// 문제: 내리막길에서 속도 빨라지게 하고싶다 
+	///////////////////////////////////////// 문제: 내리막길에서 속도 빨라지게
 	// 오르막, 내리막길 
 	float4 CheckPos = { MoveDir.x, 1.f };
 	//float4 LeftUpPos = float4::UP;
 
 	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
-	//int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + CheckPos);
 
 	if (RGB(0, 0, 0) != DownColor)
 	{
@@ -719,7 +718,6 @@ void MetalKirby::AttackUpdate()
 			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
 		}
 
-		MoveDir.x += 50.f * GameEngineTime::GetDeltaTime();
 		SetMove(CheckPos);
 	}
 }

@@ -79,7 +79,7 @@ void IceKirby::Start()
 
 		// Float
 		PlayerAnimationRender->CreateAnimation("Ice_Left.bmp", "Float_Left", 34, 38, 0.05f, true);
-		PlayerAnimationRender->CreateAnimation("Ice_Left.bmp", "Float_Left_Loop", 39, 56, 0.03f, true);
+		PlayerAnimationRender->CreateAnimation("Ice_Left.bmp", "Float_Left_Loop", 39, 54, 0.08f, true);
 
 		PlayerAnimationRender->CreateAnimation("Ice_Left.bmp", "Exhale_Left", 57, 57, 0.1f, false);
 
@@ -108,7 +108,7 @@ void IceKirby::Start()
 
 		// Float
 		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "Float_Right", 34, 38, 0.05f, true);
-		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "Float_Right_Loop", 39, 56, 0.03f, true);
+		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "Float_Right_Loop", 39, 54, 0.08f, true);
 
 		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "Exhale_Right", 57, 57, 0.1f, false);
 
@@ -123,7 +123,7 @@ void IceKirby::Start()
 		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "Attack_Right", 99, 100, 0.05f, true);
 		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "AttackEnd_Right", 101, 102, 0.05f, false);
 	}
-
+	
 	AnimationName_ = "Idle_";
 	PlayerAnimationRender->ChangeAnimation("Idle_Right");
 
@@ -339,15 +339,42 @@ void IceKirby::DirAnimationCheck()
 
 void IceKirby::IdleUpdate()
 {
-	if (true == IsMoveKey())
+	RunningTime_ -= GameEngineTime::GetDeltaTime();
+
+	if (true == IsMoveKey()
+		&& RunningTime_ < 0)
+		// 연속키를 누른적이 없사
 	{
+		InputDir_ = CurDir_;
+
 		ChangeState(PlayerState::Walk);
 		return;
+	}
+	else if (true == IsMoveKey()
+		&& RunningTime_ > 0)
+	{
+		if (InputDir_ == CurDir_)
+		{
+			ChangeState(PlayerState::Run);
+			return;
+		}
+		else
+		{
+			ChangeState(PlayerState::Walk);
+			return;
+		}
+
 	}
 
 	if (true == GameEngineInput::GetInst()->IsPress("Down"))
 	{
 		ChangeState(PlayerState::Down);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	{
+		ChangeState(PlayerState::Inhale);
 		return;
 	}
 
@@ -358,17 +385,33 @@ void IceKirby::IdleUpdate()
 		return;
 	}
 
-	if (true == GameEngineInput::GetInst()->IsDown("Inhale"))
+	// 오르막, 내리막길 
+	float4 RightDownkPos = GetPosition() + float4{ 0.f,20.f };
+	float4 LeftUpPos = GetPosition() + float4{ -20.f,0.f };
+
+	int DownColor = MapColImage_->GetImagePixel(RightDownkPos);
+	int UpColor = MapColImage_->GetImagePixel(LeftUpPos);
+
+
+	float4 XMove = { MoveDir.x, 0.0f };
+	float4 YMove = { 0.0f, MoveDir.y };
+
+	if (RGB(0, 0, 0) != DownColor)
 	{
-		ChangeState(PlayerState::Attack);
-		return;
+		SetMove(float4::DOWN);
+	}
+	else if (RGB(0, 0, 0) != UpColor)
+	{
+		SetMove(YMove);
 	}
 
-	HillPixelCheck();
+
 }
 
 void IceKirby::WalkUpdate()
 {
+	RunningTime_ = 0.1f;
+
 	if (false == IsMoveKey())
 	{
 		ChangeState(PlayerState::Idle);
@@ -388,30 +431,52 @@ void IceKirby::WalkUpdate()
 		return;
 	}
 
+	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	{
+		ChangeState(PlayerState::Inhale);
+		return;
+	}
+
 	Move();
 	StagePixelCheck(Speed_);
 
 	// 오르막, 내리막길 
-	HillPixelCheck();
-}
+	//HillPixelCheck();
+	float4 CheckPos = float4::DOWN;
+	float4 LeftUpPos = float4::UP;
+	float4 RightUpPos = float4::UP;
 
-void IceKirby::DownUpdate()
-{
-	if (true == GameEngineInput::GetInst()->IsFree("Down"))
+	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
+	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
+
+	if (RGB(0, 0, 0) != DownColor)
 	{
-		ChangeState(PlayerState::Idle);
-		return;
+		// 땅에 닿아있는 동안은 계속 내려준다
+		while (RGB(0, 0, 0) == DownColor)
+		{
+			CheckPos += float4::DOWN;
+			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+		}
+		SetMove(CheckPos);
 	}
-
-
-	DownTime_ -= GameEngineTime::GetDeltaTime();
-
-
-	if (true == IsMoveKey()
-		&& DownTime_ > 0)
+	else if (RGB(0, 0, 0) == LeftColor)
 	{
-		ChangeState(PlayerState::Slide);
-		return;
+		while (RGB(0, 0, 0) != LeftColor)
+		{
+			LeftUpPos += float4::UP;
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
+		}
+		SetMove(LeftUpPos);
+	}
+	else if (RGB(0, 0, 0) == RightColor)
+	{
+		while (RGB(0, 0, 0) != RightColor)
+		{
+			RightUpPos += float4::UP;
+			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
+		}
+		SetMove(RightUpPos);
 	}
 }
 
@@ -436,7 +501,61 @@ void IceKirby::RunUpdate()
 
 
 	// 오르막, 내리막길 
-	HillPixelCheck();
+	//HillPixelCheck();
+	float4 CheckPos = float4::DOWN;
+	float4 LeftUpPos = float4::UP;
+	float4 RightUpPos = float4::UP;
+
+	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
+	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		// 땅에 닿아있는 동안은 계속 내려준다
+		while (RGB(0, 0, 0) == DownColor)
+		{
+			CheckPos += float4::DOWN;
+			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+		}
+		SetMove(CheckPos);
+	}
+	else if (RGB(0, 0, 0) == LeftColor)
+	{
+		while (RGB(0, 0, 0) != LeftColor)
+		{
+			LeftUpPos += float4::UP;
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
+		}
+		SetMove(LeftUpPos);
+	}
+	else if (RGB(0, 0, 0) == RightColor)
+	{
+		while (RGB(0, 0, 0) != RightColor)
+		{
+			RightUpPos += float4::UP;
+			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
+		}
+		SetMove(RightUpPos);
+	}
+
+	// 속력 제한
+	//if (1.f <= MoveDir.Len2D())
+	//{
+	//	MoveDir.Range2D(1.f);
+	//}
+
+	// 아무런 키가 눌리지 않으면 점점 감속한다
+	//if (false == IsMoveKey())
+	//{
+	//	MoveDir += -MoveDir * GameEngineTime::GetDeltaTime();
+
+	//	if (0.005f >= MoveDir.Len2D())
+	//	{
+	//		MoveDir = float4::ZERO;
+	//		return;
+	//	}
+
 }
 
 void IceKirby::RunToStopUpdate()
@@ -464,6 +583,27 @@ void IceKirby::RunToStopUpdate()
 	HillPixelCheck();
 
 }
+
+void IceKirby::DownUpdate()
+{
+	if (true == GameEngineInput::GetInst()->IsFree("Down"))
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+
+	DownTime_ -= GameEngineTime::GetDeltaTime();
+
+
+	if (true == IsMoveKey()
+		&& DownTime_ > 0)
+	{
+		ChangeState(PlayerState::Slide);
+		return;
+	}
+}
+
 void IceKirby::SlideUpdate()
 {
 	// 감속
@@ -486,7 +626,43 @@ void IceKirby::SlideUpdate()
 	}
 
 	// 오르막, 내리막길 
-	HillPixelCheck();
+	//HillPixelCheck();
+	float4 CheckPos = float4::DOWN;
+	float4 LeftUpPos = float4::UP;
+	float4 RightUpPos = float4::UP;
+
+	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
+	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		// 땅에 닿아있는 동안은 계속 내려준다
+		while (RGB(0, 0, 0) == DownColor)
+		{
+			CheckPos += float4::DOWN;
+			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+		}
+		SetMove(CheckPos);
+	}
+	else if (RGB(0, 0, 0) == LeftColor)
+	{
+		while (RGB(0, 0, 0) != LeftColor)
+		{
+			LeftUpPos += float4::UP;
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
+		}
+		SetMove(LeftUpPos);
+	}
+	else if (RGB(0, 0, 0) == RightColor)
+	{
+		while (RGB(0, 0, 0) != RightColor)
+		{
+			RightUpPos += float4::UP;
+			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
+		}
+		SetMove(RightUpPos);
+	}
 }
 
 void IceKirby::JumpUpdate()
@@ -497,9 +673,9 @@ void IceKirby::JumpUpdate()
 	float4 YPos = { 0.0f, MoveDir.y };
 
 	// 일정 높이 될 때까지 Pause
-	if (YPos.y = -200.f)
+	if (YPos.y = -500.f)
 	{
-		if (24 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+		if (0 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
 		{
 			PlayerAnimationRender->PauseOn();
 		}
@@ -507,16 +683,16 @@ void IceKirby::JumpUpdate()
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
-		MoveDir = float4{ -200.0f, MoveDir.y };
+		MoveDir = float4{ -300.0f, MoveDir.y };
 	}
 	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
 	{
-		MoveDir = float4{ 200.0f, MoveDir.y };
+		MoveDir = float4{ 300.0f, MoveDir.y };
 	}
 
 	// Float
 	YPos = { 0.0f, MoveDir.y };
-	if (YPos.y >= -100.f)
+	if (YPos.y >= -300.f)
 	{
 		if (GameEngineInput::GetInst()->IsDown("JumpRight"))
 		{
@@ -532,17 +708,12 @@ void IceKirby::JumpUpdate()
 
 
 	// 중력
-	MoveDir.y += 1.f * GameEngineTime::GetDeltaTime() * Gravity_;
+	GravityOn();
 
 	YPos = { 0.0f, MoveDir.y };
-	if (YPos.y > -200.f)
+	if (YPos.y > -500.f)
 	{
 		PlayerAnimationRender->PauseOff();
-
-		//if (31 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
-		//{
-		//	PlayerAnimationRender->PauseOn();
-		//}
 	}
 
 	// 양옆 + 위 체크 
@@ -554,6 +725,72 @@ void IceKirby::JumpUpdate()
 		MoveDir = float4::ZERO;
 		ChangeState(PlayerState::Idle);
 		return;
+	}
+	//else if (RGB(0, 0, 0) != BottomPixelColorCheck(400.f))
+	//{
+	//	ChangeState(PlayerState::Fall);
+	//	return;
+	//}
+}
+
+void IceKirby::FloatUpdate()
+{
+	// 공기 내뱉고 내려오기
+	if (GameEngineInput::GetInst()->IsDown("Inhale"))
+	{
+		if (true == IsJumpKey())
+		{
+			ChangeState(PlayerState::Float);
+			return;
+		}
+
+		ChangeState(PlayerState::Exhale);
+		return;
+	}
+
+	if (true == PlayerAnimationRender->IsEndAnimation())
+	{
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+	}
+
+	// Float상태에서 이동
+	//MoveDir = float4::ZERO;
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -200.f, MoveDir.y };
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 200.f, MoveDir.y };
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+	}
+	else if (false == IsMoveKey())
+	{
+		MoveDir.x = 0.0f;
+	}
+
+	// 중력
+	if (false == IsJumpKey())
+	{
+		MoveDir.y = 100.f;
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+	}
+	else if (true == IsJumpKey())
+	{
+		MoveDir.y = -200.f;
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+	}
+
+	// 양 옆 + 위 픽셀 체크
+	MovePixelCheck(20.0f, 20.0f);
+
+	// Float상태로 바닥에 닿았다
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
+	{
+		MoveDir = float4::UP;
+		SetMove(MoveDir);
 	}
 }
 
@@ -582,7 +819,7 @@ void IceKirby::FallUpdate()
 	}
 
 	// MoveDir.x는 움직이지 않고 y만 가속한다 
-	MoveDir.y += 2000.f * GameEngineTime::GetDeltaTime();
+	MoveDir.y += 1500.f * GameEngineTime::GetDeltaTime();
 
 
 	// 땅에 닿지 않았다면 MoveDir.y로 가속하며 떨어진다 
@@ -603,23 +840,23 @@ void IceKirby::FallToBounceUpdate()
 	// 방향키를 누르면 해당 방향으로 x 이동
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
-		MoveDir = float4{ -100.0f, MoveDir.y };
+		MoveDir = float4{ -300.0f, MoveDir.y };
 	}
 	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
 	{
-		MoveDir = float4{ 100.0f, MoveDir.y };
+		MoveDir = float4{ 300.0f, MoveDir.y };
 	}
 
 	// 땅에 닿으면 위로 한 번 튕긴다
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
-		MoveDir.y = -50.f;
+		MoveDir.y = -400.f;
 	}
 
 	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
 	// 튕겼으면 BounceToIdle로 전환
-	if (RGB(0, 0, 0) != BottomPixelColorCheck(35.f))
+	if (RGB(0, 0, 0) != BottomPixelColorCheck(130.f))
 	{
 		ChangeState(PlayerState::BounceToIdle);
 		return;
@@ -631,15 +868,15 @@ void IceKirby::BounceToIdleUpdate()
 	// 방향키를 누르면 해당 방향으로 x 이동
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
-		MoveDir = float4{ -200.0f, MoveDir.y };
+		MoveDir = float4{ -300.0f, MoveDir.y };
 	}
 	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
 	{
-		MoveDir = float4{ 200.0f, MoveDir.y };
+		MoveDir = float4{ 300.0f, MoveDir.y };
 	}
 
 	// MoveDir.x는 움직이지 않고 y만 가속한다 
-	MoveDir.y += 2000.f * GameEngineTime::GetDeltaTime();
+	MoveDir.y += 1300.f * GameEngineTime::GetDeltaTime();
 	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
 	// 땅에 닿으면 Idle로 전환
@@ -650,65 +887,7 @@ void IceKirby::BounceToIdleUpdate()
 		ChangeState(PlayerState::Idle);
 		return;
 	}
-}
 
-void IceKirby::FloatUpdate()
-{
-	// 공기 내뱉고 내려오기
-	if (GameEngineInput::GetInst()->IsDown("Inhale"))
-	{
-		if (true == IsJumpKey())
-		{
-			ChangeState(PlayerState::Float);
-			return;
-		}
-
-		ChangeState(PlayerState::Exhale);
-		return;
-	}
-
-	if (true == PlayerAnimationRender->IsEndAnimation())
-	{
-		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
-	}
-
-
-	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
-	{
-		MoveDir = float4{ -200.f, MoveDir.y };
-		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
-	}
-	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
-	{
-		MoveDir = float4{ 200.f, MoveDir.y };
-		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
-	}
-	else if (false == IsMoveKey())
-	{
-		MoveDir.x = 0.0f;
-	}
-
-	// 중력
-	if (false == IsJumpKey())
-	{
-		MoveDir.y = 200.f;
-		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
-	}
-	else if (true == IsJumpKey())
-	{
-		MoveDir.y = -100.f;
-		SetMove(MoveDir * GameEngineTime::GetDeltaTime());
-	}
-
-	// 양 옆 + 위 픽셀 체크
-	MovePixelCheck(20.0f, 20.0f);
-
-	// Float상태로 바닥에 닿았다
-	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
-	{
-		MoveDir = float4::UP;
-		SetMove(MoveDir);
-	}
 }
 
 void IceKirby::ExhaleUpdate()
@@ -716,7 +895,7 @@ void IceKirby::ExhaleUpdate()
 	if (PlayerAnimationRender->IsEndAnimation())
 	{
 		// 땅이랑 너무 가깝다 -> Idle
-		if (RGB(0, 0, 0) == BottomPixelColorCheck(100.f))
+		if (RGB(0, 0, 0) == BottomPixelColorCheck(150.f))
 		{
 			MoveDir = float4::ZERO;
 
@@ -732,7 +911,6 @@ void IceKirby::ExhaleUpdate()
 		ChangeState(PlayerState::Fall);
 		return;
 	}
-
 }
 
 

@@ -37,7 +37,7 @@ void Level_1::Loading()
 	{
 		Player::MainPlayer = CreateActor<Player>((int)ORDER::PLAYER, "Player");
 		MetalKirby::MetalPlayer = CreateActor<MetalKirby>((int)ORDER::PLAYER, "MetalKirby");
-		//IceKirby::IcePlayer = CreateActor<IceKirby>((int)ORDER::PLAYER, "IceKirby");
+		IceKirby::IcePlayer = CreateActor<IceKirby>((int)ORDER::PLAYER, "IceKirby");
 		SparkKirby::SparkPlayer = CreateActor<SparkKirby>((int)ORDER::PLAYER, "SparkKirby");
 
 		// UI 
@@ -140,10 +140,12 @@ void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 		Player::MainPlayer->SetPosition({ 100.f, 520.f });
 		//Player::MainPlayer->SetPosition({ 1800.f, 420.f });
 		//Player::MainPlayer->SetPosition({ 5300.f, 450.f });
-		//Player::MainPlayer->SetPosition({ 2600.f, 200.f });
+		//Player::MainPlayer->SetPosition({ 2800.f, 200.f });
 
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 520.f });
-		//MetalKirby::MetalPlayer->SetPosition({ 2600.f, 200.f });
+		//MetalKirby::MetalPlayer->SetPosition({ 2800.f, 200.f });
+
+		IceKirby::IcePlayer->SetPosition({ 100.f, 520.f });
 
 		SparkKirby::SparkPlayer->SetPosition({ 100.f, 520.f });
 	}
@@ -152,6 +154,7 @@ void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	{
 		Player::MainPlayer->MapScale(5753.f, 760.f);
 		MetalKirby::MetalPlayer->MapScale(5753.f, 760.f);
+		IceKirby::IcePlayer->MapScale(5753.f, 760.f);
 		SparkKirby::SparkPlayer->MapScale(5753.f, 760.f);
 	}
 	

@@ -113,7 +113,43 @@ void Player::WalkUpdate()
 	StagePixelCheck(Speed_);
 
 	// 오르막, 내리막길 
-	HillPixelCheck();
+	//HillPixelCheck();
+	float4 CheckPos = float4::DOWN;
+	float4 LeftUpPos = float4::UP;
+	float4 RightUpPos = float4::UP;
+
+	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
+	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		// 땅에 닿아있는 동안은 계속 내려준다
+		while (RGB(0, 0, 0) == DownColor)
+		{
+			CheckPos += float4::DOWN;
+			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+		}
+		SetMove(CheckPos);
+	}
+	else if (RGB(0, 0, 0) == LeftColor)
+	{
+		while (RGB(0, 0, 0) != LeftColor)
+		{
+			LeftUpPos += float4::UP;
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
+		}
+		SetMove(LeftUpPos);
+	}
+	else if (RGB(0, 0, 0) == RightColor)
+	{
+		while (RGB(0, 0, 0) != RightColor)
+		{
+			RightUpPos += float4::UP;
+			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
+		}
+		SetMove(RightUpPos);
+	}
 }
 
 void Player::RunUpdate()
@@ -137,7 +173,43 @@ void Player::RunUpdate()
 
 
 	// 오르막, 내리막길 
-	HillPixelCheck();
+	//HillPixelCheck();
+	float4 CheckPos = float4::DOWN;
+	float4 LeftUpPos = float4::UP;
+	float4 RightUpPos = float4::UP;
+
+	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
+	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		// 땅에 닿아있는 동안은 계속 내려준다
+		while (RGB(0, 0, 0) == DownColor)
+		{
+			CheckPos += float4::DOWN;
+			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+		}
+		SetMove(CheckPos);
+	}
+	else if (RGB(0, 0, 0) == LeftColor)
+	{
+		while (RGB(0, 0, 0) != LeftColor)
+		{
+			LeftUpPos += float4::UP;
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
+		}
+		SetMove(LeftUpPos);
+	}
+	else if (RGB(0, 0, 0) == RightColor)
+	{
+		while (RGB(0, 0, 0) != RightColor)
+		{
+			RightUpPos += float4::UP;
+			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
+		}
+		SetMove(RightUpPos);
+	}
 
 	// 속력 제한
 	//if (1.f <= MoveDir.Len2D())
@@ -226,7 +298,43 @@ void Player::SlideUpdate()
 	}
 
 	// 오르막, 내리막길 
-	HillPixelCheck();
+	//HillPixelCheck();
+	float4 CheckPos = float4::DOWN;
+	float4 LeftUpPos = float4::UP;
+	float4 RightUpPos = float4::UP;
+
+	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
+	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
+
+	if (RGB(0, 0, 0) != DownColor)
+	{
+		// 땅에 닿아있는 동안은 계속 내려준다
+		while (RGB(0, 0, 0) == DownColor)
+		{
+			CheckPos += float4::DOWN;
+			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+		}
+		SetMove(CheckPos);
+	}
+	else if (RGB(0, 0, 0) == LeftColor)
+	{
+		while (RGB(0, 0, 0) != LeftColor)
+		{
+			LeftUpPos += float4::UP;
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
+		}
+		SetMove(LeftUpPos);
+	}
+	else if (RGB(0, 0, 0) == RightColor)
+	{
+		while (RGB(0, 0, 0) != RightColor)
+		{
+			RightUpPos += float4::UP;
+			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
+		}
+		SetMove(RightUpPos);
+	}
 }
 
 void Player::JumpUpdate()
@@ -578,9 +686,12 @@ void Player::DamagedStartUpdate()
 
 	SetMove(MoveDir);
 
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Damaged);
+		return;
+	}
 
-	ChangeState(PlayerState::Damaged);
-	return;
 
 	//if (1.8f <= GetAccTime())
 	//{
@@ -823,6 +934,8 @@ void Player::DamagedStartStart()
 
 void Player::DamagedStart()
 {
+	MoveDir = float4::ZERO;
+
 	AnimationName_ = "Damaged_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }

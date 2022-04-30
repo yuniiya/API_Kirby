@@ -302,8 +302,8 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Walk_Left", 6, 15, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Run_Left", 16, 23, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "RunToStop_Left", 24, 24, 0.3f, false);
-		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "DamagedStart_Left", 70, 70, 0.08f, false);
-		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Damaged_Left", 71, 78, 0.04f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "DamagedStart_Left", 70, 70, 0.8f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Damaged_Left", 70, 78, 0.04f, true);
 
 		// Full
 		//PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Full_Left", 42, 43, 1.f, true);
