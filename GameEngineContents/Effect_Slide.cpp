@@ -1,5 +1,4 @@
 #include "Effect_Slide.h"
-#include "Player.h"
 
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngine/GameEngineRenderer.h>
@@ -15,11 +14,6 @@ Effect_Slide::~Effect_Slide()
 
 }
 
-void Effect_Slide::DirAnimationCheck()
-{
-
-}
-
 void Effect_Slide::Start()
 {
 	AnimationRenderer_ = CreateRenderer();
@@ -30,13 +24,25 @@ void Effect_Slide::Start()
 	AnimationRenderer_->CreateAnimation("Effect_Slide_Left.bmp", "Slide_Left", 0, 6, 0.25f, true);
 	AnimationRenderer_->CreateAnimation("Effect_Slide_Right.bmp", "Slide_Right", 0, 6, 0.25f, true);
 
+	AnimationName_ = "Slide_";
+	//ChangeDirText_ = "Left";
+	//AnimationRenderer_->ChangeAnimation("Slide_Left");
+	
 
-	AnimationRenderer_->ChangeAnimation("Slide_Left");
+	Death(1.2f);
 }
 
 void Effect_Slide::Update()
 {
-
+	if (Dir_ == EffectDir::Right)
+	{
+		ChangeDirText_ = "Right";
+	}
+	else if (Dir_ == EffectDir::Left)
+	{
+		ChangeDirText_ = "Left";
+	}
+	AnimationRenderer_->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 

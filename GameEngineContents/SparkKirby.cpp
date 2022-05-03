@@ -715,8 +715,9 @@ void SparkKirby::FloatUpdate()
 
 	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
-		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 		GameEngineSound::SoundPlayOneShot("Float.wav");
+		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+		
 	}
 
 	// Float상태에서 이동

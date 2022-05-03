@@ -140,7 +140,7 @@ void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 		Player::MainPlayer->SetPosition({ 100.f, 520.f });
 		//Player::MainPlayer->SetPosition({ 1800.f, 420.f });
 		//Player::MainPlayer->SetPosition({ 5300.f, 450.f });
-		//Player::MainPlayer->SetPosition({ 2800.f, 200.f });
+		//Player::MainPlayer->SetPosition({ 2900.f, 200.f });
 
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 520.f });
 		//MetalKirby::MetalPlayer->SetPosition({ 2800.f, 200.f });

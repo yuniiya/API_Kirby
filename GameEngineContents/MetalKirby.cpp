@@ -738,6 +738,9 @@ void MetalKirby::IdleStart()
 
 void MetalKirby::WalkStart()
 {
+	GameEngineSound::SoundPlayOneShot("Metal1.wav");
+
+
 	Speed_ = 150.f;
 
 	AnimationName_ = "Walk_";

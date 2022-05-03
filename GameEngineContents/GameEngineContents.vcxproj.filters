@@ -131,13 +131,25 @@
     <ClCompile Include="Effect_Exhale.cpp">
       <Filter>Actor\Play\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Effect_Ice.cpp">
+    <ClCompile Include="Effect_IceBreath.cpp">
       <Filter>Actor\Play\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Effect_RunToStop.cpp">
       <Filter>Actor\Play\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Effect_Attack.cpp">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_AttackEnd.cpp">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Star.cpp">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Inhale.cpp">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_IceBox.cpp">
       <Filter>Actor\Play\Effect</Filter>
     </ClCompile>
   </ItemGroup>
@@ -270,13 +282,25 @@
     <ClInclude Include="Effect_Exhale.h">
       <Filter>Actor\Play\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Effect_Ice.h">
+    <ClInclude Include="Effect_IceBreath.h">
       <Filter>Actor\Play\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Effect_RunToStop.h">
       <Filter>Actor\Play\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Effect_Attack.h">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_AttackEnd.h">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_Star.h">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_Inhale.h">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_IceBox.h">
       <Filter>Actor\Play\Effect</Filter>
     </ClInclude>
   </ItemGroup>

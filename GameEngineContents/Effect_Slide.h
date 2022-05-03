@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
+#include "ContentsEnum.h"
 
 class GameEngineImage;
 class GameEngineCollision;
@@ -18,10 +19,18 @@ public:
 	Effect_Slide& operator=(Effect_Slide&& _Other) noexcept = delete;
 
 public:
+	//PlayerDir CurDir_;
+	EffectDir Dir_;
 
 
-protected:
-	void DirAnimationCheck();
+	std::string AnimationName_;
+	std::string ChangeDirText_;
+
+public:
+	void SetDir(EffectDir _Dir)
+	{
+		Dir_ = _Dir;
+	}
 
 private:
 	void Start() override;

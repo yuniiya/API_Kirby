@@ -181,11 +181,23 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Effect_AttackEnd.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Effect_Exhale.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Effect_Ice.h">
+    <ClInclude Include="Effect_IceBreath.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_IceBox.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_Inhale.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -194,6 +206,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Effect_Slide.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_Star.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -379,11 +395,23 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Effect_AttackEnd.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Effect_Exhale.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Effect_Ice.cpp">
+    <ClCompile Include="Effect_IceBreath.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_IceBox.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_Inhale.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -392,6 +420,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Effect_Slide.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_Star.cpp">
       <SubType>
       </SubType>
     </ClCompile>

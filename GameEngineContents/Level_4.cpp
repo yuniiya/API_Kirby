@@ -97,8 +97,8 @@ void Level_4::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	Player::BgmPlayer = GameEngineSound::SoundPlayControl("Play2.mp3");
 
 	{
-		//Player::MainPlayer->SetPosition({ 100.f, 440.f });
-		Player::MainPlayer->SetPosition({ 1000.f, 440.f });
+		Player::MainPlayer->SetPosition({ 100.f, 440.f });
+		//Player::MainPlayer->SetPosition({ 1000.f, 440.f });
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 440.f });
 		IceKirby::IcePlayer->SetPosition({ 100.f, 440.f });
 		SparkKirby::SparkPlayer->SetPosition({ 100.f, 440.f });

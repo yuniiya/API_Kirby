@@ -11,3 +11,10 @@ enum class ORDER
 	EFFECT,
 	UI
 };
+
+enum class EffectDir
+{
+	Left,
+	Right,
+	Max,
+};

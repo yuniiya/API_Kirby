@@ -120,12 +120,13 @@ void Player::WalkUpdate()
 
 	// 오르막, 내리막길 
 	//HillPixelCheck();
+	
 	float4 CheckPos = float4::DOWN;
 	float4 LeftUpPos = float4::UP;
 	float4 RightUpPos = float4::UP;
 
 	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
-	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + CheckPos);
 	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
 
 	if (RGB(0, 0, 0) != DownColor)
@@ -138,12 +139,12 @@ void Player::WalkUpdate()
 		}
 		SetMove(CheckPos);
 	}
-	else if (RGB(0, 0, 0) == LeftColor)
+	else if (RGB(0, 0, 0) == LeftColor)	// 왼쪽앞이 땅이라면 땅이 아닐 때까지 올려준다
 	{
 		while (RGB(0, 0, 0) != LeftColor)
 		{
 			LeftUpPos += float4::UP;
-			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
 		}
 		SetMove(LeftUpPos);
 	}
@@ -151,7 +152,7 @@ void Player::WalkUpdate()
 	{
 		while (RGB(0, 0, 0) != RightColor)
 		{
-			RightUpPos.y += 2.f;
+			RightUpPos += float4::UP;
 			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
 		}
 		SetMove(RightUpPos);
@@ -188,7 +189,7 @@ void Player::RunUpdate()
 	float4 RightUpPos = float4::UP;
 
 	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
-	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + CheckPos);
 	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
 
 	if (RGB(0, 0, 0) != DownColor)
@@ -201,12 +202,12 @@ void Player::RunUpdate()
 		}
 		SetMove(CheckPos);
 	}
-	else if (RGB(0, 0, 0) == LeftColor)
+	else if (RGB(0, 0, 0) == LeftColor)	// 왼쪽앞이 땅이라면 땅이 아닐 때까지 올려준다
 	{
 		while (RGB(0, 0, 0) != LeftColor)
 		{
 			LeftUpPos += float4::UP;
-			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
 		}
 		SetMove(LeftUpPos);
 	}
@@ -262,8 +263,45 @@ void Player::RunToStopUpdate()
 	}
 
 	// 오르막, 내리막길 
-	HillPixelCheck();
+	//HillPixelCheck();
+	{
+		float4 CheckPos = float4::DOWN;
+		float4 LeftUpPos = float4::UP;
+		float4 RightUpPos = float4::UP;
 
+		int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+		int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + CheckPos);
+		int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
+
+		if (RGB(0, 0, 0) != DownColor)
+		{
+			// 땅에 닿아있는 동안은 계속 내려준다
+			while (RGB(0, 0, 0) == DownColor)
+			{
+				CheckPos += float4::DOWN;
+				DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+			}
+			SetMove(CheckPos);
+		}
+		else if (RGB(0, 0, 0) == LeftColor)	// 왼쪽앞이 땅이라면 땅이 아닐 때까지 올려준다
+		{
+			while (RGB(0, 0, 0) != LeftColor)
+			{
+				LeftUpPos += float4::UP;
+				LeftColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+			}
+			SetMove(LeftUpPos);
+		}
+		else if (RGB(0, 0, 0) == RightColor)
+		{
+			while (RGB(0, 0, 0) != RightColor)
+			{
+				RightUpPos += float4::UP;
+				RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
+			}
+			SetMove(RightUpPos);
+		}
+	}
 }
 
 void Player::DownUpdate()
@@ -315,7 +353,7 @@ void Player::SlideUpdate()
 	float4 RightUpPos = float4::UP;
 
 	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
-	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + CheckPos);
 	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
 
 	if (RGB(0, 0, 0) != DownColor)
@@ -328,12 +366,12 @@ void Player::SlideUpdate()
 		}
 		SetMove(CheckPos);
 	}
-	else if (RGB(0, 0, 0) == LeftColor)
+	else if (RGB(0, 0, 0) == LeftColor)	// 왼쪽앞이 땅이라면 땅이 아닐 때까지 올려준다
 	{
 		while (RGB(0, 0, 0) != LeftColor)
 		{
 			LeftUpPos += float4::UP;
-			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
+			LeftColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
 		}
 		SetMove(LeftUpPos);
 	}
@@ -943,13 +981,21 @@ void Player::WalkStart()
 
 void Player::RunStart()
 {
-	/*Effect_Slide* RunEffect = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
-	RunEffect->SetPosition(GetPosition() + float4{0.f, 10.f});*/
+	{
+		Effect_Slide* RunEffect = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
 
-	RunEffct_ = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
-	RunEffct_->SetPosition(GetPosition() + float4{ 0.f, 20.f });
-
-	RunEffTime_ = 1.f;
+		if (CurDir_ == PlayerDir::Right)
+		{
+			RunEffect->SetPosition(GetPosition() + float4{ -40.f, 40.f });
+			RunEffect->SetDir(EffectDir::Right);
+			
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			RunEffect->SetPosition(GetPosition() + float4{ 40.f, 40.f });
+			RunEffect->SetDir(EffectDir::Left);	
+		}
+	}
 
 	GameEngineSound::SoundPlayOneShot("Slide.wav");
 

@@ -85,11 +85,11 @@ void Level_2::Loading()
 	
 	// ∏ÛΩ∫≈Õ
 	{
-		Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
-		scarfy->SetPosition({ 500.f, 400.f });
+		//Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
+		//scarfy->SetPosition({ 500.f, 400.f });
 
-		Pengy* pengy = CreateActor<Pengy>((int)ORDER::MONSTER, "Pengy");
-		pengy->SetPosition({ 700.f, 300.f });
+		//Pengy* pengy = CreateActor<Pengy>((int)ORDER::MONSTER, "Pengy");
+		//pengy->SetPosition({ 700.f, 300.f });
 	}
 }
 
