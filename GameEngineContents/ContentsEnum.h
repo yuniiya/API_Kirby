@@ -6,8 +6,8 @@ enum class ORDER
 	GRASS,
 	STAGE,
 	STAGEACTOR,
-	PLAYER,
 	MONSTER,
+	PLAYER,
 	EFFECT,
 	UI
 };

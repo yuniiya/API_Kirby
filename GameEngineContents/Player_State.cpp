@@ -636,7 +636,17 @@ void Player::InhaleUpdate()
 
 void Player::FullUpdate()
 {
+	//InhaleCollision->Off();
 
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::FullLoop);
+		return;
+	}
+}
+
+void Player::FullLoopUpdate()
+{
 	if (true == GameEngineInput::GetInst()->IsPress("Down"))
 	{
 		ChangeState(PlayerState::Swallow);
@@ -670,7 +680,7 @@ void Player::FullWalkUpdate()
 
 	if (false == IsMoveKey())
 	{
-		ChangeState(PlayerState::Full);
+		ChangeState(PlayerState::FullLoop);
 		return;
 	}
 
@@ -757,6 +767,13 @@ void Player::FullJumpUpdate()
 
 	// 양옆 + 위 체크 
 	MovePixelCheck(20.0f, 20.0f);
+
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
+	{
+		MoveDir = float4::ZERO;
+		ChangeState(PlayerState::FullLoop);
+		return;
+	}
 }
 
 void Player::ExhaleUpdate()
@@ -874,7 +891,7 @@ void Player::DamagedUpdate()
 	{
 		MoveDir.x = -1.f;
 	}
-
+	
 	SetMove(MoveDir);
 
 	if (PlayerAnimationRender->IsEndAnimation())
@@ -1026,6 +1043,14 @@ void Player::FullStart()
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
+void Player::FullLoopStart()
+{
+	InhaleCollision->Off();
+
+	AnimationName_ = "Full_Loop_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
 void Player::FullWalkStart()
 {
 	AnimationName_ = "FullWalk_";
@@ -1034,6 +1059,12 @@ void Player::FullWalkStart()
 
 void Player::FullJumpStart()
 {
+	JumpPower_ = 1000.f;
+	Gravity_ = 1800.f;
+
+	// 한 번에 100의 힘으로 위로 간다 
+	MoveDir = float4::UP * JumpPower_;
+
 	AnimationName_ = "FullJump_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }

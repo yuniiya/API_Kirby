@@ -31,6 +31,7 @@ enum class PlayerState
 	BounceToIdle,
 	Inhale,
 	Full,
+	FullLoop,
 	FullWalk,
 	FullJump,
 	Exhale,
@@ -190,13 +191,14 @@ protected:
 	virtual void BounceToIdleStart();
 	virtual void FloatStart();
 
-	virtual void InhaleStart();
-	virtual void FullStart();
-	virtual void FullWalkStart();
-	virtual void FullJumpStart();
+	void InhaleStart();
+	void FullStart();
+	void FullLoopStart();
+	void FullWalkStart();
+	void FullJumpStart();
 	virtual void ExhaleStart();
-	virtual void SwallowStart();
-	virtual void ExhaustedStart();
+	void SwallowStart();
+	void ExhaustedStart();
 
 	virtual void AttackStartStart();
 	virtual void AttackStart();
@@ -222,14 +224,14 @@ protected:
 	virtual void BounceToIdleUpdate();
 	virtual void FloatUpdate();
 
-	virtual void InhaleUpdate();
-	virtual void FullUpdate();
-	virtual void FullWalkUpdate();
-	virtual void FullJumpUpdate();
-
+	void InhaleUpdate();
+	void FullUpdate();
+	void FullLoopUpdate();
+	void FullWalkUpdate();
+	void FullJumpUpdate();
 	virtual void ExhaleUpdate();
-	virtual void SwallowUpdate();
-	virtual void ExhaustedUpdate();
+	void SwallowUpdate();
+	void ExhaustedUpdate();
 
 	virtual void AttackStartUpdate();
 	virtual void AttackUpdate();

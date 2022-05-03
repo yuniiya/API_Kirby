@@ -116,7 +116,7 @@ void WaddleDee::WalkUpdate()
 		WallPixelCheck(30.f, Speed_);
 	}
 
-	InhaleColCheck();
+	//InhaleColCheck();
 }
 
 void WaddleDee::SwallowedUpdate()
@@ -140,6 +140,22 @@ void WaddleDee::SwallowedUpdate()
 
 void WaddleDee::DamagedUpdate()
 {
+	float4 PlayerPos = Player::MainPlayer->GetPosition();
+	float4 MonsterPos = GetPosition();
+
+	// 플레이어가 몬스터 왼쪽에 있다
+	if (PlayerPos.x < MonsterPos.x)
+	{
+		MoveDir.x = 0.3f;
+	}
+	else if (PlayerPos.x > MonsterPos.x)
+	{
+		// 몬스터 오른쪽에 있다
+		MoveDir.x = -0.3f;
+	}
+
+	SetMove(MoveDir);
+
 	DamagedTime_ -= GameEngineTime::GetDeltaTime();
 
 	if (DamagedTime_ < 0)
@@ -165,7 +181,7 @@ void WaddleDee::SwallowedStart()
 
 void WaddleDee::DamagedStart()
 {
-	DamagedTime_ = 1.f;
+	DamagedTime_ = 0.8f;
 
 	AnimationName_ = "Damaged_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
@@ -220,6 +236,28 @@ void WaddleDee::WallPixelCheck(float _x, float _Speed)
 
 void WaddleDee::MonsterColCheck()
 {
+	std::vector<GameEngineCollision*> SwallowColList;
+
+	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))
+	{
+		for (size_t i = 0; i < SwallowColList.size(); i++)
+		{
+			// (엑터 제외한) 콜리전만 파괴 
+
+			ChangeState(MonsterState::Swallowed);
+			return;
+		}
+	}
+
+
+	if (CurState_ == MonsterState::Swallowed)
+	{
+		if (5.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+		{
+			Death();
+		}
+	}
+
 	std::vector<GameEngineCollision*> ColList;
 
 	if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
@@ -239,17 +277,5 @@ void WaddleDee::MonsterColCheck()
 
 void WaddleDee::InhaleColCheck()
 {
-	std::vector<GameEngineCollision*> SwallowColList;
 
-	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))
-	{
-		for (size_t i = 0; i < SwallowColList.size(); i++)
-		{
-			// (엑터 제외한) 콜리전만 파괴 
-
-			ChangeState(MonsterState::Swallowed);
-			return;
-		}
-
-	}
 }

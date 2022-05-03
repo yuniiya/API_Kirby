@@ -167,6 +167,9 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::Full:
 			FullStart();
 			break;
+		case PlayerState::FullLoop:
+			FullLoopStart();
+			break;
 		case PlayerState::FullWalk:
 			FullWalkStart();
 			break;
@@ -246,6 +249,9 @@ void Player::PlayerStateUpdate()
 	case PlayerState::Full:
 		FullUpdate();
 		break;
+	case PlayerState::FullLoop:
+		FullLoopUpdate();
+		break;
 	case PlayerState::FullWalk:
 		FullWalkUpdate();
 		break;
@@ -306,10 +312,10 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Damaged_Left", 70, 78, 0.04f, true);
 
 		// Full
-		//PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Full_Left", 42, 43, 0.5f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Full_Loop_Left", 42, 43, 0.5f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Att_Left.bmp", "Full_Left", 2, 8, 0.05f, false);			// ÀÌÆåÆ® ÀÖ´Â ver
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "FullWalk_Left", 44, 56, 0.05f, true);
-		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "FullJump_Left", 57, 63, 0.03f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "FullJump_Left", 57, 63, 0.1f, false);
 
 		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Swallow_Left", 64, 69, 0.05f, false);
 
@@ -355,10 +361,10 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Damaged_Right", 71, 78, 0.04f, true);
 
 		// Full
-		//PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Full_Right", 42, 43, 0.5f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Full_Loop_Right", 42, 43, 0.5f, true);
 		PlayerAnimationRender->CreateAnimation("Default_Att_Right.bmp", "Full_Right", 2, 8, 0.05f, false);			// ÀÌÆåÆ® ÀÖ´Â ver
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "FullWalk_Right", 44, 56, 0.05f, true);
-		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "FullJump_Right", 57, 63, 0.03f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "FullJump_Right", 57, 63, 0.1f, false);
 
 		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Swallow_Right", 64, 69, 0.05f, false);
 

@@ -123,12 +123,12 @@ void BigWaddleDee::SwallowedUpdate()
 	// 플레이어가 몬스터 왼쪽에 있다
 	if (PlayerPos.x < MonsterPos.x)
 	{
-		MoveDir.x -= 0.06f * GameEngineTime::GetDeltaTime();
+		MoveDir.x -= 2.f * GameEngineTime::GetDeltaTime();
 	}
 	else if (PlayerPos.x > MonsterPos.x)
 	{
 		// 몬스터 오른쪽에 있다
-		MoveDir.x += 0.06f * GameEngineTime::GetDeltaTime();
+		MoveDir.x += 2.f * GameEngineTime::GetDeltaTime();
 	}
 
 	SetMove(MoveDir);
@@ -136,10 +136,25 @@ void BigWaddleDee::SwallowedUpdate()
 
 void BigWaddleDee::DamagedUpdate()
 {
-	float Time = 0.0f;
-	Time += GameEngineTime::GetDeltaTime();
+	float4 PlayerPos = Player::MainPlayer->GetPosition();
+	float4 MonsterPos = GetPosition();
 
-	if (1.f >= Time)
+	// 플레이어가 몬스터 왼쪽에 있다
+	if (PlayerPos.x < MonsterPos.x)
+	{
+		MoveDir.x = 0.3f;
+	}
+	else if (PlayerPos.x > MonsterPos.x)
+	{
+		// 몬스터 오른쪽에 있다
+		MoveDir.x = -0.3f;
+	}
+
+	SetMove(MoveDir);
+
+	DamagedTime_ -= GameEngineTime::GetDeltaTime();
+
+	if (DamagedTime_ < 0)
 	{
 		Death();
 	}
@@ -154,12 +169,16 @@ void BigWaddleDee::WalkStart()
 
 void BigWaddleDee::SwallowedStart()
 {
+	MoveDir = float4::ZERO;
+
 	AnimationName_ = "Swallowed_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void BigWaddleDee::DamagedStart()
 {
+	DamagedTime_ = 0.8f;
+
 	AnimationName_ = "Damaged_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
@@ -214,6 +233,29 @@ void BigWaddleDee::WallPixelCheck(float _x, float _Speed)
 
 void BigWaddleDee::MonsterColCheck()
 {
+
+	if (CurState_ == MonsterState::Swallowed)
+	{
+		if (10.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+		{
+			Death();
+		}
+	}
+
+	std::vector<GameEngineCollision*> SwallowColList;
+
+	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))
+	{
+		for (size_t i = 0; i < SwallowColList.size(); i++)
+		{
+			// (엑터 제외한) 콜리전만 파괴 
+
+			ChangeState(MonsterState::Swallowed);
+			return;
+		}
+	}
+
+
 	std::vector<GameEngineCollision*> ColList;
 
 	if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
@@ -228,17 +270,5 @@ void BigWaddleDee::MonsterColCheck()
 		return;
 	}
 
-	std::vector<GameEngineCollision*> SwallowColList;
 
-	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))
-	{
-		for (size_t i = 0; i < SwallowColList.size(); i++)
-		{
-			// (엑터 제외한) 콜리전만 파괴 
-
-			ChangeState(MonsterState::Swallowed);
-			return;
-		}
-
-	}
 }

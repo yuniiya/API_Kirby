@@ -157,32 +157,52 @@ void Scarfy::JumpUpdate()
 			return;
 		}
 	}
-
-	
 }
 
 
 void Scarfy::SwallowedUpdate()
 {
-	//float4 PlayerPos = Player::MainPlayer->GetPosition();
-	//float4 MonsterPos = GetPosition();
+	float4 PlayerPos = Player::MainPlayer->GetPosition();
+	float4 MonsterPos = GetPosition();
 
-	//// 플레이어가 몬스터 왼쪽에 있다
-	//if (PlayerPos.x < MonsterPos.x)
-	//{
-	//	MoveDir.x -= 0.08f * GameEngineTime::GetDeltaTime();
-	//}
-	//else if (PlayerPos.x > MonsterPos.x)
-	//{
-	//	// 몬스터 오른쪽에 있다
-	//	MoveDir.x += 0.08f * GameEngineTime::GetDeltaTime();
-	//}
+	// 플레이어가 몬스터 왼쪽에 있다
+	if (PlayerPos.x < MonsterPos.x)
+	{
+		MoveDir.x -= 2.f * GameEngineTime::GetDeltaTime();
+	}
+	else if (PlayerPos.x > MonsterPos.x)
+	{
+		// 몬스터 오른쪽에 있다
+		MoveDir.x += 2.f * GameEngineTime::GetDeltaTime();
+	}
 
-	//SetMove(MoveDir);
+	SetMove(MoveDir);
 }
 
 void Scarfy::DamagedUpdate()
 {
+	float4 PlayerPos = Player::MainPlayer->GetPosition();
+	float4 MonsterPos = GetPosition();
+
+	// 플레이어가 몬스터 왼쪽에 있다
+	if (PlayerPos.x < MonsterPos.x)
+	{
+		MoveDir.x = 0.3f;
+	}
+	else if (PlayerPos.x > MonsterPos.x)
+	{
+		// 몬스터 오른쪽에 있다
+		MoveDir.x = -0.3f;
+	}
+
+	SetMove(MoveDir);
+
+	DamagedTime_ -= GameEngineTime::GetDeltaTime();
+
+	if (DamagedTime_ < 0)
+	{
+		Death();
+	}
 }
 
 void Scarfy::IdleStart()
@@ -205,18 +225,45 @@ void Scarfy::JumpStart()
 
 void Scarfy::SwallowedStart()
 {
+	MoveDir = float4::ZERO;
+
 	AnimationName_ = "Damaged_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Scarfy::DamagedStart()
 {
+	MoveDir = float4::ZERO;
+	DamagedTime_ = 0.8f;
+
 	AnimationName_ = "Damaged_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Scarfy::MonsterColCheck()
 {
+	std::vector<GameEngineCollision*> SwallowColList;
+
+	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))
+	{
+		for (size_t i = 0; i < SwallowColList.size(); i++)
+		{
+			// (엑터 제외한) 콜리전만 파괴 
+
+			ChangeState(MonsterState::Swallowed);
+			return;
+		}
+	}
+
+
+	if (CurState_ == MonsterState::Swallowed)
+	{
+		if (5.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+		{
+			Death();
+		}
+	}
+
 	std::vector<GameEngineCollision*> ColList;
 
 	if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
@@ -229,19 +276,5 @@ void Scarfy::MonsterColCheck()
 
 		ChangeState(MonsterState::Damaged);
 		return;
-	}
-
-	std::vector<GameEngineCollision*> SwallowColList;
-
-	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))
-	{
-		for (size_t i = 0; i < SwallowColList.size(); i++)
-		{
-			// (엑터 제외한) 콜리전만 파괴 
-
-			ChangeState(MonsterState::Swallowed);
-			return;
-		}
-
 	}
 }
