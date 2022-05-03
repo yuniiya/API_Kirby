@@ -17,11 +17,6 @@ public:
 	Water& operator=(const Water& _Other) = delete;
 	Water& operator=(Water&& _Other) noexcept = delete;
 
-	GameEngineRenderer* GetRenderer()
-	{
-		return AnimationRenderer_;
-	};
-
 protected:
 
 private:

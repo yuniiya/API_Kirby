@@ -116,6 +116,7 @@ void WaddleDee::WalkUpdate()
 		WallPixelCheck(30.f, Speed_);
 	}
 
+	InhaleColCheck();
 }
 
 void WaddleDee::SwallowedUpdate()
@@ -135,7 +136,6 @@ void WaddleDee::SwallowedUpdate()
 	}
 
 	SetMove(MoveDir);
-
 }
 
 void WaddleDee::DamagedUpdate()
@@ -234,6 +234,11 @@ void WaddleDee::MonsterColCheck()
 		return;
 	}
 
+
+}
+
+void WaddleDee::InhaleColCheck()
+{
 	std::vector<GameEngineCollision*> SwallowColList;
 
 	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))

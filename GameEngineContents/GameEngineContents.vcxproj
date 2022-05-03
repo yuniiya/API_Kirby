@@ -197,6 +197,18 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Grass_3.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Grass_4.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Grass_5.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="IceKirby.h">
       <SubType>
       </SubType>
@@ -313,6 +325,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Water_1.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Water_2.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp">
@@ -352,6 +372,18 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Grass_2.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Grass_3.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Grass_4.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Grass_5.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -469,6 +501,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Water.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Water_1.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Water_2.cpp">
       <SubType>
       </SubType>
     </ClCompile>

@@ -148,7 +148,7 @@ void Player::WalkUpdate()
 	{
 		while (RGB(0, 0, 0) != RightColor)
 		{
-			RightUpPos += float4::UP;
+			RightUpPos.y += 2.f;
 			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
 		}
 		SetMove(RightUpPos);

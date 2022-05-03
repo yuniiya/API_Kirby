@@ -12,6 +12,8 @@
 
 #include "ContentsEnum.h"
 #include "PlayUI.h"
+#include "Water_1.h"
+#include "Water_2.h"
 
 Level_4::Level_4()
 {
@@ -61,6 +63,14 @@ void Level_4::Loading()
 
 		CurStage->GetRenderer()->SetPivot(StageActor);
 	}
+
+	{
+		Water_1* Water1 = CreateActor<Water_1>((int)ORDER::GRASS);
+		Water1->SetPosition({ 1215.f, 432.f });
+
+		Water_2* Water2 = CreateActor<Water_2>((int)ORDER::GRASS);
+		Water2->SetPosition({ 2400.f, 433.f });
+	}
 }
 
 void Level_4::Update()
@@ -87,7 +97,8 @@ void Level_4::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	Player::BgmPlayer = GameEngineSound::SoundPlayControl("Play2.mp3");
 
 	{
-		Player::MainPlayer->SetPosition({ 100.f, 440.f });
+		//Player::MainPlayer->SetPosition({ 100.f, 440.f });
+		Player::MainPlayer->SetPosition({ 1000.f, 440.f });
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 440.f });
 		IceKirby::IcePlayer->SetPosition({ 100.f, 440.f });
 		SparkKirby::SparkPlayer->SetPosition({ 100.f, 440.f });

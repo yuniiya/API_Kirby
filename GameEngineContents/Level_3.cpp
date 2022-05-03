@@ -12,6 +12,7 @@
 
 #include "ContentsEnum.h"
 #include "PlayUI.h"
+#include "Water.h"
 
 Level_3::Level_3()
 {
@@ -59,6 +60,11 @@ void Level_3::Loading()
 
 		CurStage->GetRenderer()->SetPivot(StageActor);
 	}
+
+	{
+		Water* Water1 = CreateActor<Water>((int)ORDER::STAGEACTOR);
+		Water1->SetPosition({ 2734.f, 425.f });
+	}
 }
 
 void Level_3::Update()
@@ -84,6 +90,7 @@ void Level_3::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	{
 		Player::MainPlayer->SetPosition({ 100.f, 490.f });
+		//Player::MainPlayer->SetPosition({ 2700.f, 490.f });
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 490.f });
 		IceKirby::IcePlayer->SetPosition({ 100.f, 490.f });
 		SparkKirby::SparkPlayer->SetPosition({ 100.f, 490.f });

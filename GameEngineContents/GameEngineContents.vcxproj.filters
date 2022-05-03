@@ -83,9 +83,6 @@
     <ClCompile Include="BigWaddleDee.cpp">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClCompile>
-    <ClCompile Include="Water.cpp">
-      <Filter>Actor\Play\Global\Back</Filter>
-    </ClCompile>
     <ClCompile Include="Grass.cpp">
       <Filter>Actor\Play\Global\Back\Grass</Filter>
     </ClCompile>
@@ -109,6 +106,24 @@
     </ClCompile>
     <ClCompile Include="SparkKirby.cpp">
       <Filter>Actor\Play\Kirby</Filter>
+    </ClCompile>
+    <ClCompile Include="Grass_3.cpp">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="Grass_4.cpp">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="Grass_5.cpp">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="Water.cpp">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="Water_1.cpp">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="Water_2.cpp">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -192,9 +207,6 @@
     <ClInclude Include="BigWaddleDee.h">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClInclude>
-    <ClInclude Include="Water.h">
-      <Filter>Actor\Play\Global\Back</Filter>
-    </ClInclude>
     <ClInclude Include="Grass.h">
       <Filter>Actor\Play\Global\Back\Grass</Filter>
     </ClInclude>
@@ -218,6 +230,24 @@
     </ClInclude>
     <ClInclude Include="SparkKirby.h">
       <Filter>Actor\Play\Kirby</Filter>
+    </ClInclude>
+    <ClInclude Include="Grass_3.h">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClInclude>
+    <ClInclude Include="Grass_4.h">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClInclude>
+    <ClInclude Include="Grass_5.h">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClInclude>
+    <ClInclude Include="Water.h">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClInclude>
+    <ClInclude Include="Water_1.h">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
+    </ClInclude>
+    <ClInclude Include="Water_2.h">
+      <Filter>Actor\Play\Global\Back\Grass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

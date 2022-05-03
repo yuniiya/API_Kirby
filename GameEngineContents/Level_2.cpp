@@ -13,6 +13,9 @@
 #include "ContentsEnum.h"
 #include "PlayUI.h"
 #include "Grass_2.h"
+#include "Grass_3.h"
+#include "Grass_4.h"
+#include "Grass_5.h"
 #include "WaddleDee.h"
 #include "BigWaddleDee.h"
 #include "Scarfy.h"
@@ -69,6 +72,15 @@ void Level_2::Loading()
 		Grass_2* Grass1 = CreateActor<Grass_2>((int)ORDER::STAGEACTOR, "Grass1");
 		Grass1->SetPosition({ 355.f, 513.f });
 
+		Grass_3* Grass2 = CreateActor<Grass_3>((int)ORDER::STAGEACTOR, "Grass2");
+		Grass2->SetPosition({ 2070.f, 513.f });
+
+		Grass_4* Grass3 = CreateActor<Grass_4>((int)ORDER::STAGEACTOR, "Grass3");
+		Grass3->SetPosition({ 4020.f, 514.f });
+
+		Grass_5* Grass4 = CreateActor<Grass_5>((int)ORDER::GRASS, "Grass4");
+		Grass4->SetPosition({ 5201.f, 395.f });
+
 	}
 	
 	// ¸ó½ºÅÍ
@@ -103,6 +115,7 @@ void Level_2::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	{
 		Player::MainPlayer->SetPosition({ 100.f, 490.f });
+		//Player::MainPlayer->SetPosition({ 5200.f, 490.f });
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 490.f });
 		IceKirby::IcePlayer->SetPosition({ 100.f, 490.f });
 		SparkKirby::SparkPlayer->SetPosition({ 100.f, 490.f });
