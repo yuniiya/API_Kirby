@@ -30,6 +30,9 @@ private:
 
 	void DirCheck();
 
+protected:
+	void MonsterColCheck();
+
 private:
 	MonsterDir CurDir_;
 	MonsterDir InputDir_;

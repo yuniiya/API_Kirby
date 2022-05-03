@@ -103,7 +103,7 @@ protected:
 	virtual void SwallowedStart() {};
 
 	virtual void AttackStart() {};
-	virtual void DamagedStart() = 0;
+	virtual void DamagedStart() {};
 
 	// Boss전용
 	virtual void SwallowStart() {};
@@ -119,7 +119,7 @@ protected:
 	virtual void SwallowedUpdate() {};
 
 	virtual void AttackUpdate() {};
-	virtual void DamagedUpdate() = 0;
+	virtual void DamagedUpdate() {};
 
 	// Boss전용
 	virtual void SwallowUpdate() {};

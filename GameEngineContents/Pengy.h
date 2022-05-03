@@ -40,11 +40,9 @@ private:
 	void WalkStart() override;
 	void SwallowedStart() override;
 	void AttackStart() override;
-	void DamagedStart() override;
 
 	void IdleUpdate() override;
 	void WalkUpdate() override;
 	void SwallowedUpdate() override;
 	void AttackUpdate() override;
-	void DamagedUpdate() override;
 };

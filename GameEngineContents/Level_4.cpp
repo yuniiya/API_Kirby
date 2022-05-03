@@ -83,18 +83,20 @@ void Level_4::Update()
 
 void Level_4::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
-	//Player::BgmPlayer.Stop();
+	Player::BgmPlayer.Stop();
 	Player::BgmPlayer = GameEngineSound::SoundPlayControl("Play2.mp3");
 
 	{
 		Player::MainPlayer->SetPosition({ 100.f, 440.f });
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 440.f });
+		IceKirby::IcePlayer->SetPosition({ 100.f, 440.f });
 		SparkKirby::SparkPlayer->SetPosition({ 100.f, 440.f });
 	}
 	
 	{
 		Player::MainPlayer->MapScale(3073.f, 768.f);
 		MetalKirby::MetalPlayer->MapScale(3073.f, 768.f);
+		IceKirby::IcePlayer->MapScale(3073.f, 768.f);
 		SparkKirby::SparkPlayer->MapScale(3073.f, 768.f);
 	}
 	
@@ -106,7 +108,9 @@ void Level_4::LevelChangeEnd(GameEngineLevel* _NextLevel)
 	{
 		Player::MainPlayer->NextLevelOn();
 		MetalKirby::MetalPlayer->NextLevelOn();
+		IceKirby::IcePlayer->NextLevelOn();
 		SparkKirby::SparkPlayer->NextLevelOn();
+
 		PlayUI::MainUI->NextLevelOn();
 	}
 }

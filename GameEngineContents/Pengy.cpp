@@ -35,9 +35,6 @@ void Pengy::ChangeState(MonsterState _State)
 		case MonsterState::Attack:
 			AttackStart();
 			break;
-		case MonsterState::Damaged:
-			DamagedStart();
-			break;
 		}
 	}
 
@@ -60,16 +57,13 @@ void Pengy::MonsterStateUpdate()
 	case MonsterState::Attack:
 		AttackUpdate();
 		break;
-	case MonsterState::Damaged:
-		DamagedUpdate();
-		break;
 	}
 }
 
 void Pengy::Start()
 {
 	// 히트 박스
-	MonsterCollision = CreateCollision("PengyHitBox", { 70, 70 });
+	MonsterCollision = CreateCollision("PengyCol", { 70, 70 });
 
 
 	AnimationRender = CreateRenderer();
@@ -133,10 +127,6 @@ void Pengy::AttackUpdate()
 {
 }
 
-void Pengy::DamagedUpdate()
-{
-}
-
 void Pengy::IdleStart()
 {
 	AnimationName_ = "Idle_";
@@ -159,12 +149,6 @@ void Pengy::SwallowedStart()
 void Pengy::AttackStart()
 {
 	AnimationName_ = "Attack_";
-	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
-}
-
-void Pengy::DamagedStart()
-{
-	AnimationName_ = "Damaged_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
@@ -226,5 +210,19 @@ void Pengy::MonsterColCheck()
 			// (엑터 제외한) 콜리전만 파괴 
 			ColList[i]->Death();
 		}
+	}
+
+	std::vector<GameEngineCollision*> SwallowColList;
+
+	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))
+	{
+		for (size_t i = 0; i < SwallowColList.size(); i++)
+		{
+			// (엑터 제외한) 콜리전만 파괴 
+
+			ChangeState(MonsterState::Swallowed);
+			return;
+		}
+
 	}
 }

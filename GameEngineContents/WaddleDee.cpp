@@ -126,7 +126,7 @@ void WaddleDee::SwallowedUpdate()
 	// 플레이어가 몬스터 왼쪽에 있다
 	if (PlayerPos.x < MonsterPos.x)
 	{
-		MoveDir.x += -0.08f * GameEngineTime::GetDeltaTime();
+		MoveDir.x -= 0.08f * GameEngineTime::GetDeltaTime();
 	}
 	else if (PlayerPos.x > MonsterPos.x)
 	{

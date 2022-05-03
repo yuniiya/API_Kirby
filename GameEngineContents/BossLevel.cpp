@@ -89,12 +89,14 @@ void BossLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	{
 		Player::MainPlayer->SetPosition({ 100.f, 500.f });
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 500.f });
+		IceKirby::IcePlayer->SetPosition({ 100.f, 500.f });
 		SparkKirby::SparkPlayer->SetPosition({ 100.f, 500.f });
 	}
 	
 	{
 		Player::MainPlayer->MapScale(1024.f, 768.f);
 		MetalKirby::MetalPlayer->MapScale(1024.f, 768.f);
+		IceKirby::IcePlayer->MapScale(1024.f, 768.f);
 		SparkKirby::SparkPlayer->MapScale(1024.f, 768.f);
 	}
 	
@@ -108,7 +110,9 @@ void BossLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
 	{
 		Player::MainPlayer->NextLevelOn();
 		MetalKirby::MetalPlayer->NextLevelOn();
+		IceKirby::IcePlayer->NextLevelOn();
 		SparkKirby::SparkPlayer->NextLevelOn();
+
 		PlayUI::MainUI->NextLevelOn();
 	};
 }

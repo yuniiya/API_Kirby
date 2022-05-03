@@ -204,6 +204,9 @@ protected:
 	virtual void DamagedStartStart();
 	virtual void DamagedStart();
 
+	void FullToMetalStart();
+	void MetalTrasformStart();
+
 
 	///////////////////////
 	virtual void IdleUpdate();
@@ -233,6 +236,9 @@ protected:
 	virtual void AttackEndUpdate();
 	virtual void DamagedStartUpdate();
 	virtual void DamagedUpdate();
+
+	void FullToMetalUpdate();
+	void MetalTransfromUpdate();
 	
 
 };

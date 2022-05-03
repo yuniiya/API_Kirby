@@ -636,6 +636,8 @@ void Player::InhaleUpdate()
 
 void Player::FullUpdate()
 {
+	float Time = 0.0f;
+
 	if (true == GameEngineInput::GetInst()->IsPress("Down"))
 	{
 		ChangeState(PlayerState::Swallow);
@@ -653,7 +655,20 @@ void Player::FullUpdate()
 		ChangeState(PlayerState::FullJump);
 		return;
 	}
+
+	
+	//Time += GameEngineTime::GetDeltaTime();
+	//if (1.f <= Time)
+	//{
+	//	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	//	{
+	//		ChangeState(PlayerState::AttackStart);
+	//		return;
+	//	}
+	//}
+	//
 }
+
 
 void Player::FullWalkUpdate()
 {
@@ -772,15 +787,29 @@ void Player::ExhaustedUpdate()
 
 void Player::AttackStartUpdate()
 {
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
 }
 
 void Player::AttackUpdate()
 {
-
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::AttackEnd);
+		return;
+	}
 }
 
 void Player::AttackEndUpdate()
 {
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 
 void Player::DamagedStartUpdate()
@@ -859,6 +888,14 @@ void Player::DamagedUpdate()
 		ChangeState(PlayerState::Idle);
 		return;
 	}
+}
+
+void Player::FullToMetalUpdate()
+{
+}
+
+void Player::MetalTransfromUpdate()
+{
 }
 
 
@@ -1059,6 +1096,14 @@ void Player::DamagedStart()
 
 	AnimationName_ = "Damaged_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Player::FullToMetalStart()
+{
+}
+
+void Player::MetalTrasformStart()
+{
 }
 
 
