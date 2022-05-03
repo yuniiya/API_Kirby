@@ -123,12 +123,12 @@ void BigWaddleDee::SwallowedUpdate()
 	// 플레이어가 몬스터 왼쪽에 있다
 	if (PlayerPos.x < MonsterPos.x)
 	{
-		MoveDir.x -= 2.f * GameEngineTime::GetDeltaTime();
+		MoveDir.x -= 1.5f * GameEngineTime::GetDeltaTime();
 	}
 	else if (PlayerPos.x > MonsterPos.x)
 	{
 		// 몬스터 오른쪽에 있다
-		MoveDir.x += 2.f * GameEngineTime::GetDeltaTime();
+		MoveDir.x += 1.5f * GameEngineTime::GetDeltaTime();
 	}
 
 	SetMove(MoveDir);

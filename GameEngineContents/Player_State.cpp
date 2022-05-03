@@ -8,7 +8,11 @@
 #include <GameEngine/GameEngineCollision.h>
 
 #include <GameEngine/GameEngineLevel.h> // 레벨을 통해서
-#include "Bullet.h" // 총알을 만들고 싶다.
+#include "ContentsEnum.h"
+#include "Effect_Slide.h"
+#include "Effect_RunToStop.h"
+#include "Effect_Exhale.h"
+#include "Effect_Attack.h"
 
 void Player::IdleUpdate()
 {
@@ -79,7 +83,6 @@ void Player::IdleUpdate()
 		SetMove(YMove);
 	}
 
-	
 }
 
 void Player::WalkUpdate()
@@ -174,7 +177,9 @@ void Player::RunUpdate()
 	Move();
 	StagePixelCheck(500.f);
 
+	
 
+	
 
 	// 오르막, 내리막길 
 	//HillPixelCheck();
@@ -420,6 +425,8 @@ void Player::FloatUpdate()
 	{
 		if (true == IsJumpKey())
 		{
+			//GameEngineSound::SoundPlayOneShot("Float.wav");
+
 			ChangeState(PlayerState::Float);
 			return;
 		}
@@ -430,6 +437,7 @@ void Player::FloatUpdate()
 
 	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
+		GameEngineSound::SoundPlayOneShot("Float.wav");
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 	}
 
@@ -916,6 +924,7 @@ void Player::MetalTransfromUpdate()
 
 void Player::IdleStart()
 {
+	RunEffTime_ = 1.f;
 	MoveDir = float4::ZERO;;
 
 	Speed_ = 350.f;
@@ -934,6 +943,16 @@ void Player::WalkStart()
 
 void Player::RunStart()
 {
+	/*Effect_Slide* RunEffect = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
+	RunEffect->SetPosition(GetPosition() + float4{0.f, 10.f});*/
+
+	RunEffct_ = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
+	RunEffct_->SetPosition(GetPosition() + float4{ 0.f, 20.f });
+
+	RunEffTime_ = 1.f;
+
+	GameEngineSound::SoundPlayOneShot("Slide.wav");
+
 	Speed_ = 500.f;
 
 	AnimationName_ = "Run_";
@@ -942,6 +961,8 @@ void Player::RunStart()
 
 void Player::RunToStopStart()
 {
+	GameEngineSound::SoundPlayOneShot("RunToStop.wav");
+
 	Speed_ = 350.f;
 	StopTime_ = 0.3f;
 
@@ -959,6 +980,8 @@ void Player::DownStart()
 
 void Player::SlideStart()
 {
+	GameEngineSound::SoundPlayOneShot("Slide.wav");
+
 	Speed_ = 500.f;
 	SlidingTime_ = 1.2f;
 
@@ -979,6 +1002,8 @@ void Player::SlideStart()
 
 void Player::JumpStart()
 {
+	GameEngineSound::SoundPlayOneShot("Jump.wav");
+
 	//FallTime_ = 0.8f;
 	JumpPower_ = 1000.f;
 	Gravity_ = 1800.f;
@@ -992,6 +1017,8 @@ void Player::JumpStart()
 
 void Player::FloatStart()
 {
+	
+
 	//FallTime_ = 0.8f;
 	Speed_ = 3.f;
 	Gravity_ = 300.f;
@@ -1013,6 +1040,8 @@ void Player::FallStart()
 
 void Player::FallToBounceStart()
 {
+	GameEngineSound::SoundPlayOneShot("Jump.wav");
+
 	Gravity_ = 0.0f;
 
 	MoveDir = float4::ZERO;
@@ -1031,6 +1060,8 @@ void Player::BounceToIdleStart()
 
 void Player::InhaleStart()
 {
+	GameEngineSound::SoundPlayOneShot("Inhale.wav");
+
 	InhaleTime_ = 2.f;
 
 	AnimationName_ = "Inhale_";
@@ -1039,6 +1070,8 @@ void Player::InhaleStart()
 
 void Player::FullStart()
 {
+	GameEngineSound::SoundPlayOneShot("Full.wav");
+
 	AnimationName_ = "Full_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
@@ -1059,6 +1092,8 @@ void Player::FullWalkStart()
 
 void Player::FullJumpStart()
 {
+	GameEngineSound::SoundPlayOneShot("Jump.wav");
+
 	JumpPower_ = 1000.f;
 	Gravity_ = 1800.f;
 
@@ -1071,6 +1106,8 @@ void Player::FullJumpStart()
 
 void Player::ExhaleStart()
 {
+	GameEngineSound::SoundPlayOneShot("Exhale.wav");
+
 	MoveDir = float4::ZERO;
 
 	AnimationName_ = "Exhale_";
@@ -1079,6 +1116,8 @@ void Player::ExhaleStart()
 
 void Player::SwallowStart()
 {
+	GameEngineSound::SoundPlayOneShot("Swallow.wav");
+
 	AnimationName_ = "Swallow_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
@@ -1097,6 +1136,8 @@ void Player::AttackStartStart()
 
 void Player::AttackStart()
 {
+	GameEngineSound::SoundPlayOneShot("Attack.wav");
+
 	AnimationName_ = "Attack_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
@@ -1117,6 +1158,8 @@ void Player::DamagedStartStart()
 
 void Player::DamagedStart()
 {
+	GameEngineSound::SoundPlayOneShot("Damaged2.wav");
+
 	MoveDir = float4::ZERO;
 
 	AnimationName_ = "Damaged_";

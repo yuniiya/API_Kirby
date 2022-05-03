@@ -79,7 +79,7 @@ void SparkKirby::Start()
 
 		// Float
 		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Float_Left", 61, 65, 0.05f, true);
-		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Float_Left_Loop", 66, 91, 0.06f, true);
+		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Float_Left_Loop", 66, 90, 0.06f, true);
 
 		// Exhale
 		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "Exhale_Left", 95, 96, 0.05f, true);
@@ -110,7 +110,7 @@ void SparkKirby::Start()
 
 		// Float
 		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Float_Right", 61, 65, 0.05f, true);
-		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Float_Right_Loop", 66, 91, 0.06f, true);
+		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Float_Right_Loop", 66, 90, 0.06f, true);
 
 		// Exhale
 		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "Exhale_Right", 95, 96, 0.05f, true);
@@ -294,7 +294,7 @@ void SparkKirby::DirAnimationCheck()
 		}
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
 	{
 		if (CheckDir_ == PlayerDir::Left)
 		{
@@ -373,7 +373,7 @@ void SparkKirby::IdleUpdate()
 		return;
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
 	{
 		ChangeState(PlayerState::AttackStart);
 		return;
@@ -432,9 +432,9 @@ void SparkKirby::WalkUpdate()
 		return;
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
 	{
-		ChangeState(PlayerState::Inhale);
+		ChangeState(PlayerState::AttackStart);
 		return;
 	}
 
@@ -640,7 +640,7 @@ void SparkKirby::JumpUpdate()
 	// 일정 높이 될 때까지 Pause
 	if (YPos.y = -500.f)
 	{
-		if (0 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+		if (20 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
 		{
 			PlayerAnimationRender->PauseOn();
 		}
@@ -716,6 +716,7 @@ void SparkKirby::FloatUpdate()
 	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+		GameEngineSound::SoundPlayOneShot("Float.wav");
 	}
 
 	// Float상태에서 이동
@@ -889,7 +890,7 @@ void SparkKirby::AttackStartUpdate()
 
 void SparkKirby::AttackUpdate()
 {
-	if (true == GameEngineInput::GetInst()->IsFree("Inhale"))
+	if (true == GameEngineInput::GetInst()->IsFree("Attack"))
 	{
 		ChangeState(PlayerState::AttackEnd);
 		return;
@@ -925,6 +926,8 @@ void SparkKirby::WalkStart()
 
 void SparkKirby::RunStart()
 {
+	GameEngineSound::SoundPlayOneShot("Slide.wav");
+
 	Speed_ = 500.f;
 
 	AnimationName_ = "Run_";
@@ -933,6 +936,8 @@ void SparkKirby::RunStart()
 
 void SparkKirby::RunToStopStart()
 {
+	GameEngineSound::SoundPlayOneShot("RunToStop.wav");
+
 	Speed_ = 350.f;
 	StopTime_ = 0.3f;
 
@@ -950,6 +955,8 @@ void SparkKirby::DownStart()
 
 void SparkKirby::SlideStart()
 {
+	GameEngineSound::SoundPlayOneShot("Slide.wav");
+
 	Speed_ = 500.f;
 	SlidingTime_ = 1.2f;
 
@@ -970,6 +977,8 @@ void SparkKirby::SlideStart()
 
 void SparkKirby::JumpStart()
 {
+	GameEngineSound::SoundPlayOneShot("Jump.wav");
+
 	//FallTime_ = 0.8f;
 	JumpPower_ = 1000.f;
 	Gravity_ = 1800.f;
@@ -1004,6 +1013,8 @@ void SparkKirby::FallStart()
 
 void SparkKirby::FallToBounceStart()
 {
+	GameEngineSound::SoundPlayOneShot("Jump.wav");
+
 	Gravity_ = 0.0f;
 
 	MoveDir = float4::ZERO;
@@ -1022,24 +1033,32 @@ void SparkKirby::BounceToIdleStart()
 
 void SparkKirby::ExhaleStart()
 {
+	GameEngineSound::SoundPlayOneShot("Exhale.wav");
+
 	AnimationName_ = "Exhale_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void SparkKirby::AttackStartStart()
 {
+	GameEngineSound::SoundPlayOneShot("Spark3.wav");
+
 	AnimationName_ = "AttackStart_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void SparkKirby::AttackStart()
 {
+	GameEngineSound::SoundPlayOneShot("Spark2.wav");
+
 	AnimationName_ = "Attack_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void SparkKirby::AttackEndStart()
 {
+	GameEngineSound::SoundPlayOneShot("Spark.wav");
+
 	AnimationName_ = "AttackStart_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }

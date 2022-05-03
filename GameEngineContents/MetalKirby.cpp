@@ -278,7 +278,7 @@ void MetalKirby::DirAnimationCheck()
 		}
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
 	{
 		if (CheckDir_ == PlayerDir::Left)
 		{
@@ -343,7 +343,7 @@ void MetalKirby::IdleUpdate()
 		return;
 	}
 
-	if (true == GameEngineInput::GetInst()->IsDown("Inhale"))
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
 	{
 		ChangeState(PlayerState::Attack);
 		return;
@@ -373,7 +373,10 @@ void MetalKirby::WalkUpdate()
 		return;
 	}
 
+	MoveDir = float4::ZERO;
+
 	Move();
+
 	StagePixelCheck(Speed_);
 
 	// 오르막, 내리막길 
@@ -487,6 +490,7 @@ void MetalKirby::JumpUpdate()
 	// 바닥에 닿았다
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
+		GameEngineSound::SoundPlayOneShot("Metal1.wav");
 		MoveDir = float4::ZERO;
 		ChangeState(PlayerState::Idle);
 		return;
@@ -605,6 +609,7 @@ void MetalKirby::FloatUpdate()
 
 	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
+		GameEngineSound::SoundPlayOneShot("Float.wav");
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 	}
 
@@ -675,7 +680,7 @@ void MetalKirby::AttackUpdate()
 {
 	PlayerAnimationRender->PauseOn();
 
-	if (true == GameEngineInput::GetInst()->IsDown("Inhale"))
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
 	{
 		ChangeState(PlayerState::Idle);
 		return;
@@ -749,6 +754,8 @@ void MetalKirby::DownStart()
 
 void MetalKirby::SlideStart()
 {
+	GameEngineSound::SoundPlayOneShot("Slide.wav");
+
 	Speed_ = 400.f;
 	SlidingTime_ = 1.2f;
 
@@ -768,6 +775,8 @@ void MetalKirby::SlideStart()
 
 void MetalKirby::JumpStart()
 {
+	GameEngineSound::SoundPlayOneShot("Jump.wav");
+
 	MoveDir = float4::UP * JumpPower_;
 	Gravity_ = 2000.f;
 
@@ -785,6 +794,8 @@ void MetalKirby::FallStart()
 
 void MetalKirby::FallToBounceStart()
 {
+	GameEngineSound::SoundPlayOneShot("Metal1.wav");
+
 	Gravity_ = 0.0f;
 	MoveDir = float4::ZERO;
 
@@ -813,12 +824,16 @@ void MetalKirby::FloatStart()
 
 void MetalKirby::ExhaleStart()
 {
+	GameEngineSound::SoundPlayOneShot("Exhale.wav");
+
 	AnimationName_ = "Exhale_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void MetalKirby::AttackStart()
 {
+	GameEngineSound::SoundPlayOneShot("Metal1.wav");
+
 	AnimationName_ = "Attack_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }

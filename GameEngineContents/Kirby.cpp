@@ -89,9 +89,9 @@ void Kirby::GameInit()
 			EffectLeft2->CutCount(5, 2);
 			GameEngineImage* EffectRight2 = GameEngineImageManager::GetInst()->Find("Effect_Slide_Right.bmp");
 			EffectRight2->CutCount(5, 2);
-			GameEngineImage* EffectLeft3 = GameEngineImageManager::GetInst()->Find("Effect_Run_Left.bmp");
+			GameEngineImage* EffectLeft3 = GameEngineImageManager::GetInst()->Find("Effect_RunToStop_Left.bmp");
 			EffectLeft3->CutCount(5, 1);
-			GameEngineImage* EffectRight3 = GameEngineImageManager::GetInst()->Find("Effect_Run_Right.bmp");
+			GameEngineImage* EffectRight3 = GameEngineImageManager::GetInst()->Find("Effect_RunToStop_Right.bmp");
 			EffectRight3->CutCount(5, 1);
 			GameEngineImage* EffectLeft4 = GameEngineImageManager::GetInst()->Find("Effect_Ice_Left.bmp");
 			EffectLeft4->CutCount(10, 2);
@@ -303,6 +303,21 @@ void Kirby::ResourceLoad()
 		ResourcesDir.Move("Resources");
 		ResourcesDir.Move("Sound");
 		//ResourcesDir.Move("EffectSound");
+
+		std::vector<GameEngineFile> AllImageFileList = ResourcesDir.GetAllFile();
+
+		for (size_t i = 0; i < AllImageFileList.size(); i++)
+		{
+			GameEngineSound::LoadRes(AllImageFileList[i].GetFullPath());
+		}
+	}
+
+	{
+		GameEngineDirectory ResourcesDir;
+		ResourcesDir.MoveParent("API");
+		ResourcesDir.Move("Resources");
+		ResourcesDir.Move("Sound");
+		ResourcesDir.Move("EffectSound");
 
 		std::vector<GameEngineFile> AllImageFileList = ResourcesDir.GetAllFile();
 

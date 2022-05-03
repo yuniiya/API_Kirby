@@ -18,17 +18,6 @@ void Grass::Start()
 
 	GameEngineImage* Grass1 = GameEngineImageManager::GetInst()->Find("Grass1-1.bmp");
 	Grass1->CutCount(1, 4);
-	//GameEngineImage* Grass2 = GameEngineImageManager::GetInst()->Find("Grass1-2.bmp");
-	//Grass2->CutCount(1, 4);
-	//GameEngineImage* Grass3 = GameEngineImageManager::GetInst()->Find("Grass2-1.bmp");
-	//Grass3->CutCount(1, 4);
-	//GameEngineImage* Grass4 = GameEngineImageManager::GetInst()->Find("Grass2-2.bmp");
-	//Grass4->CutCount(1, 4);
-	//GameEngineImage* Grass5 = GameEngineImageManager::GetInst()->Find("Grass2-3.bmp");
-	//Grass5->CutCount(1, 4);
-	//GameEngineImage* Grass6 = GameEngineImageManager::GetInst()->Find("Grass2-4.bmp");
-	//Grass6->CutCount(1, 4);
-
 
 	SetScale(GameEngineWindow::GetScale());
 

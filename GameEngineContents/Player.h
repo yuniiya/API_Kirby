@@ -2,6 +2,7 @@
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngineBase/GameEngineSound.h>
 #include "Stage.h"
+#include "Effect_Slide.h"
 
 class GameEngineImage;
 class GameEngineCollision;
@@ -99,8 +100,12 @@ protected:
 	std::string AnimationName_;
 	std::string ChangeDirText_;
 	
-
 	void CameraFix();
+
+protected:
+	GameEngineRenderer* RunEffectRenderer_;
+
+	Effect_Slide* RunEffct_;
 
 
 protected:
@@ -118,6 +123,8 @@ protected:
 	float InhaleTime_;
 	float FallTime_;
 
+	// Effect
+	float RunEffTime_;
 
 	// 스테이지 관련
 	float MapScaleX_;

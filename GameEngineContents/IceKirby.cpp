@@ -294,7 +294,7 @@ void IceKirby::DirAnimationCheck()
 		}
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
 	{
 		if (CheckDir_ == PlayerDir::Left)
 		{
@@ -373,7 +373,7 @@ void IceKirby::IdleUpdate()
 		return;
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
 	{
 		ChangeState(PlayerState::AttackStart);
 		return;
@@ -432,7 +432,7 @@ void IceKirby::WalkUpdate()
 		return;
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
 	{
 		ChangeState(PlayerState::AttackStart);
 		return;
@@ -676,7 +676,7 @@ void IceKirby::JumpUpdate()
 	// 일정 높이 될 때까지 Pause
 	if (YPos.y = -500.f)
 	{
-		if (0 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
+		if (6 == PlayerAnimationRender->CurrentAnimation()->WorldCurrentFrame())
 		{
 			PlayerAnimationRender->PauseOn();
 		}
@@ -751,6 +751,7 @@ void IceKirby::FloatUpdate()
 
 	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
+		GameEngineSound::SoundPlayOneShot("Float.wav");
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 	}
 
@@ -926,7 +927,7 @@ void IceKirby::AttackStartUpdate()
 
 void IceKirby::AttackUpdate()
 {
-	if (true == GameEngineInput::GetInst()->IsFree("Inhale"))
+	if (true == GameEngineInput::GetInst()->IsFree("Attack"))
 	{
 		ChangeState(PlayerState::AttackEnd);
 		return;
@@ -963,6 +964,8 @@ void IceKirby::WalkStart()
 
 void IceKirby::RunStart()
 {
+	GameEngineSound::SoundPlayOneShot("Slide.wav");
+
 	Speed_ = 500.f;
 
 	AnimationName_ = "Run_";
@@ -971,6 +974,8 @@ void IceKirby::RunStart()
 
 void IceKirby::RunToStopStart()
 {
+	GameEngineSound::SoundPlayOneShot("RunToStop.wav");
+
 	Speed_ = 350.f;
 	StopTime_ = 0.3f;
 
@@ -988,6 +993,8 @@ void IceKirby::DownStart()
 
 void IceKirby::SlideStart()
 {
+	GameEngineSound::SoundPlayOneShot("Slide.wav");
+
 	Speed_ = 500.f;
 	SlidingTime_ = 1.2f;
 
@@ -1008,6 +1015,8 @@ void IceKirby::SlideStart()
 
 void IceKirby::JumpStart()
 {
+	GameEngineSound::SoundPlayOneShot("Jump.wav");
+
 	//FallTime_ = 0.8f;
 	JumpPower_ = 1000.f;
 	Gravity_ = 1800.f;
@@ -1042,6 +1051,8 @@ void IceKirby::FallStart()
 
 void IceKirby::FallToBounceStart()
 {
+	GameEngineSound::SoundPlayOneShot("Jump.wav");
+
 	Gravity_ = 0.0f;
 
 	MoveDir = float4::ZERO;
@@ -1060,6 +1071,8 @@ void IceKirby::BounceToIdleStart()
 
 void IceKirby::ExhaleStart()
 {
+	GameEngineSound::SoundPlayOneShot("Exhale.wav");
+
 	AnimationName_ = "Exhale_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }

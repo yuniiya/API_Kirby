@@ -125,6 +125,21 @@
     <ClCompile Include="Water_2.cpp">
       <Filter>Actor\Play\Global\Back\Grass</Filter>
     </ClCompile>
+    <ClCompile Include="Effect_Slide.cpp">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Exhale.cpp">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Ice.cpp">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_RunToStop.cpp">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Attack.cpp">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Kirby.h" />
@@ -249,6 +264,21 @@
     <ClInclude Include="Water_2.h">
       <Filter>Actor\Play\Global\Back\Grass</Filter>
     </ClInclude>
+    <ClInclude Include="Effect_Slide.h">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_Exhale.h">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_Ice.h">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_RunToStop.h">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_Attack.h">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level">
@@ -295,6 +325,9 @@
     </Filter>
     <Filter Include="Actor\Play\Monster\Skilled">
       <UniqueIdentifier>{689bf6ac-a095-4768-ad57-65a7a0c20165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Play\Effect">
+      <UniqueIdentifier>{b4f8f212-580c-435b-b69f-c79f78845c61}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
