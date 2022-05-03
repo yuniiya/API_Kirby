@@ -83,7 +83,7 @@ void Level_4::Update()
 
 void Level_4::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
-	Player::BgmPlayer.Stop();
+	//Player::BgmPlayer.Stop();
 	Player::BgmPlayer = GameEngineSound::SoundPlayControl("Play2.mp3");
 
 	{

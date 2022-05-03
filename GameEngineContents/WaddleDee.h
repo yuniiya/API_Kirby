@@ -16,6 +16,7 @@ public:
 
 private:
 	float Speed_;
+	float DamagedTime_;
 
 public:
 
@@ -31,6 +32,7 @@ private:
 protected:
 	void WallPixelCheck(float _x, float _Speed);
 	void MonsterColCheck();
+	void InhaleColCheck();
 
 protected:
 	void Start() override;

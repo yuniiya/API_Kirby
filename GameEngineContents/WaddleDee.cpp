@@ -126,12 +126,12 @@ void WaddleDee::SwallowedUpdate()
 	// 플레이어가 몬스터 왼쪽에 있다
 	if (PlayerPos.x < MonsterPos.x)
 	{
-		MoveDir.x -= 0.08f * GameEngineTime::GetDeltaTime();
+		MoveDir.x -= 2.f * GameEngineTime::GetDeltaTime();
 	}
 	else if (PlayerPos.x > MonsterPos.x)
 	{
 		// 몬스터 오른쪽에 있다
-		MoveDir.x += 0.08f * GameEngineTime::GetDeltaTime();
+		MoveDir.x += 2.f * GameEngineTime::GetDeltaTime();
 	}
 
 	SetMove(MoveDir);
@@ -140,10 +140,9 @@ void WaddleDee::SwallowedUpdate()
 
 void WaddleDee::DamagedUpdate()
 {
-	float Time = 0.0f;
-	Time += GameEngineTime::GetDeltaTime();
+	DamagedTime_ -= GameEngineTime::GetDeltaTime();
 
-	if (1.f >= Time)
+	if (DamagedTime_ < 0)
 	{
 		Death();
 	}
@@ -158,12 +157,16 @@ void WaddleDee::WalkStart()
 
 void WaddleDee::SwallowedStart()
 {
+	MoveDir = float4::ZERO;
+
 	AnimationName_ = "Swallowed_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void WaddleDee::DamagedStart()
 {
+	DamagedTime_ = 1.f;
+
 	AnimationName_ = "Damaged_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }

@@ -636,7 +636,6 @@ void Player::InhaleUpdate()
 
 void Player::FullUpdate()
 {
-	float Time = 0.0f;
 
 	if (true == GameEngineInput::GetInst()->IsPress("Down"))
 	{
@@ -656,17 +655,11 @@ void Player::FullUpdate()
 		return;
 	}
 
-	
-	//Time += GameEngineTime::GetDeltaTime();
-	//if (1.f <= Time)
-	//{
-	//	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
-	//	{
-	//		ChangeState(PlayerState::AttackStart);
-	//		return;
-	//	}
-	//}
-	//
+	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
+	{
+		ChangeState(PlayerState::AttackStart);
+		return;
+	}
 }
 
 
@@ -688,7 +681,7 @@ void Player::FullWalkUpdate()
 		return;
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("Inhale"))
+	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
 	{
 		ChangeState(PlayerState::AttackStart);
 		return;
@@ -739,7 +732,31 @@ void Player::FullWalkUpdate()
 
 void Player::FullJumpUpdate()
 {
+	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
+	{
+		ChangeState(PlayerState::AttackStart);
+		return;
+	}
+
 	MonsterColCheck();
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
+	float4 YPos = { 0.0f, MoveDir.y };
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir = float4{ -300.0f, MoveDir.y };
+	}
+	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		MoveDir = float4{ 300.0f, MoveDir.y };
+	}
+
+	// 중력
+	GravityOn();
+
+	// 양옆 + 위 체크 
+	MovePixelCheck(20.0f, 20.0f);
 }
 
 void Player::ExhaleUpdate()
@@ -814,18 +831,6 @@ void Player::AttackEndUpdate()
 
 void Player::DamagedStartUpdate()
 {
-	//PlayerAnimationRender->PauseOn();
-
-	//float Time = 0.0f;
-
-	//Time += GameEngineTime::GetDeltaTime();
-
-	//if (1.f >= Time)
-	//{
-	//	ChangeState(PlayerState::Damaged);
-	//	return;
-	//}
-
 	if (CurDir_ == PlayerDir::Right)
 	{
 		MoveDir.x = -0.5f;
@@ -842,17 +847,6 @@ void Player::DamagedStartUpdate()
 		ChangeState(PlayerState::Damaged);
 		return;
 	}
-
-
-	//if (1.8f <= GetAccTime())
-	//{
-	//	ReSetAccTime();
-
-	//	ChangeState(PlayerState::Damaged);
-	//	return;
-	//}
-
-	
 }
 
 void Player::DamagedUpdate()

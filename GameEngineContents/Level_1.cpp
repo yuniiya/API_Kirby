@@ -134,7 +134,7 @@ void Level_1::Update()
 
 void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
-	Player::BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
+	//Player::BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
 
 	{
 		Player::MainPlayer->SetPosition({ 100.f, 520.f });
