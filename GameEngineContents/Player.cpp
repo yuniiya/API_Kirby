@@ -18,6 +18,7 @@
 #include "ContentsEnum.h"
 #include "Monster.h"
 #include "Scarfy.h"
+#include "Effect_ReleaseSkill.h"
 
 Player* Player::MainPlayer = nullptr;
 GameEngineSoundPlayer Player::BgmPlayer;
@@ -553,7 +554,9 @@ void Player::InhaleColCheck()
 				ColList[i]->GetActor()->Death();
 			}*/
 
+		InhaleEffect_->Death();
 		InhaleEffSound_.Stop();
+
 		ChangeState(PlayerState::Full);
 		return;
 
@@ -855,6 +858,25 @@ void Player::DefaultKirbyUpdate()
 	else if (CurSkill_ == KirbySkill::Spark)
 	{
 		SparkKirby::SparkPlayer->Off();
+	}
+
+	// 스킬 해제 사운드
+	GameEngineSound::SoundPlayOneShot("Release1.wav");
+
+	{
+		Effect_ReleaseSkill* Effect = GetLevel()->CreateActor<Effect_ReleaseSkill>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition());
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition());
+			Effect->SetDir(EffectDir::Left);
+		}
 	}
 
 	MainPlayer->SetPosition(GetPosition());

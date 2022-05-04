@@ -5,6 +5,7 @@
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineImageManager.h>
 #include <GameEngine/GameEngineCollision.h>
+#include "Effect_MonsterDeath.h"
 
 
 Scarfy::Scarfy()
@@ -202,6 +203,12 @@ void Scarfy::DamagedUpdate()
 	if (DamagedTime_ < 0)
 	{
 		Death();
+		{
+			GameEngineSound::SoundPlayOneShot("Damaged.wav");
+
+			Effect_MonsterDeath* Effect = GetLevel()->CreateActor<Effect_MonsterDeath>((int)ORDER::EFFECT);
+			Effect->SetPosition(GetPosition());
+		}
 	}
 }
 

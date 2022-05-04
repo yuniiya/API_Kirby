@@ -4,6 +4,7 @@
 #include "Stage.h"
 #include "Effect_Attack.h"
 #include "Effect_Star.h"
+#include "Effect_Inhale.h"
 
 class GameEngineImage;
 class GameEngineCollision;
@@ -106,6 +107,7 @@ protected:
 protected:
 	Effect_Attack* AttEffect_;
 	Effect_Star* StarEffect_;
+	Effect_Inhale* InhaleEffect_;
 
 	GameEngineSoundPlayer FloatEffSound_;
 	GameEngineSoundPlayer InhaleEffSound_;

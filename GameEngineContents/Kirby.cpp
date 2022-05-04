@@ -103,6 +103,11 @@ void Kirby::GameInit()
 			EffectLeft4->CutCount(10, 2);
 			GameEngineImage* EffectRight4 = GameEngineImageManager::GetInst()->Find("Effect_Ice_Right.bmp");
 			EffectRight4->CutCount(10, 2);
+			GameEngineImage* EffectLeft5 = GameEngineImageManager::GetInst()->Find("Effect_Inhale_Left.bmp");
+			EffectLeft5->CutCount(5, 1);
+			GameEngineImage* EffectRight5 = GameEngineImageManager::GetInst()->Find("Effect_Inhale_Right.bmp");
+			EffectRight5->CutCount(5, 1);
+
 		}
 
 		// Monster

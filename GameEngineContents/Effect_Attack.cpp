@@ -5,6 +5,9 @@
 
 Effect_Attack::Effect_Attack()
 	: AnimationRenderer_(nullptr)
+	, AttackCollision_(nullptr)
+	, MapColImage_(nullptr)
+	, Dir_(EffectDir::Right)
 {
 
 }

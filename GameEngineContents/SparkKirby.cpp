@@ -19,6 +19,7 @@
 #include "Effect_Slide.h"
 #include "Effect_RunToStop.h"
 #include "Effect_Star.h"
+#include "Effect_Exhale.h"
 
 SparkKirby* SparkKirby::SparkPlayer = nullptr;
 
@@ -63,6 +64,8 @@ void SparkKirby::LevelChangeStart(GameEngineLevel* _PrevLevel)
 void SparkKirby::Start()
 {
 	PlayerCollision = CreateCollision("PlayerHitBox", { 70, 70 });
+	SparkAttackCollision_ = CreateCollision("SparkAttackCol", { 150.f,150.f });
+	SparkAttackCollision_->Off();
 
 	// 애니메이션을 하나라도 만들면 애니메이션이 재생된다.
 	PlayerAnimationRender = CreateRenderer();
@@ -889,6 +892,8 @@ void SparkKirby::AttackStartUpdate()
 {
 	if (PlayerAnimationRender->IsEndAnimation())
 	{
+		SparkAttackCollision_->On();
+
 		ChangeState(PlayerState::Attack);
 		return;
 	}
@@ -898,6 +903,11 @@ void SparkKirby::AttackUpdate()
 {
 	if (true == GameEngineInput::GetInst()->IsFree("Attack"))
 	{
+		AttackEffSound_.Stop();
+		AttackEffSoundMid_.Stop();
+
+		SparkAttackCollision_->Off();
+
 		ChangeState(PlayerState::AttackEnd);
 		return;
 	}
@@ -932,6 +942,21 @@ void SparkKirby::WalkStart()
 
 void SparkKirby::RunStart()
 {
+	{
+		Effect_Slide* Effect = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition() + float4{ -40.f, 40.f });
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition() + float4{ 40.f, 40.f });
+			Effect->SetDir(EffectDir::Left);
+		}
+	}
 	GameEngineSound::SoundPlayOneShot("Slide.wav");
 
 	Speed_ = 500.f;
@@ -942,6 +967,21 @@ void SparkKirby::RunStart()
 
 void SparkKirby::RunToStopStart()
 {
+	{
+		Effect_RunToStop* Effect = GetLevel()->CreateActor<Effect_RunToStop>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition() + float4{ -40.f, 50.f });
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition() + float4{ 40.f, 50.f });
+			Effect->SetDir(EffectDir::Left);
+		}
+	}
 	GameEngineSound::SoundPlayOneShot("RunToStop.wav");
 
 	Speed_ = 350.f;
@@ -961,6 +1001,21 @@ void SparkKirby::DownStart()
 
 void SparkKirby::SlideStart()
 {
+	{
+		Effect_Slide* Effect = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition() + float4{ -45.f, 40.f });
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition() + float4{ 45.f, 40.f });
+			Effect->SetDir(EffectDir::Left);
+		}
+	}
 	GameEngineSound::SoundPlayOneShot("Slide.wav");
 
 	Speed_ = 500.f;
@@ -1041,6 +1096,21 @@ void SparkKirby::BounceToIdleStart()
 
 void SparkKirby::ExhaleStart()
 {
+	{
+		Effect_Exhale* Effect = GetLevel()->CreateActor<Effect_Exhale>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition() + float4{ 80.f, 55.f });
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition() + float4{ -80.f, 55.f });
+			Effect->SetDir(EffectDir::Left);
+		}
+	}
 	GameEngineSound::SoundPlayOneShot("Exhale.wav");
 
 	AnimationName_ = "Exhale_";
@@ -1057,7 +1127,10 @@ void SparkKirby::AttackStartStart()
 
 void SparkKirby::AttackStart()
 {
-	GameEngineSound::SoundPlayOneShot("Spark2.wav");
+	AttackEffSound_.Stop();
+	AttackEffSoundMid_.Stop();
+	AttackEffSound_ = GameEngineSound::SoundPlayControl("Spark2.wav");
+	AttackEffSoundMid_ = GameEngineSound::SoundPlayControl("Spark3.wav");
 
 	AnimationName_ = "Attack_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);

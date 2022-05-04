@@ -19,6 +19,7 @@
 #include "Scarfy.h"
 #include "Effect_Slide.h"
 #include "Effect_Star.h"
+#include "Effect_Exhale.h"
 
 MetalKirby* MetalKirby::MetalPlayer = nullptr;
 
@@ -30,6 +31,7 @@ MetalKirby::MetalKirby()
 	, Gravity_(1800.f)
 	, StopTime_(1.f)
 	, DownTime_(0.5f)
+	, SlidingTime_(1.2f)
 {
 
 }
@@ -40,15 +42,12 @@ MetalKirby::~MetalKirby()
 
 void MetalKirby::MonsterColCheck()
 {
-	std::vector<GameEngineCollision*> ColList;
+	//std::vector<GameEngineCollision*> ColList;
 
-	if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
-	{
-		for (size_t i = 0; i < ColList.size(); i++)
-		{
-			ColList[i]->Death();
-		}
-	}
+	//if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
+	//{
+	//	GameEngineSound::SoundPlayOneShot("Damaged2.wav");
+	//}
 }
 
 void MetalKirby::LevelChangeStart(GameEngineLevel* _PrevLevel)
@@ -60,7 +59,7 @@ void MetalKirby::Start()
 {
 	//SetScale({ 1000, 1000 });
 
-	PlayerCollision = CreateCollision("PlayerHitBox", { 70, 70 }, {});
+	PlayerCollision = CreateCollision("MetalCol", { 70, 70 });
 
 	// 애니메이션을 하나라도 만들면 애니메이션이 재생된다.
 	PlayerAnimationRender = CreateRenderer();
@@ -691,6 +690,7 @@ void MetalKirby::AttackUpdate()
 
 	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
 	{
+		GameEngineSound::SoundPlayOneShot("MetalAttack3.wav");
 		ChangeState(PlayerState::Idle);
 		return;
 	}
@@ -770,6 +770,21 @@ void MetalKirby::DownStart()
 
 void MetalKirby::SlideStart()
 {
+	{
+		Effect_Slide* Effect = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition() + float4{ -45.f, 40.f });
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition() + float4{ 45.f, 40.f });
+			Effect->SetDir(EffectDir::Left);
+		}
+	}
 	GameEngineSound::SoundPlayOneShot("Slide.wav");
 
 	Speed_ = 400.f;
@@ -843,6 +858,21 @@ void MetalKirby::FloatStart()
 
 void MetalKirby::ExhaleStart()
 {
+	{
+		Effect_Exhale* Effect = GetLevel()->CreateActor<Effect_Exhale>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition() + float4{ 80.f, 55.f });
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition() + float4{ -80.f, 55.f });
+			Effect->SetDir(EffectDir::Left);
+		}
+	}
 	GameEngineSound::SoundPlayOneShot("Exhale.wav");
 
 	AnimationName_ = "Exhale_";
@@ -851,7 +881,7 @@ void MetalKirby::ExhaleStart()
 
 void MetalKirby::AttackStart()
 {
-	GameEngineSound::SoundPlayOneShot("Metal1.wav");
+	GameEngineSound::SoundPlayOneShot("MetalAttack3.wav");
 
 	AnimationName_ = "Attack_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);

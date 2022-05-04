@@ -5,6 +5,7 @@
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineImageManager.h>
 #include <GameEngine/GameEngineCollision.h>
+#include "Effect_MonsterDeath.h"
 
 WaddleDee::WaddleDee()
 	: Speed_(50.f)
@@ -161,7 +162,16 @@ void WaddleDee::DamagedUpdate()
 	if (DamagedTime_ < 0)
 	{
 		Death();
+
+		{
+			GameEngineSound::SoundPlayOneShot("Damaged.wav");
+
+			Effect_MonsterDeath* Effect = GetLevel()->CreateActor<Effect_MonsterDeath>((int)ORDER::EFFECT);
+			Effect->SetPosition(GetPosition());
+		}
 	}
+
+
 }
 
 void WaddleDee::WalkStart()
@@ -236,6 +246,7 @@ void WaddleDee::WallPixelCheck(float _x, float _Speed)
 
 void WaddleDee::MonsterColCheck()
 {
+	// Èí¼ö¿¡ ´ê¾ÒÀ» ¶§ -> Swallowed
 	std::vector<GameEngineCollision*> SwallowColList;
 
 	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))
@@ -249,7 +260,7 @@ void WaddleDee::MonsterColCheck()
 		}
 	}
 
-
+	// »ïÄÑÁö°í ÀÖ´Â ÁßÀÌ¸é Death·Î Ã³¸®
 	if (CurState_ == MonsterState::Swallowed)
 	{
 		if (5.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
@@ -257,6 +268,7 @@ void WaddleDee::MonsterColCheck()
 			Death();
 		}
 	}
+
 
 	std::vector<GameEngineCollision*> ColList;
 
@@ -272,6 +284,16 @@ void WaddleDee::MonsterColCheck()
 		return;
 	}
 
+	// ¸ÞÅ» 
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == MonsterCollision->CollisionResult("MetalCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			ChangeState(MonsterState::Damaged);
+			return;
+		}
+	}
 
 }
 

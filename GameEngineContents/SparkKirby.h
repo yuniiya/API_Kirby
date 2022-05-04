@@ -32,6 +32,8 @@ protected:
 	GameEngineRenderer* PlayerAnimationRender;
 
 	GameEngineSoundPlayer FloatEffSound_;
+	GameEngineSoundPlayer AttackEffSound_;
+	GameEngineSoundPlayer AttackEffSoundMid_;
 
 private:
 	float Speed_;
@@ -46,7 +48,7 @@ private:
 
 private:
 	// Ãæµ¹
-	//GameEngineCollision* PlayerCollision;
+	GameEngineCollision* SparkAttackCollision_;
 
 
 	void MonsterColCheck() override;

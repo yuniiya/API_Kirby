@@ -22,9 +22,10 @@ public:
 	//PlayerDir CurDir_;
 	EffectDir Dir_;
 
-
 	std::string AnimationName_;
 	std::string ChangeDirText_;
+
+	GameEngineCollision* AttackCollision_;
 
 public:
 	void SetDir(EffectDir _Dir)

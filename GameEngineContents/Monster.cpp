@@ -11,6 +11,9 @@ Monster::Monster()
 	, Gravity_(100.f)
 	, CurDir_(MonsterDir::Left)
 	, CurState_(MonsterState::Idle)
+	, InputDir_(CurDir_)
+	, MapColImage_(nullptr)
+	, MonsterAnimationRenderer(nullptr)
 {
 
 }

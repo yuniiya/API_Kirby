@@ -21,6 +21,7 @@
 #include "Effect_Star.h"
 #include "Effect_IceBreath.h"
 #include "Effect_IceBox.h"
+#include "Effect_Exhale.h"
 
 
 IceKirby* IceKirby::IcePlayer = nullptr;
@@ -32,6 +33,8 @@ IceKirby::IceKirby()
 	, Gravity_(1500.f)
 	, StopTime_(1.f)
 	, DownTime_(0.5f)
+	, SlidingTime_(1.2f)
+	, PlayerAnimationRender(nullptr)
 {
 
 }
@@ -62,7 +65,7 @@ void IceKirby::Start()
 {
 	//SetScale({ 1000, 1000 });
 
-	PlayerCollision = CreateCollision("PlayerHitBox", { 70, 70 }, {});
+	PlayerCollision = CreateCollision("PlayerHitBox", { 70, 70 });
 
 	// 애니메이션을 하나라도 만들면 애니메이션이 재생된다.
 	PlayerAnimationRender = CreateRenderer();
@@ -938,6 +941,7 @@ void IceKirby::AttackUpdate()
 {
 	if (true == GameEngineInput::GetInst()->IsFree("Attack"))
 	{
+		AttackEffSound_.Stop();
 		ChangeState(PlayerState::AttackEnd);
 		return;
 	}
@@ -947,6 +951,7 @@ void IceKirby::AttackEndUpdate()
 {
 	if (PlayerAnimationRender->IsEndAnimation())
 	{
+		IceBreath_->Death();
 		ChangeState(PlayerState::Idle);
 		return;
 	}
@@ -973,6 +978,22 @@ void IceKirby::WalkStart()
 
 void IceKirby::RunStart()
 {
+	{
+		Effect_Slide* Effect = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition() + float4{ -40.f, 40.f });
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition() + float4{ 40.f, 40.f });
+			Effect->SetDir(EffectDir::Left);
+		}
+	}
+
 	GameEngineSound::SoundPlayOneShot("Slide.wav");
 
 	Speed_ = 500.f;
@@ -983,6 +1004,21 @@ void IceKirby::RunStart()
 
 void IceKirby::RunToStopStart()
 {
+	{
+		Effect_RunToStop* Effect = GetLevel()->CreateActor<Effect_RunToStop>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition() + float4{ -40.f, 50.f });
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition() + float4{ 40.f, 50.f });
+			Effect->SetDir(EffectDir::Left);
+		}
+	}
 	GameEngineSound::SoundPlayOneShot("RunToStop.wav");
 
 	Speed_ = 350.f;
@@ -1002,6 +1038,20 @@ void IceKirby::DownStart()
 
 void IceKirby::SlideStart()
 {
+	Effect_Slide* Effect = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
+
+	if (CurDir_ == PlayerDir::Right)
+	{
+		Effect->SetPosition(GetPosition() + float4{ -45.f, 40.f });
+		Effect->SetDir(EffectDir::Right);
+
+	}
+	else if (CurDir_ == PlayerDir::Left)
+	{
+		Effect->SetPosition(GetPosition() + float4{ 45.f, 40.f });
+		Effect->SetDir(EffectDir::Left);
+	}
+
 	GameEngineSound::SoundPlayOneShot("Slide.wav");
 
 	Speed_ = 500.f;
@@ -1082,6 +1132,21 @@ void IceKirby::BounceToIdleStart()
 
 void IceKirby::ExhaleStart()
 {
+	{
+		Effect_Exhale* Effect = GetLevel()->CreateActor<Effect_Exhale>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition() + float4{ 80.f, 55.f });
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition() + float4{ -80.f, 55.f });
+			Effect->SetDir(EffectDir::Left);
+		}
+	}
 	GameEngineSound::SoundPlayOneShot("Exhale.wav");
 
 	AnimationName_ = "Exhale_";
@@ -1096,6 +1161,25 @@ void IceKirby::AttackStartStart()
 
 void IceKirby::AttackStart()
 {
+	{
+		IceBreath_ = GetLevel()->CreateActor<Effect_IceBreath>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			IceBreath_->SetPosition(GetPosition() + float4{ 155.f, 10.f });
+			IceBreath_->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			IceBreath_->SetPosition(GetPosition() + float4{ -155.f, 10.f });
+			IceBreath_->SetDir(EffectDir::Left);
+		}
+	}
+	
+	AttackEffSound_.Stop();
+	AttackEffSound_ = GameEngineSound::SoundPlayControl("IceBreath3.wav");
+
 	AnimationName_ = "Attack_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }

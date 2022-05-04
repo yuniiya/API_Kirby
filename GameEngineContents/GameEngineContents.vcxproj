@@ -201,6 +201,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Effect_MonsterDeath.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_ReleaseSkill.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Effect_RunToStop.h">
       <SubType>
       </SubType>
@@ -408,6 +416,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Effect_Inhale.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_MonsterDeath.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_ReleaseSkill.cpp">
       <SubType>
       </SubType>
     </ClCompile>

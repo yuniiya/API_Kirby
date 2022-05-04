@@ -5,6 +5,7 @@
 
 Effect_Exhale::Effect_Exhale()
 	: AnimationRenderer_(nullptr)
+	, Dir_(EffectDir::Right)
 {
 
 }

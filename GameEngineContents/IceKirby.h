@@ -1,5 +1,6 @@
 #pragma once
 #include "Player.h"
+#include "Effect_IceBreath.h"
 
 class GameEngineImage;
 class GameEngineCollision;
@@ -32,6 +33,7 @@ protected:
 	GameEngineRenderer* PlayerAnimationRender;
 
 	GameEngineSoundPlayer FloatEffSound_;
+	GameEngineSoundPlayer AttackEffSound_;
 
 private:
 	float Speed_;
@@ -44,9 +46,10 @@ private:
 	float StopTime_;
 	float DownTime_;
 
+	// Effect
+	Effect_IceBreath* IceBreath_;
 
 private:
-	//GameEngineCollision* PlayerCollision;
 
 
 	void MonsterColCheck() override;

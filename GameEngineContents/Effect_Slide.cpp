@@ -6,6 +6,7 @@
 
 Effect_Slide::Effect_Slide()
 	: AnimationRenderer_(nullptr)
+	, Dir_(EffectDir::Right)
 {
 
 }

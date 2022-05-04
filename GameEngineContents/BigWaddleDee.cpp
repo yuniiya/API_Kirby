@@ -5,9 +5,13 @@
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineImageManager.h>
 #include <GameEngine/GameEngineCollision.h>
+#include "Effect_MonsterDeath.h"
 
 BigWaddleDee::BigWaddleDee()
-	: Speed_(50.f)
+	: AnimationRender(nullptr)
+	, MonsterCollision(nullptr)
+	, Speed_(50.f)
+	, DamagedTime_(0.8f)
 {
 	CurState_ = MonsterState::Max;
 	MoveDir = float4::LEFT;
@@ -157,6 +161,12 @@ void BigWaddleDee::DamagedUpdate()
 	if (DamagedTime_ < 0)
 	{
 		Death();
+		{
+			GameEngineSound::SoundPlayOneShot("Damaged.wav");
+
+			Effect_MonsterDeath* Effect = GetLevel()->CreateActor<Effect_MonsterDeath>((int)ORDER::EFFECT);
+			Effect->SetPosition(GetPosition());
+		}
 	}
 }
 

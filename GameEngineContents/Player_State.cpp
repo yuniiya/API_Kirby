@@ -12,6 +12,7 @@
 #include "Effect_Slide.h"
 #include "Effect_RunToStop.h"
 #include "Effect_Exhale.h"
+#include "Effect_Inhale.h"
 #include "Effect_Attack.h"
 #include "Effect_Star.h"
 
@@ -651,7 +652,9 @@ void Player::InhaleUpdate()
 	// 2.5초 후 Exhausted
 	if (InhaleTime_ <= 0)
 	{
+		InhaleEffect_->Death();
 		InhaleEffSound_.Stop();
+
 		InhaleCollision->Off();
 		ChangeState(PlayerState::Exhausted);
 		return;
@@ -660,7 +663,9 @@ void Player::InhaleUpdate()
 	// 키에서 손 뗐을 때 -> Idle
 	if(GameEngineInput::GetInst()->IsUp("Inhale"))
 	{
+		InhaleEffect_->Death();
 		InhaleEffSound_.Stop();
+
 		InhaleCollision->Off();
 		ChangeState(PlayerState::Idle);
 		return;
@@ -669,7 +674,9 @@ void Player::InhaleUpdate()
 	// 걷기
 	if (true == IsMoveKey())
 	{
+		InhaleEffect_->Death();
 		InhaleEffSound_.Stop();
+
 		InhaleCollision->Off();
 		ChangeState(PlayerState::Walk);
 		return;
@@ -678,7 +685,9 @@ void Player::InhaleUpdate()
 	// 점프
 	if (true == IsJumpKey())
 	{
+		InhaleEffect_->Death();
 		InhaleEffSound_.Stop();
+
 		InhaleCollision->Off();
 		ChangeState(PlayerState::Jump);
 		return;
@@ -1146,9 +1155,24 @@ void Player::BounceToIdleStart()
 
 void Player::InhaleStart()
 {
+	{
+		InhaleEffect_ = GetLevel()->CreateActor<Effect_Inhale>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			InhaleEffect_->SetPosition(GetPosition() + float4{ 90.f, 50.f });
+			InhaleEffect_->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			InhaleEffect_->SetPosition(GetPosition() + float4{ -90.f, 50.f });
+			InhaleEffect_->SetDir(EffectDir::Left);
+		}
+	}
+
 	InhaleEffSound_.Stop();
 	InhaleEffSound_ = GameEngineSound::SoundPlayControl("Inhale.wav");
-	//GameEngineSound::SoundPlayOneShot("Inhale.wav");
 
 	InhaleTime_ = 2.f;
 

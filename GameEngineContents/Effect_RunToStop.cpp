@@ -6,6 +6,7 @@
 
 Effect_RunToStop::Effect_RunToStop()
 	: AnimationRenderer_(nullptr)
+	, Dir_(EffectDir::Right)
 {
 
 }

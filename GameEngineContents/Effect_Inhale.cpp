@@ -5,6 +5,7 @@
 
 Effect_Inhale::Effect_Inhale()
 	: AnimationRenderer_(nullptr)
+	, Dir_(EffectDir::Right)
 {
 
 }
@@ -17,18 +18,13 @@ void Effect_Inhale::Start()
 {
 	AnimationRenderer_ = CreateRenderer();
 	AnimationRenderer_->SetPivotType(RenderPivot::BOT);
-	AnimationRenderer_->SetPivot({ 0.f, 140.f });
+	AnimationRenderer_->SetPivot({ 0.f, 180.f });
 
 
-	//AnimationRenderer_->CreateAnimation("Effect_RunToStop_Left.bmp", "RunToStop_Left", 0, 3, 0.25f, true);
-	//AnimationRenderer_->CreateAnimation("Effect_RunToStop_Right.bmp", "RunToStop_Right", 0, 3, 0.25f, true);
+	AnimationRenderer_->CreateAnimation("Effect_Inhale_Left.bmp", "Inhale_Left", 0, 1, 0.2f, true);
+	AnimationRenderer_->CreateAnimation("Effect_Inhale_Right.bmp", "Inhale_Right", 0, 1, 0.2f, true);
 
-	//AnimationName_ = "RunToStop_";
-	////ChangeDirText_ = "Left";
-	////AnimationRenderer_->ChangeAnimation("Slide_Left");
-
-
-	//Death(1.2f);
+	AnimationName_ = "Inhale_";
 }
 
 void Effect_Inhale::Update()
