@@ -708,14 +708,42 @@ void Player::DoorCheck(std::string ChangeLevelName_)
 void Player::StagePixelCheck(float _Speed)
 {
 	// 땅 밑으로 못 가게
-	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
+	//float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
 
-	int Color = MapColImage_->GetImagePixel(CheckPos);
-	if (RGB(0, 0, 0) != Color)
+	//int Color = MapColImage_->GetImagePixel(CheckPos);
+	//if (RGB(0, 0, 0) != Color)
+	//{
+	//	SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
+	//}
+
+	//float4 DownPos = GetPosition() + float4{ 0.0f, 15.f } + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
+
+
+	float4 DownPos = GetPosition() + float4{ 0.0f, 15.f } + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
+	float4 LeftPos = GetPosition() + float4{ -15.f, 0.f } + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
+	float4 RightPos = GetPosition() + float4{ 15.f, 0.f } + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
+
+	int DownColor = MapColImage_->GetImagePixel(DownPos);
+	int LeftColor = MapColImage_->GetImagePixel(LeftPos);
+	int RightColor = MapColImage_->GetImagePixel(RightPos);
+
+	if (RGB(0, 0, 0) != DownColor
+		&& RGB(0, 0, 0) != RightColor
+		&& RGB(0, 0, 0) != LeftColor)						// 1-1) 발보다 조금 위가 땅이 아닐 떄만 갈 수 있다
 	{
+		if (RGB(0, 0, 0) != BottomPixelColorCheck(20.f))	// 1-2) 가다가 발이 땅에 안닿았어 그러면 1픽셀 내려줘
+		{
+			MoveDir.y = 1.f;
+		}
+
 		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
 	}
+	else if (RGB(0, 0, 0) == DownColor)				// 2-1) 발보다 조금 위가 땅에 박혔어 그럼 1픽셀 올려줘
+	{
+		MoveDir.y = -1.f;
 
+		SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
+	}
 }
 
 void Player::MovePixelCheck(float _x, float _y)
@@ -749,11 +777,39 @@ void Player::MovePixelCheck(float _x, float _y)
 void Player::HillPixelCheck()
 {
 	// 오르막, 내리막길 
+	//float4 CheckPos = float4::DOWN;
+	//float4 LeftUpPos = float4::UP;
+
+	//int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
+	//int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + CheckPos);
+
+	//if (RGB(0, 0, 0) != DownColor)
+	//{
+	//	// 땅에 닿아있는 동안은 계속 내려준다
+	//	while (RGB(0, 0, 0) == DownColor)
+	//	{
+	//		CheckPos += float4::DOWN;
+	//		DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+	//	}
+	//	SetMove(CheckPos);
+	//}
+	//else if (RGB(0, 0, 0) == LeftColor)
+	//{
+	//	while (RGB(0, 0, 0) != LeftColor)
+	//	{
+	//		LeftUpPos += float4::UP;
+	//		LeftColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
+	//	}
+	//	SetMove(LeftUpPos);
+	//}
+
 	float4 CheckPos = float4::DOWN;
 	float4 LeftUpPos = float4::UP;
+	float4 RightUpPos = float4::UP;
 
 	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
 	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + CheckPos);
+	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
 
 	if (RGB(0, 0, 0) != DownColor)
 	{
@@ -765,7 +821,7 @@ void Player::HillPixelCheck()
 		}
 		SetMove(CheckPos);
 	}
-	else if (RGB(0, 0, 0) == LeftColor)
+	else if (RGB(0, 0, 0) == LeftColor)	// 왼쪽앞이 땅이라면 땅이 아닐 때까지 올려준다
 	{
 		while (RGB(0, 0, 0) != LeftColor)
 		{
@@ -773,6 +829,15 @@ void Player::HillPixelCheck()
 			LeftColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
 		}
 		SetMove(LeftUpPos);
+	}
+	else if (RGB(0, 0, 0) == RightColor)
+	{
+		while (RGB(0, 0, 0) != RightColor)
+		{
+			RightUpPos += float4::UP;
+			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
+		}
+		SetMove(RightUpPos);
 	}
 }
 

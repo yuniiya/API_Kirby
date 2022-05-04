@@ -260,7 +260,7 @@ void BigWaddleDee::MonsterColCheck()
 	// 삼켜지고 있는 중이면 Death로 처리
 	if (CurState_ == MonsterState::Swallowed)
 	{
-		if (15.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+		if (20.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
 		{
 			Death();
 		}

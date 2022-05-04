@@ -114,8 +114,8 @@ void Level_2::Update()
 void Level_2::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	{
-		Player::MainPlayer->SetPosition({ 100.f, 490.f });
-		//Player::MainPlayer->SetPosition({ 5200.f, 490.f });
+		//Player::MainPlayer->SetPosition({ 100.f, 490.f });
+		Player::MainPlayer->SetPosition({ 1000.f, 490.f });
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 490.f });
 		IceKirby::IcePlayer->SetPosition({ 100.f, 490.f });
 		SparkKirby::SparkPlayer->SetPosition({ 100.f, 490.f });

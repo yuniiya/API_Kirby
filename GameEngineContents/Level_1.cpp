@@ -100,8 +100,8 @@ void Level_1::Loading()
 		BigWaddle->SetPosition({ 2700.f, 400.f });
 
 
-		//Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
-		//scarfy->SetPosition({1300.f, 300.f});
+		Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
+		scarfy->SetPosition({1300.f, 300.f});
 	}
 	
 
