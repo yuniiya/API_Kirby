@@ -160,7 +160,6 @@ protected:
 	void WallCheck();
 	virtual void MonsterColCheck();
 	void InhaleColCheck();
-	void AttackColCheck();
 
 	void MovePixelCheck(float _x, float _y);
 	void HillPixelCheck();

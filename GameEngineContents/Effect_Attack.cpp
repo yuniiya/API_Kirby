@@ -2,6 +2,7 @@
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineImageManager.h>
+#include <GameEngine/GameEngineCollision.h>
 
 Effect_Attack::Effect_Attack()
 	: AnimationRenderer_(nullptr)
@@ -119,6 +120,24 @@ void Effect_Attack::Update()
 	}
 
 	SetMove(MoveDir);
+
+
+	////////////////////////////////////// 충돌 체크
+	{
+		std::vector<GameEngineCollision*> ColList;
+		if (true == AttackCollision_->CollisionCheck("DefaultMonster", CollisionType::Rect, CollisionType::Rect))
+		{
+			MoveDir = float4::ZERO;
+
+			//AnimationRenderer_->ChangeAnimation("Attack_End");
+
+			if (AnimationRenderer_->IsEndAnimation())
+			{
+				Death();
+			}
+		}
+	}
+
 }
 
 

@@ -53,6 +53,9 @@ void Monster::ChangeState(MonsterState _State)
 		case MonsterState::Damaged:
 			DamagedStart();
 			break;
+		case MonsterState::Iced:
+			IcedStart();
+			break;
 		}
 	}
 
@@ -82,6 +85,9 @@ void Monster::MonsterStateUpdate()
 			break;
 		case MonsterState::Damaged:
 			DamagedUpdate();
+			break;
+		case MonsterState::Iced:
+			IcedUpdate();
 			break;
 		}
 	}

@@ -243,15 +243,7 @@ void BigWaddleDee::WallPixelCheck(float _x, float _Speed)
 
 void BigWaddleDee::MonsterColCheck()
 {
-
-	if (CurState_ == MonsterState::Swallowed)
-	{
-		if (10.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
-		{
-			Death();
-		}
-	}
-
+	// 흡수에 닿았을 때 -> Swallowed
 	std::vector<GameEngineCollision*> SwallowColList;
 
 	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))
@@ -262,6 +254,15 @@ void BigWaddleDee::MonsterColCheck()
 
 			ChangeState(MonsterState::Swallowed);
 			return;
+		}
+	}
+
+	// 삼켜지고 있는 중이면 Death로 처리
+	if (CurState_ == MonsterState::Swallowed)
+	{
+		if (15.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+		{
+			Death();
 		}
 	}
 
@@ -280,5 +281,26 @@ void BigWaddleDee::MonsterColCheck()
 		return;
 	}
 
+	// 메탈 
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == MonsterCollision->CollisionResult("MetalCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			ChangeState(MonsterState::Damaged);
+			return;
+		}
+	}
+
+	// 디폴트 플레이어 공격
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == MonsterCollision->CollisionResult("AttackCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			ChangeState(MonsterState::Damaged);
+			return;
+		}
+	}
 
 }

@@ -563,12 +563,6 @@ void Player::InhaleColCheck()
 	}
 }
 
-void Player::AttackColCheck()
-{
-}
-
-
-
 
 void Player::DirAnimationCheck()
 {

@@ -249,6 +249,7 @@ void Scarfy::DamagedStart()
 
 void Scarfy::MonsterColCheck()
 {
+	// 흡수에 닿았을 때 -> Swallowed
 	std::vector<GameEngineCollision*> SwallowColList;
 
 	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))
@@ -262,14 +263,15 @@ void Scarfy::MonsterColCheck()
 		}
 	}
 
-
+	// 삼켜지고 있는 중이면 Death로 처리
 	if (CurState_ == MonsterState::Swallowed)
 	{
-		if (5.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+		if (10.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
 		{
 			Death();
 		}
 	}
+
 
 	std::vector<GameEngineCollision*> ColList;
 
@@ -283,5 +285,27 @@ void Scarfy::MonsterColCheck()
 
 		ChangeState(MonsterState::Damaged);
 		return;
+	}
+
+	// 메탈 
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == MonsterCollision->CollisionResult("MetalCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			ChangeState(MonsterState::Damaged);
+			return;
+		}
+	}
+
+	// 디폴트 플레이어 공격
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == MonsterCollision->CollisionResult("AttackCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			ChangeState(MonsterState::Damaged);
+			return;
+		}
 	}
 }

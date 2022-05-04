@@ -155,6 +155,9 @@
     <ClCompile Include="Effect_ReleaseSkill.cpp">
       <Filter>Actor\Play\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Effect_AttackEnd.cpp">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Kirby.h" />
@@ -307,6 +310,9 @@
       <Filter>Actor\Play\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Effect_ReleaseSkill.h">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_AttackEnd.h">
       <Filter>Actor\Play\Effect</Filter>
     </ClInclude>
   </ItemGroup>
