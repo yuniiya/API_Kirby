@@ -555,6 +555,7 @@ void Player::InhaleColCheck()
 				ColList[i]->GetActor()->Death();
 			}*/
 
+		InhaleEffSound_.Stop();
 		ChangeState(PlayerState::Full);
 		return;
 

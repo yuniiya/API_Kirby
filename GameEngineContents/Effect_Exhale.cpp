@@ -20,15 +20,15 @@ void Effect_Exhale::Start()
 	AnimationRenderer_->SetPivot({ 0.f, 140.f });
 
 
-	AnimationRenderer_->CreateAnimation("Effect_Left.bmp", "Exhale_Left", 0, 5, 0.2f, false);
-	AnimationRenderer_->CreateAnimation("Effect_Right.bmp", "Exhale_Right", 0, 5, 0.2f, false);
+	AnimationRenderer_->CreateAnimation("Effect_Left.bmp", "Exhale_Left", 0, 5, 0.1f, false);
+	AnimationRenderer_->CreateAnimation("Effect_Right.bmp", "Exhale_Right", 0, 5, 0.1f, false);
 
 	AnimationName_ = "Exhale_";
 	//ChangeDirText_ = "Left";
 	//AnimationRenderer_->ChangeAnimation("Slide_Left");
 
 
-	Death(0.8f);
+	Death(0.4f);
 }
 
 void Effect_Exhale::Update()

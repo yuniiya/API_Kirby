@@ -652,6 +652,7 @@ void Player::InhaleUpdate()
 	// 2.5초 후 Exhausted
 	if (InhaleTime_ <= 0)
 	{
+		InhaleEffSound_.Stop();
 		InhaleCollision->Off();
 		ChangeState(PlayerState::Exhausted);
 		return;
@@ -660,6 +661,7 @@ void Player::InhaleUpdate()
 	// 키에서 손 뗐을 때 -> Idle
 	if(GameEngineInput::GetInst()->IsUp("Inhale"))
 	{
+		InhaleEffSound_.Stop();
 		InhaleCollision->Off();
 		ChangeState(PlayerState::Idle);
 		return;
@@ -668,6 +670,7 @@ void Player::InhaleUpdate()
 	// 걷기
 	if (true == IsMoveKey())
 	{
+		InhaleEffSound_.Stop();
 		InhaleCollision->Off();
 		ChangeState(PlayerState::Walk);
 		return;
@@ -676,6 +679,7 @@ void Player::InhaleUpdate()
 	// 점프
 	if (true == IsJumpKey())
 	{
+		InhaleEffSound_.Stop();
 		InhaleCollision->Off();
 		ChangeState(PlayerState::Jump);
 		return;
@@ -984,18 +988,18 @@ void Player::WalkStart()
 void Player::RunStart()
 {
 	{
-		Effect_Slide* RunEffect = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
+		Effect_Slide* Effect = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
 
 		if (CurDir_ == PlayerDir::Right)
 		{
-			RunEffect->SetPosition(GetPosition() + float4{ -40.f, 40.f });
-			RunEffect->SetDir(EffectDir::Right);
+			Effect->SetPosition(GetPosition() + float4{ -40.f, 40.f });
+			Effect->SetDir(EffectDir::Right);
 			
 		}
 		else if (CurDir_ == PlayerDir::Left)
 		{
-			RunEffect->SetPosition(GetPosition() + float4{ 40.f, 40.f });
-			RunEffect->SetDir(EffectDir::Left);	
+			Effect->SetPosition(GetPosition() + float4{ 40.f, 40.f });
+			Effect->SetDir(EffectDir::Left);
 		}
 	}
 
@@ -1009,6 +1013,22 @@ void Player::RunStart()
 
 void Player::RunToStopStart()
 {
+	{
+		Effect_RunToStop* Effect = GetLevel()->CreateActor<Effect_RunToStop>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition() + float4{ -40.f, 50.f });
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition() + float4{ 40.f, 50.f });
+			Effect->SetDir(EffectDir::Left);
+		}
+	}
+
 	GameEngineSound::SoundPlayOneShot("RunToStop.wav");
 
 	Speed_ = 350.f;
@@ -1028,6 +1048,22 @@ void Player::DownStart()
 
 void Player::SlideStart()
 {
+	{
+		Effect_Slide* Effect = GetLevel()->CreateActor<Effect_Slide>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition() + float4{ -45.f, 40.f });
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition() + float4{ 45.f, 40.f });
+			Effect->SetDir(EffectDir::Left);
+		}
+	}
+
 	GameEngineSound::SoundPlayOneShot("Slide.wav");
 
 	Speed_ = 500.f;
@@ -1109,7 +1145,9 @@ void Player::BounceToIdleStart()
 
 void Player::InhaleStart()
 {
-	GameEngineSound::SoundPlayOneShot("Inhale.wav");
+	InhaleEffSound_.Stop();
+	InhaleEffSound_ = GameEngineSound::SoundPlayControl("Inhale.wav");
+	//GameEngineSound::SoundPlayOneShot("Inhale.wav");
 
 	InhaleTime_ = 2.f;
 
@@ -1155,6 +1193,22 @@ void Player::FullJumpStart()
 
 void Player::ExhaleStart()
 {
+	{
+		Effect_Exhale* Effect = GetLevel()->CreateActor<Effect_Exhale>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			Effect->SetPosition(GetPosition() + float4{ 80.f, 55.f });
+			Effect->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			Effect->SetPosition(GetPosition() + float4{ -80.f, 55.f });
+			Effect->SetDir(EffectDir::Left);
+		}
+	}
+
 	GameEngineSound::SoundPlayOneShot("Exhale.wav");
 
 	MoveDir = float4::ZERO;
@@ -1185,6 +1239,25 @@ void Player::AttackStartStart()
 
 void Player::AttackStart()
 {
+	AttackTime_ = 0.05f;
+	{
+		AttEffect_ = GetLevel()->CreateActor<Effect_Attack>((int)ORDER::EFFECT);
+
+		if (CurDir_ == PlayerDir::Right)
+		{
+			AttEffect_->SetPosition(GetPosition() + float4{ 30.f, -5.f });
+			AttEffect_->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == PlayerDir::Left)
+		{
+			AttEffect_->SetPosition(GetPosition() + float4{ -80.f, -5.f });
+			AttEffect_->SetDir(EffectDir::Left);
+		}
+
+		//if(AttEffect_->AttackCollision_->GetCollisionPos())
+	}
+
 	GameEngineSound::SoundPlayOneShot("Attack.wav");
 
 	AnimationName_ = "Attack_";

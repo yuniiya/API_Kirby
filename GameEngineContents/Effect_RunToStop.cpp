@@ -21,15 +21,15 @@ void Effect_RunToStop::Start()
 	AnimationRenderer_->SetPivot({ 0.f, 140.f });
 
 
-	AnimationRenderer_->CreateAnimation("Effect_RunToStop_Left.bmp", "RunToStop_Left", 0, 3, 0.25f, true);
-	AnimationRenderer_->CreateAnimation("Effect_RunToStop_Right.bmp", "RunToStop_Right", 0, 3, 0.25f, true);
+	AnimationRenderer_->CreateAnimation("Effect_RunToStop_Left.bmp", "RunToStop_Left", 0, 3, 0.1f, false);
+	AnimationRenderer_->CreateAnimation("Effect_RunToStop_Right.bmp", "RunToStop_Right", 0, 3, 0.1f, false);
 
 	AnimationName_ = "RunToStop_";
 	//ChangeDirText_ = "Left";
 	//AnimationRenderer_->ChangeAnimation("Slide_Left");
 
 
-	Death(1.2f);
+	Death(0.4f);
 }
 
 void Effect_RunToStop::Update()

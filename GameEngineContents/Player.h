@@ -2,7 +2,7 @@
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngineBase/GameEngineSound.h>
 #include "Stage.h"
-#include "Effect_Slide.h"
+#include "Effect_Attack.h"
 
 class GameEngineImage;
 class GameEngineCollision;
@@ -103,9 +103,10 @@ protected:
 	void CameraFix();
 
 protected:
-	GameEngineRenderer* RunEffectRenderer_;
+	Effect_Attack* AttEffect_;
 
 	GameEngineSoundPlayer FloatEffSound_;
+	GameEngineSoundPlayer InhaleEffSound_;
 
 
 protected:
@@ -125,6 +126,7 @@ protected:
 
 	// Effect
 	float RunEffTime_;
+	float AttackTime_;
 
 	// 스테이지 관련
 	float MapScaleX_;

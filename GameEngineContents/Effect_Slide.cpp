@@ -21,15 +21,15 @@ void Effect_Slide::Start()
 	AnimationRenderer_->SetPivot({ 0.f, 140.f });
 
 
-	AnimationRenderer_->CreateAnimation("Effect_Slide_Left.bmp", "Slide_Left", 0, 6, 0.25f, true);
-	AnimationRenderer_->CreateAnimation("Effect_Slide_Right.bmp", "Slide_Right", 0, 6, 0.25f, true);
+	AnimationRenderer_->CreateAnimation("Effect_Slide_Left.bmp", "Slide_Left", 0, 6, 0.1f, false);
+	AnimationRenderer_->CreateAnimation("Effect_Slide_Right.bmp", "Slide_Right", 0, 6, 0.1f, false);
 
 	AnimationName_ = "Slide_";
 	//ChangeDirText_ = "Left";
 	//AnimationRenderer_->ChangeAnimation("Slide_Left");
 	
 
-	Death(1.2f);
+	Death(0.8f);
 }
 
 void Effect_Slide::Update()
@@ -42,6 +42,7 @@ void Effect_Slide::Update()
 	{
 		ChangeDirText_ = "Left";
 	}
+
 	AnimationRenderer_->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
