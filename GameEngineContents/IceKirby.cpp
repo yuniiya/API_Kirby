@@ -727,6 +727,8 @@ void IceKirby::JumpUpdate()
 	// ¹Ù´Ú¿¡ ´ê¾Ò´Ù
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
+		MakeStarEffect();
+
 		MoveDir = float4::ZERO;
 		ChangeState(PlayerState::Idle);
 		return;
@@ -835,6 +837,7 @@ void IceKirby::FallUpdate()
 	}
 	else
 	{
+		MakeStarEffect();
 		ChangeState(PlayerState::FallToBounce);
 		return;
 	}
@@ -890,6 +893,7 @@ void IceKirby::BounceToIdleUpdate()
 	{
 		MoveDir = float4::ZERO;
 
+		MakeStarEffect();
 		ChangeState(PlayerState::Idle);
 		return;
 	}
@@ -905,6 +909,7 @@ void IceKirby::ExhaleUpdate()
 		{
 			MoveDir = float4::ZERO;
 
+			MakeStarEffect();
 			ChangeState(PlayerState::Idle);
 			return;
 		}

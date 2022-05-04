@@ -556,6 +556,7 @@ void Player::FallUpdate()
 	}
 	else
 	{
+		MakeStarEffect();
 		ChangeState(PlayerState::FallToBounce);
 		return;
 	}
@@ -578,7 +579,6 @@ void Player::FallToBounceUpdate()
 	// ¶¥¿¡ ´êÀ¸¸é À§·Î ÇÑ ¹ø Æ¨±ä´Ù
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
-		MakeStarEffect();
 		MoveDir.y = -400.f;
 	}
 
@@ -612,8 +612,8 @@ void Player::BounceToIdleUpdate()
 	// ¶¥¿¡ ´êÀ¸¸é Idle·Î ÀüÈ¯
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
+		MakeStarEffect();
 		MoveDir = float4::ZERO;
-
 		ChangeState(PlayerState::Idle);
 		return;
 	}

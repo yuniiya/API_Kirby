@@ -689,6 +689,7 @@ void SparkKirby::JumpUpdate()
 	// ¹Ù´Ú¿¡ ´ê¾Ò´Ù
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
+		MakeStarEffect();
 		MoveDir = float4::ZERO;
 		ChangeState(PlayerState::Idle);
 		return;
@@ -797,6 +798,7 @@ void SparkKirby::FallUpdate()
 	}
 	else
 	{
+		MakeStarEffect();
 		ChangeState(PlayerState::FallToBounce);
 		return;
 	}
@@ -852,6 +854,7 @@ void SparkKirby::BounceToIdleUpdate()
 	{
 		MoveDir = float4::ZERO;
 
+		MakeStarEffect();
 		ChangeState(PlayerState::Idle);
 		return;
 	}
@@ -867,6 +870,7 @@ void SparkKirby::ExhaleUpdate()
 		{
 			MoveDir = float4::ZERO;
 
+			MakeStarEffect();
 			ChangeState(PlayerState::Idle);
 			return;
 		}

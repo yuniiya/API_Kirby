@@ -495,6 +495,7 @@ void MetalKirby::JumpUpdate()
 	// ¹Ù´Ú¿¡ ´ê¾Ò´Ù
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
+		MakeStarEffect();
 		GameEngineSound::SoundPlayOneShot("Metal1.wav");
 		MoveDir = float4::ZERO;
 		ChangeState(PlayerState::Idle);
@@ -537,6 +538,7 @@ void MetalKirby::FallUpdate()
 	}
 	else
 	{
+		MakeStarEffect();
 		ChangeState(PlayerState::FallToBounce);
 		return;
 	}
@@ -590,8 +592,9 @@ void MetalKirby::BounceToIdleUpdate()
 	// ¶¥¿¡ ´êÀ¸¸é Idle·Î ÀüÈ¯
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
-		MoveDir = float4::ZERO;
+		MakeStarEffect();
 
+		MoveDir = float4::ZERO;
 		ChangeState(PlayerState::Idle);
 		return;
 	}
@@ -666,6 +669,7 @@ void MetalKirby::ExhaleUpdate()
 		{
 			MoveDir = float4::ZERO;
 
+			MakeStarEffect();
 			ChangeState(PlayerState::Idle);
 			return;
 		}
