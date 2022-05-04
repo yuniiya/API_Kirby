@@ -185,10 +185,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Effect_AttackEnd.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="Effect_Exhale.h">
       <SubType>
       </SubType>
@@ -396,10 +392,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Effect_Attack.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Effect_AttackEnd.cpp">
       <SubType>
       </SubType>
     </ClCompile>

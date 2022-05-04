@@ -14,12 +14,10 @@
 #include <GameEngineBase/GameEngineSound.h>
 #include <GameEngine/GameEngineLevel.h>
 
-#include "Bullet.h"
 #include "Stage.h"
 #include "ContentsEnum.h"
 #include "Monster.h"
 #include "Scarfy.h"
-
 
 Player* Player::MainPlayer = nullptr;
 GameEngineSoundPlayer Player::BgmPlayer;
@@ -682,6 +680,20 @@ void Player::CameraFix()
 		float4 CurCameraPos = GetLevel()->GetCameraPos();
 		CurCameraPos.y = GetLevel()->GetCameraPos().y - (GetLevel()->GetCameraPos().y + CameraRectY - MapScaleY_);
 		GetLevel()->SetCameraPos(CurCameraPos);
+	}
+}
+
+void Player::MakeStarEffect()
+{
+	StarEffect_ = GetLevel()->CreateActor<Effect_Star>((int)ORDER::EFFECT);
+
+	if (CurDir_ == PlayerDir::Right)
+	{
+		StarEffect_->SetPosition(GetPosition() + float4{ -30.f, 0.f });
+	}
+	else if (CurDir_ == PlayerDir::Left)
+	{
+		StarEffect_->SetPosition(GetPosition() + float4{ 30.f, 0.f });
 	}
 }
 

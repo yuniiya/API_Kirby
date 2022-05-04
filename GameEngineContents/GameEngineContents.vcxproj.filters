@@ -140,9 +140,6 @@
     <ClCompile Include="Effect_Attack.cpp">
       <Filter>Actor\Play\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Effect_AttackEnd.cpp">
-      <Filter>Actor\Play\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="Effect_Star.cpp">
       <Filter>Actor\Play\Effect</Filter>
     </ClCompile>
@@ -289,9 +286,6 @@
       <Filter>Actor\Play\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Effect_Attack.h">
-      <Filter>Actor\Play\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Effect_AttackEnd.h">
       <Filter>Actor\Play\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Effect_Star.h">

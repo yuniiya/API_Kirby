@@ -82,6 +82,8 @@ void Kirby::GameInit()
 	{
 		GameEngineImage* Effect1 = GameEngineImageManager::GetInst()->Find("Effect.bmp");
 		Effect1->CutCount(10, 6);
+		GameEngineImage* Effect2 = GameEngineImageManager::GetInst()->Find("Effect2.bmp");
+		Effect2->CutCount(10, 6);
 		GameEngineImage* EffectLeft2 = GameEngineImageManager::GetInst()->Find("Effect_Left.bmp");
 		EffectLeft2->CutCount(10, 6);
 		GameEngineImage* EffectRight2 = GameEngineImageManager::GetInst()->Find("Effect_Right.bmp");

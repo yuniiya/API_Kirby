@@ -3,6 +3,7 @@
 #include <GameEngineBase/GameEngineSound.h>
 #include "Stage.h"
 #include "Effect_Attack.h"
+#include "Effect_Star.h"
 
 class GameEngineImage;
 class GameEngineCollision;
@@ -104,9 +105,13 @@ protected:
 
 protected:
 	Effect_Attack* AttEffect_;
+	Effect_Star* StarEffect_;
 
 	GameEngineSoundPlayer FloatEffSound_;
 	GameEngineSoundPlayer InhaleEffSound_;
+
+protected:
+	void MakeStarEffect();
 
 
 protected:

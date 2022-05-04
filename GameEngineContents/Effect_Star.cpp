@@ -22,27 +22,23 @@ void Effect_Star::Start()
 	AnimationRenderer_->SetPivot({ 0.f, 140.f });
 
 
-	AnimationRenderer_->CreateAnimation("Effect.bmp", "Star_", 8, 9, 0.25f, true);
+	AnimationRenderer_->CreateAnimation("Effect2.bmp", "Star_", 8, 9, 0.2f, true);
 
 	AnimationName_ = "Star_";
 	//ChangeDirText_ = "Left";
 	//AnimationRenderer_->ChangeAnimation("Slide_Left");
 
 
-	Death(1.2f);
+	Death(0.3f);
 }
 
 void Effect_Star::Update()
 {
-	if (Dir_ == EffectDir::Right)
-	{
-		ChangeDirText_ = "Right";
-	}
-	else if (Dir_ == EffectDir::Left)
-	{
-		ChangeDirText_ = "Left";
-	}
-	AnimationRenderer_->ChangeAnimation(AnimationName_ + ChangeDirText_);
+	AnimationRenderer_->ChangeAnimation(AnimationName_);
+
+	MoveDir.y = -0.2f;
+
+	SetMove(MoveDir);
 }
 
 

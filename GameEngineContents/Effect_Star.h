@@ -22,6 +22,7 @@ public:
 	//PlayerDir CurDir_;
 	EffectDir Dir_;
 
+	float4 MoveDir;
 
 	std::string AnimationName_;
 	std::string ChangeDirText_;

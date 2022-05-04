@@ -13,7 +13,6 @@
 #include "Effect_RunToStop.h"
 #include "Effect_Exhale.h"
 #include "Effect_Attack.h"
-#include "Effect_AttackEnd.h"
 #include "Effect_Star.h"
 
 void Player::IdleUpdate()
@@ -446,6 +445,7 @@ void Player::JumpUpdate()
 	// ¹Ù´Ú¿¡ ´ê¾Ò´Ù
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
+		MakeStarEffect();
 		MoveDir = float4::ZERO;
 		ChangeState(PlayerState::Idle);
 		return;
@@ -465,8 +465,6 @@ void Player::FloatUpdate()
 	{
 		if (true == IsJumpKey())
 		{
-			//GameEngineSound::SoundPlayOneShot("Float.wav");
-
 			ChangeState(PlayerState::Float);
 			return;
 		}
@@ -580,6 +578,7 @@ void Player::FallToBounceUpdate()
 	// ¶¥¿¡ ´êÀ¸¸é À§·Î ÇÑ ¹ø Æ¨±ä´Ù
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
+		MakeStarEffect();
 		MoveDir.y = -400.f;
 	}
 
@@ -822,6 +821,7 @@ void Player::FullJumpUpdate()
 
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(20.f))
 	{
+		MakeStarEffect();
 		MoveDir = float4::ZERO;
 		ChangeState(PlayerState::FullLoop);
 		return;
@@ -836,6 +836,7 @@ void Player::ExhaleUpdate()
 		// ¶¥ÀÌ¶û ³Ê¹« °¡±õ´Ù -> Idle
 		if (RGB(0, 0, 0) == BottomPixelColorCheck(150.f))
 		{
+			MakeStarEffect();
 			MoveDir = float4::ZERO;
 
 			ChangeState(PlayerState::Idle);
@@ -1239,7 +1240,6 @@ void Player::AttackStartStart()
 
 void Player::AttackStart()
 {
-	AttackTime_ = 0.05f;
 	{
 		AttEffect_ = GetLevel()->CreateActor<Effect_Attack>((int)ORDER::EFFECT);
 
@@ -1254,8 +1254,6 @@ void Player::AttackStart()
 			AttEffect_->SetPosition(GetPosition() + float4{ -80.f, -5.f });
 			AttEffect_->SetDir(EffectDir::Left);
 		}
-
-		//if(AttEffect_->AttackCollision_->GetCollisionPos())
 	}
 
 	GameEngineSound::SoundPlayOneShot("Attack.wav");
