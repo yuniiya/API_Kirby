@@ -12,11 +12,15 @@
 #include <GameEngineBase/GameEngineSound.h>
 #include <GameEngine/GameEngineLevel.h>
 
-#include "Bullet.h"
 #include "Stage.h"
 #include "ContentsEnum.h"
 #include "Monster.h"
 #include "Scarfy.h"
+#include "Effect_Slide.h"
+#include "Effect_RunToStop.h"
+#include "Effect_Star.h"
+#include "Effect_IceBreath.h"
+#include "Effect_IceBox.h"
 
 
 IceKirby* IceKirby::IcePlayer = nullptr;

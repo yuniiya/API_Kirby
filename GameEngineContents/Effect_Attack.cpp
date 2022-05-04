@@ -20,9 +20,9 @@ void Effect_Attack::Start()
 	AnimationRenderer_->SetPivot({ 0.f, 140.f });
 
 
-	AnimationRenderer_->CreateAnimation("Effect.bmp", "Attack", 6, 7, 0.2f, true);
+	AnimationRenderer_->CreateAnimation("Effect.bmp", "Attack_", 6, 7, 0.2f, true);
 
-	AnimationName_ = "Attack";
+	AnimationName_ = "Attack_";
 	//ChangeDirText_ = "Left";
 	//AnimationRenderer_->ChangeAnimation("Slide_Left");
 

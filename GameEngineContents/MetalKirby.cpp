@@ -17,6 +17,8 @@
 #include "ContentsEnum.h"
 #include "Monster.h"
 #include "Scarfy.h"
+#include "Effect_Slide.h"
+#include "Effect_Star.h"
 
 MetalKirby* MetalKirby::MetalPlayer = nullptr;
 

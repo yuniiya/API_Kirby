@@ -13,6 +13,8 @@
 #include "Effect_RunToStop.h"
 #include "Effect_Exhale.h"
 #include "Effect_Attack.h"
+#include "Effect_AttackEnd.h"
+#include "Effect_Star.h"
 
 void Player::IdleUpdate()
 {

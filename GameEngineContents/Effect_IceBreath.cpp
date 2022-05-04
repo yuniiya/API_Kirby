@@ -20,10 +20,10 @@ void Effect_IceBreath::Start()
 	AnimationRenderer_->SetPivot({ 0.f, 140.f });
 
 
-	AnimationRenderer_->CreateAnimation("Effect_Ice_Left.bmp", "Ice_Left", 0, 18, 0.25f, true);
-	AnimationRenderer_->CreateAnimation("Effect_Ice_Right.bmp", "Ice_Right", 0, 18, 0.25f, true);
+	AnimationRenderer_->CreateAnimation("Effect_Ice_Left.bmp", "IceBreath__Left", 0, 18, 0.25f, true);
+	AnimationRenderer_->CreateAnimation("Effect_Ice_Right.bmp", "IceBreath__Right", 0, 18, 0.25f, true);
 
-	AnimationName_ = "RunToStop_";
+	AnimationName_ = "IceBreath_";
 	//ChangeDirText_ = "Left";
 	//AnimationRenderer_->ChangeAnimation("Slide_Left");
 
