@@ -711,15 +711,14 @@ void SparkKirby::FloatUpdate()
 			return;
 		}
 
+		FloatEffSound_.Stop();
 		ChangeState(PlayerState::Exhale);
 		return;
 	}
 
 	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
-		GameEngineSound::SoundPlayOneShot("Float.wav");
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
-		
 	}
 
 	// Float상태에서 이동
@@ -995,6 +994,8 @@ void SparkKirby::JumpStart()
 
 void SparkKirby::FloatStart()
 {
+	FloatEffSound_.Stop();
+	FloatEffSound_ = GameEngineSound::SoundPlayControl("Float.wav");
 	//FallTime_ = 0.8f;
 	Speed_ = 3.f;
 	Gravity_ = 300.f;

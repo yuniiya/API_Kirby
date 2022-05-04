@@ -128,7 +128,7 @@ void Player::WalkUpdate()
 	float4 RightUpPos = float4::UP;
 
 	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
-	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + CheckPos);
+	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
 	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
 
 	if (RGB(0, 0, 0) != DownColor)
@@ -471,13 +471,13 @@ void Player::FloatUpdate()
 			return;
 		}
 
+		FloatEffSound_.Stop();
 		ChangeState(PlayerState::Exhale);
 		return;
 	}
 
 	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
-		GameEngineSound::SoundPlayOneShot("Float.wav");
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 	}
 
@@ -1065,7 +1065,8 @@ void Player::JumpStart()
 
 void Player::FloatStart()
 {
-	
+	FloatEffSound_.Stop();
+	FloatEffSound_ = GameEngineSound::SoundPlayControl("Float.wav");
 
 	//FallTime_ = 0.8f;
 	Speed_ = 3.f;

@@ -358,12 +358,14 @@ void MetalKirby::WalkUpdate()
 {
 	if (false == IsMoveKey())
 	{
+		EffectSound_.Stop();
 		ChangeState(PlayerState::Idle);
 		return;
 	}
 
 	if (true == GameEngineInput::GetInst()->IsDown("Down"))
 	{
+		EffectSound_.Stop();
 		ChangeState(PlayerState::Down);
 		return;
 	}
@@ -371,6 +373,7 @@ void MetalKirby::WalkUpdate()
 	// มกวม 
 	if (true == IsJumpKey())
 	{
+		EffectSound_.Stop();
 		ChangeState(PlayerState::Jump);
 		return;
 	}
@@ -605,13 +608,13 @@ void MetalKirby::FloatUpdate()
 			return;
 		}
 
+		FloatEffSound_.Stop();
 		ChangeState(PlayerState::Exhale);
 		return;
 	}
 
 	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
-		GameEngineSound::SoundPlayOneShot("Float.wav");
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 	}
 
@@ -740,7 +743,11 @@ void MetalKirby::IdleStart()
 
 void MetalKirby::WalkStart()
 {
-	GameEngineSound::SoundPlayOneShot("Metal1.wav");
+	//GameEngineSound::SoundPlayOneShot("Metal1.wav");
+	EffectSound_.Stop();
+	EffectSound_ = GameEngineSound::SoundPlayControl("Metal1.wav");
+
+	//EffectSound_ = GameEngineSound::SoundPlayOneShot("Metal1.wav", -1);
 
 
 	Speed_ = 150.f;
@@ -818,6 +825,9 @@ void MetalKirby::BounceToIdleStart()
 
 void MetalKirby::FloatStart()
 {
+	FloatEffSound_.Stop();
+	FloatEffSound_ = GameEngineSound::SoundPlayControl("Float.wav");
+
 	Speed_ = 3.f;
 	Gravity_ = 500.f;
 

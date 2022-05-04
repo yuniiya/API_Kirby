@@ -105,7 +105,7 @@ protected:
 protected:
 	GameEngineRenderer* RunEffectRenderer_;
 
-	Effect_Slide* RunEffct_;
+	GameEngineSoundPlayer FloatEffSound_;
 
 
 protected:

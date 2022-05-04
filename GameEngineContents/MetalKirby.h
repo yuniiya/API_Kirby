@@ -41,13 +41,9 @@ protected:
 
 protected:
 	GameEngineRenderer* PlayerAnimationRender;
-	//PlayerDir CurDir_;
-	//PlayerDir InputDir_;
-	//std::string AnimationName_;
-	//std::string ChangeDirText_;
-
-
-	//void CameraFix();
+	
+	GameEngineSoundPlayer EffectSound_;
+	GameEngineSoundPlayer FloatEffSound_;
 
 
 private:

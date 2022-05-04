@@ -749,13 +749,13 @@ void IceKirby::FloatUpdate()
 			return;
 		}
 
+		FloatEffSound_.Stop();
 		ChangeState(PlayerState::Exhale);
 		return;
 	}
 
 	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
-		GameEngineSound::SoundPlayOneShot("Float.wav");
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 	}
 
@@ -1034,6 +1034,8 @@ void IceKirby::JumpStart()
 
 void IceKirby::FloatStart()
 {
+	FloatEffSound_.Stop();
+	FloatEffSound_ = GameEngineSound::SoundPlayControl("Float.wav");
 	//FallTime_ = 0.8f;
 	Speed_ = 3.f;
 	Gravity_ = 300.f;

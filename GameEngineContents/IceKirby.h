@@ -31,6 +31,8 @@ protected:
 protected:
 	GameEngineRenderer* PlayerAnimationRender;
 
+	GameEngineSoundPlayer FloatEffSound_;
+
 private:
 	float Speed_;
 	float JumpPower_;
