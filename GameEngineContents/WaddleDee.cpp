@@ -7,9 +7,11 @@
 #include <GameEngine/GameEngineCollision.h>
 #include "Effect_MonsterDeath.h"
 #include "Effect_AttackEnd.h"
+//#include "Effect_IceBox.h"
 
 WaddleDee::WaddleDee()
 	: Speed_(50.f)
+	, DamagedTime_(0.8f)
 {
 	CurState_ = MonsterState::Max;
 	MoveDir = float4::LEFT;
@@ -40,9 +42,6 @@ void WaddleDee::ChangeState(MonsterState _State)
 		case MonsterState::Damaged:
 			DamagedStart();
 			break;
-		case MonsterState::Iced:
-			IcedStart();
-			break;
 		}
 	}
 
@@ -68,9 +67,6 @@ void WaddleDee::MonsterStateUpdate()
 	case MonsterState::Damaged:
 		DamagedUpdate();
 		break;
-	case MonsterState::Iced:
-		IcedUpdate();
-		break;
 	}
 }
 
@@ -93,8 +89,6 @@ void WaddleDee::Start()
 	AnimationRender->CreateAnimation("WaddleDee_Right.bmp", "Walk_Right", 0, 4, 0.2f, true);
 	AnimationRender->CreateAnimation("WaddleDee_Right.bmp", "Swallowed_Right", 5, 5, 0.5f, false);
 	AnimationRender->CreateAnimation("WaddleDee_Right.bmp", "Damaged_Right", 6, 6, 0.5f, false);
-
-	AnimationRender->CreateAnimation("Effect.bmp", "Iced_", 49, 49, 0.5f, false);
 
 	AnimationName_ = "Walk_";
 	ChangeDirText_ = "Left";
@@ -183,11 +177,6 @@ void WaddleDee::DamagedUpdate()
 
 }
 
-void WaddleDee::IcedUpdate()
-{
-	int a = 0;
-}
-
 void WaddleDee::WalkStart()
 {
 	Speed_ = 50.0f;
@@ -211,13 +200,6 @@ void WaddleDee::DamagedStart()
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
-void WaddleDee::IcedStart()
-{
-	MoveDir = float4::ZERO;
-
-	AnimationName_ = "Iced_";
-	AnimationRender->ChangeAnimation(AnimationName_);
-}
 
 void WaddleDee::WallPixelCheck(float _x, float _Speed)
 {
@@ -338,21 +320,23 @@ void WaddleDee::MonsterColCheck()
 
 		if (true == MonsterCollision->CollisionResult("IceBreathCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
-			ChangeState(MonsterState::Iced);
-			return;
+			Death();
+
+			IceBox_ = GetLevel()->CreateActor<Effect_IceBox>((int)ORDER::EFFECT);
+			IceBox_->SetPosition(GetPosition());
 		}
 	}
 
 	// 얼음 콜리전
-	//{
-	//	std::vector<GameEngineCollision*> ColList;
+	{
+		std::vector<GameEngineCollision*> ColList;
 
-	//	if (true == MonsterCollision->CollisionResult("IceCol", ColList, CollisionType::Rect, CollisionType::Rect))
-	//	{
-	//		ChangeState(MonsterState::Damaged);
-	//		return;
-	//	}
-	//}
+		if (true == MonsterCollision->CollisionResult("IceBoxCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			ChangeState(MonsterState::Damaged);
+			return;
+		}
+	}
 
 	// 스파크 커비 공격
 	{
@@ -365,10 +349,5 @@ void WaddleDee::MonsterColCheck()
 			return;
 		}
 	}
-
-}
-
-void WaddleDee::InhaleColCheck()
-{
 
 }

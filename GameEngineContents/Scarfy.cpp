@@ -10,6 +10,7 @@
 
 Scarfy::Scarfy()
 	: Speed_(250.0f)
+	, DamagedTime_(0.8f)
 {
 	CurState_ = MonsterState::Max;
 	MoveDir = float4::LEFT;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Monster.h"
 #include "Effect_AttackEnd.h"
+#include "Effect_IceBox.h"
 
 class WaddleDee : public Monster
 {
@@ -27,6 +28,7 @@ protected:
 	GameEngineCollision* MonsterCollision;
 
 	Effect_AttackEnd* AttackEffect_;
+	Effect_IceBox* IceBox_;
 
 private:
 	void ChangeState(MonsterState _State) override;
@@ -35,7 +37,6 @@ private:
 protected:
 	void WallPixelCheck(float _x, float _Speed);
 	void MonsterColCheck();
-	void InhaleColCheck();
 
 protected:
 	void Start() override;
@@ -46,10 +47,8 @@ private:
 	void WalkStart() override;
 	void SwallowedStart() override;
 	void DamagedStart() override;
-	void IcedStart();
 
 	void WalkUpdate() override;
 	void SwallowedUpdate() override;
 	void DamagedUpdate() override;
-	void IcedUpdate();
 };
