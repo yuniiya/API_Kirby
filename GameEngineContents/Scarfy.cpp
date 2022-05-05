@@ -6,6 +6,7 @@
 #include <GameEngine/GameEngineImageManager.h>
 #include <GameEngine/GameEngineCollision.h>
 #include "Effect_MonsterDeath.h"
+#include "Effect_IceBox.h"
 
 
 Scarfy::Scarfy()
@@ -309,4 +310,42 @@ void Scarfy::MonsterColCheck()
 			return;
 		}
 	}
+
+	// 아이스 커비 공격
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == MonsterCollision->CollisionResult("IceBreathCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			Death();
+
+			Effect_IceBox* Effect = GetLevel()->CreateActor<Effect_IceBox>((int)ORDER::EFFECT);
+			Effect->SetPosition(GetPosition());
+		}
+	}
+
+	// 얼음 콜리전
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == MonsterCollision->CollisionResult("IceBoxCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			ChangeState(MonsterState::Damaged);
+			return;
+		}
+	}
+
+	// 스파크 커비 공격
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == MonsterCollision->CollisionResult("SparkAttackCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+
+			ChangeState(MonsterState::Damaged);
+			return;
+		}
+	}
+
+
 }

@@ -394,25 +394,7 @@ void IceKirby::IdleUpdate()
 	}
 
 	// 오르막, 내리막길 
-	float4 RightDownkPos = GetPosition() + float4{ 0.f,20.f };
-	float4 LeftUpPos = GetPosition() + float4{ -20.f,0.f };
-
-	int DownColor = MapColImage_->GetImagePixel(RightDownkPos);
-	int UpColor = MapColImage_->GetImagePixel(LeftUpPos);
-
-
-	float4 XMove = { MoveDir.x, 0.0f };
-	float4 YMove = { 0.0f, MoveDir.y };
-
-	if (RGB(0, 0, 0) != DownColor)
-	{
-		SetMove(float4::DOWN);
-	}
-	else if (RGB(0, 0, 0) != UpColor)
-	{
-		SetMove(YMove);
-	}
-
+	HillPixelCheck();
 
 }
 
@@ -447,45 +429,6 @@ void IceKirby::WalkUpdate()
 
 	Move();
 	StagePixelCheck(Speed_);
-
-	// 오르막, 내리막길 
-	//HillPixelCheck();
-	float4 CheckPos = float4::DOWN;
-	float4 LeftUpPos = float4::UP;
-	float4 RightUpPos = float4::UP;
-
-	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
-	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
-	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
-
-	if (RGB(0, 0, 0) != DownColor)
-	{
-		// 땅에 닿아있는 동안은 계속 내려준다
-		while (RGB(0, 0, 0) == DownColor)
-		{
-			CheckPos += float4::DOWN;
-			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
-		}
-		SetMove(CheckPos);
-	}
-	else if (RGB(0, 0, 0) == LeftColor)
-	{
-		while (RGB(0, 0, 0) != LeftColor)
-		{
-			LeftUpPos += float4::UP;
-			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
-		}
-		SetMove(LeftUpPos);
-	}
-	else if (RGB(0, 0, 0) == RightColor)
-	{
-		while (RGB(0, 0, 0) != RightColor)
-		{
-			RightUpPos += float4::UP;
-			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
-		}
-		SetMove(RightUpPos);
-	}
 }
 
 void IceKirby::RunUpdate()
@@ -505,71 +448,13 @@ void IceKirby::RunUpdate()
 
 	Move();
 	StagePixelCheck(500.f);
-
-
-
-	// 오르막, 내리막길 
-	//HillPixelCheck();
-	float4 CheckPos = float4::DOWN;
-	float4 LeftUpPos = float4::UP;
-	float4 RightUpPos = float4::UP;
-
-	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
-	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
-	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
-
-	if (RGB(0, 0, 0) != DownColor)
-	{
-		// 땅에 닿아있는 동안은 계속 내려준다
-		while (RGB(0, 0, 0) == DownColor)
-		{
-			CheckPos += float4::DOWN;
-			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
-		}
-		SetMove(CheckPos);
-	}
-	else if (RGB(0, 0, 0) == LeftColor)
-	{
-		while (RGB(0, 0, 0) != LeftColor)
-		{
-			LeftUpPos += float4::UP;
-			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
-		}
-		SetMove(LeftUpPos);
-	}
-	else if (RGB(0, 0, 0) == RightColor)
-	{
-		while (RGB(0, 0, 0) != RightColor)
-		{
-			RightUpPos += float4::UP;
-			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
-		}
-		SetMove(RightUpPos);
-	}
-
-	// 속력 제한
-	//if (1.f <= MoveDir.Len2D())
-	//{
-	//	MoveDir.Range2D(1.f);
-	//}
-
-	// 아무런 키가 눌리지 않으면 점점 감속한다
-	//if (false == IsMoveKey())
-	//{
-	//	MoveDir += -MoveDir * GameEngineTime::GetDeltaTime();
-
-	//	if (0.005f >= MoveDir.Len2D())
-	//	{
-	//		MoveDir = float4::ZERO;
-	//		return;
-	//	}
-
 }
 
 void IceKirby::RunToStopUpdate()
 {
 	// 이동 시 미래 위치 픽셀 체크
-	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
+	MoveDir.x += -(MoveDir.x * 3.f) * GameEngineTime::GetDeltaTime();
+
 	float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;
 	int Color = MapColImage_->GetImagePixel(CheckPos);
 
@@ -587,7 +472,6 @@ void IceKirby::RunToStopUpdate()
 		return;
 	}
 
-	// 오르막, 내리막길 
 	HillPixelCheck();
 
 }
@@ -618,7 +502,15 @@ void IceKirby::SlideUpdate()
 	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
 
 	// 땅 밑으로는 못 가게
-	StagePixelCheck(Speed_);
+	{
+		float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;
+
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+		if (RGB(0, 0, 0) != Color)
+		{
+			SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
+		}
+	}
 
 	// 문제: 애니메이션이 재생되는 동안 다른 방향으로 변경안되게
 
@@ -634,43 +526,7 @@ void IceKirby::SlideUpdate()
 	}
 
 	// 오르막, 내리막길 
-	//HillPixelCheck();
-	float4 CheckPos = float4::DOWN;
-	float4 LeftUpPos = float4::UP;
-	float4 RightUpPos = float4::UP;
-
-	int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
-	int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + LeftUpPos);
-	int RightColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 20.0f, 0.0f } + RightUpPos);
-
-	if (RGB(0, 0, 0) != DownColor)
-	{
-		// 땅에 닿아있는 동안은 계속 내려준다
-		while (RGB(0, 0, 0) == DownColor)
-		{
-			CheckPos += float4::DOWN;
-			DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
-		}
-		SetMove(CheckPos);
-	}
-	else if (RGB(0, 0, 0) == LeftColor)
-	{
-		while (RGB(0, 0, 0) != LeftColor)
-		{
-			LeftUpPos += float4::UP;
-			LeftColor = MapColImage_->GetImagePixel(GetPosition() + LeftUpPos);
-		}
-		SetMove(LeftUpPos);
-	}
-	else if (RGB(0, 0, 0) == RightColor)
-	{
-		while (RGB(0, 0, 0) != RightColor)
-		{
-			RightUpPos += float4::UP;
-			RightColor = MapColImage_->GetImagePixel(GetPosition() + RightUpPos);
-		}
-		SetMove(RightUpPos);
-	}
+	HillPixelCheck();
 }
 
 void IceKirby::JumpUpdate()

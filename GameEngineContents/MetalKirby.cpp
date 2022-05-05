@@ -382,9 +382,6 @@ void MetalKirby::WalkUpdate()
 	Move();
 
 	StagePixelCheck(Speed_);
-
-	// 오르막, 내리막길 
-	HillPixelCheck();
 }
 
 void MetalKirby::DownUpdate()
@@ -413,7 +410,15 @@ void MetalKirby::SlideUpdate()
 	MoveDir += -(MoveDir * 3.f) * GameEngineTime::GetDeltaTime();
 
 	// 땅 밑으로는 못 가게
-	StagePixelCheck(Speed_);
+	{
+		float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * Speed_;
+
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+		if (RGB(0, 0, 0) != Color)
+		{
+			SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
+		}
+	}
 
 	// 문제: 애니메이션이 재생되는 동안 다른 방향으로 변경안되게
 
