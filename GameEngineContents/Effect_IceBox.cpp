@@ -68,6 +68,13 @@ void Effect_IceBox::CollisionCheck()
 		if (true == IceCollision_->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
 			IsSlide = true;
+
+			IsSlideSound = true;
+
+		}
+		else
+		{
+			IsSlideSound = false;
 		}
 	}
 
@@ -144,14 +151,12 @@ void Effect_IceBox::Update()
 	if (true == IsSlide)
 	{
 		SlideOn();
-
-		IsSlideSound = true;
 	}
 
-	//if (true == IsSlideSound)
-	//{
-	//	GameEngineSound::SoundPlayOneShot("IcePush2.wav");
-	//}
+	if (true == IsSlideSound)
+	{
+		GameEngineSound::SoundPlayOneShot("IcePush2.wav");
+	}
 
 	if (true == IsCrack)
 	{

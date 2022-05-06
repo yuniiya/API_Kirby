@@ -37,17 +37,17 @@ MetalKirby::MetalKirby()
 }
 MetalKirby::~MetalKirby()
 {
-
+	
 }
 
 void MetalKirby::MonsterColCheck()
 {
-	//std::vector<GameEngineCollision*> ColList;
-
-	//if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
-	//{
-	//	GameEngineSound::SoundPlayOneShot("Damaged2.wav");
-	//}
+//	std::vector<GameEngineCollision*> ColList;
+//
+//	if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
+//	{
+//		IsDamagedSound_ = true;
+//	}
 }
 
 void MetalKirby::LevelChangeStart(GameEngineLevel* _PrevLevel)
@@ -156,7 +156,6 @@ void MetalKirby::Update()
 
 	// 카메라 위치 고정
 	CameraFix();
-
 }
 
 void MetalKirby::ChangeState(PlayerState _State)

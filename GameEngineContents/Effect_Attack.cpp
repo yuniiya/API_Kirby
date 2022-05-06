@@ -3,6 +3,7 @@
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineImageManager.h>
 #include <GameEngine/GameEngineCollision.h>
+#include "Effect_AttackEnd.h"
 
 Effect_Attack::Effect_Attack()
 	: AnimationRenderer_(nullptr)
@@ -129,15 +130,20 @@ void Effect_Attack::Update()
 		{
 			MoveDir = float4::ZERO;
 
-			//AnimationRenderer_->ChangeAnimation("Attack_End");
+			////AnimationRenderer_->ChangeAnimation("Attack_End");
 
-			if (AnimationRenderer_->IsEndAnimation())
-			{
-				Death();
-			}
+			//if (AnimationRenderer_->IsEndAnimation())
+			//{
+			//	Death();
+			//}
+
+			Death();
+
+			Effect_AttackEnd* Effect = GetLevel()->CreateActor<Effect_AttackEnd>((int)ORDER::EFFECT);
+			Effect->SetPosition(GetPosition());
+
 		}
 	}
-
 }
 
 

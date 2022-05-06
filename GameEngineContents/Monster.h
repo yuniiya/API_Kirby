@@ -13,6 +13,7 @@ enum class MonsterState
 	Attack,
 	Swallowed,
 	Damaged,
+	DamagedByMetal,
 	Swallow,
 	Scream,
 	Dead,
@@ -104,6 +105,7 @@ protected:
 
 	virtual void AttackStart() {};
 	virtual void DamagedStart() {};
+	virtual void DamagedByMetalStart() {};
 
 	// Boss전용
 	virtual void SwallowStart() {};
@@ -120,6 +122,7 @@ protected:
 
 	virtual void AttackUpdate() {};
 	virtual void DamagedUpdate() {};
+	virtual void DamagedByMetalUpdate() {};
 
 	// Boss전용
 	virtual void SwallowUpdate() {};

@@ -36,7 +36,12 @@ void Effect_AttackEnd::Start()
 
 void Effect_AttackEnd::Update()
 {
-	AnimationRenderer_->ChangeAnimation(AnimationName_ + ChangeDirText_);
+	AnimationRenderer_->ChangeAnimation(AnimationName_);
+
+	if (AnimationRenderer_->IsEndAnimation())
+	{
+		Death();
+	}
 
 }
 

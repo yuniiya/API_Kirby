@@ -57,22 +57,9 @@ private:
 	float StopTime_;
 	float DownTime_;
 
-	// 스테이지 관련
-	//float MapScaleX_;
-	//float MapScaleY_;
-
-	//GameEngineImage* MapColImage_;
-
-	//void ColMapUpdate();
-
-	//std::string CurrentLevel;
+	bool IsDamagedSound_;
 
 private:
-	// 충돌
-	//GameEngineCollision* PlayerCollision;
-	//void DoorCheck(std::string ChangeLevelName_);
-
-
 	void MonsterColCheck() override;
 
 	//void SwallowColCheck();
