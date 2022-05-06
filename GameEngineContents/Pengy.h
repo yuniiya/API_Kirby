@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+#include "Effect_IceBreath.h"
 
 class Pengy : public Monster
 {
@@ -17,6 +18,12 @@ public:
 private:
 	float Speed_;
 
+	float DamagedTime_;
+	float AttackEndTime_;
+
+protected:
+	Effect_IceBreath* IceBreath_;
+
 protected:
 	GameEngineRenderer* AnimationRender;
 
@@ -25,6 +32,7 @@ protected:
 private:
 	void ChangeState(MonsterState _State) override;
 	void MonsterStateUpdate() override;
+	void DirCheck();
 
 protected:
 	void WallPixelCheck(float _x, float _Speed);
@@ -40,9 +48,11 @@ private:
 	void WalkStart() override;
 	void SwallowedStart() override;
 	void AttackStart() override;
+	void DamagedStart() override;
 
 	void IdleUpdate() override;
 	void WalkUpdate() override;
 	void SwallowedUpdate() override;
 	void AttackUpdate() override;
+	void DamagedUpdate() override;
 };

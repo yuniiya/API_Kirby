@@ -13,9 +13,10 @@ public:
 	Kingdedede(Kingdedede&& _Other) noexcept = delete;
 	Kingdedede& operator=(const Kingdedede& _Other) = delete;
 	Kingdedede& operator=(Kingdedede&& _Other) noexcept = delete;
-
 private:
 	float Speed_;
+
+	float DamagedTime_;
 
 protected:
 	GameEngineRenderer* AnimationRender;
@@ -25,10 +26,12 @@ protected:
 private:
 	void ChangeState(MonsterState _State) override;
 	void MonsterStateUpdate() override;
+	void DirCheck();
 
 protected:
 	void WallPixelCheck(float _x, float _Speed);
 	void MonsterColCheck();
+
 
 protected:
 	void Start() override;

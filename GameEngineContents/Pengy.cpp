@@ -6,9 +6,12 @@
 #include <GameEngine/GameEngineCollision.h>
 #include "Player.h"
 #include "Effect_MonsterDeath.h"
+#include "Effect_IceBreath.h"
 
 Pengy::Pengy()
-	: Speed_(80.f)
+	: Speed_(100.f)
+	, DamagedTime_(0.8f)
+	, AttackEndTime_(1.f)
 {
 	CurState_ = MonsterState::Max;
 	MoveDir = float4::LEFT;
@@ -37,6 +40,9 @@ void Pengy::ChangeState(MonsterState _State)
 		case MonsterState::Attack:
 			AttackStart();
 			break;
+		case MonsterState::Damaged:
+			DamagedStart();
+			break;
 		}
 	}
 
@@ -59,6 +65,37 @@ void Pengy::MonsterStateUpdate()
 	case MonsterState::Attack:
 		AttackUpdate();
 		break;
+	case MonsterState::Damaged:
+		DamagedUpdate();
+		break;
+	}
+}
+
+void Pengy::DirCheck()
+{
+	// 처음 방향은 Left
+	MonsterDir PrevDir_ = CurDir_;
+
+	float4 PlayerPos = Player::MainPlayer->GetPosition();
+	float4 MonsterPos = GetPosition();
+
+	// 플레이어가 몬스터 왼쪽에 있다
+	if (PlayerPos.x < MonsterPos.x)
+	{
+		PrevDir_ = MonsterDir::Left;
+		ChangeDirText_ = "Left";
+	}
+	else if (PlayerPos.x > MonsterPos.x)
+	{
+		PrevDir_ = MonsterDir::Right;
+		ChangeDirText_ = "Right";
+	}
+
+	// 방향이 달라졌다
+	if (PrevDir_ != CurDir_)
+	{
+		AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+		CurDir_ = PrevDir_;
 	}
 }
 
@@ -76,14 +113,14 @@ void Pengy::Start()
 	AnimationRender->CreateAnimation("Pengy_Left.bmp", "Idle_Left", 0, 0, 0.1f, false);
 	AnimationRender->CreateAnimation("Pengy_Left.bmp", "Walk_Left", 1, 2, 0.1f, true);
 	//AnimationRender->CreateAnimation("Pengy_Left.bmp", "Swallowed_Left", 7, 7, 0.1f, false);
-	AnimationRender->CreateAnimation("Pengy_Left.bmp", "Attack_Left", 3, 5, 0.1f, true);
+	AnimationRender->CreateAnimation("Pengy_Left.bmp", "Attack_Left", 3, 5, 0.1f, false);
 	AnimationRender->CreateAnimation("Pengy_Left.bmp", "Damaged_Left", 7, 7, 0.1f, false);
 
 	// Pengy _ Right
 	AnimationRender->CreateAnimation("Pengy_Right.bmp", "Idle_Right", 0, 0, 0.1f, false);
 	AnimationRender->CreateAnimation("Pengy_Right.bmp", "Walk_Right", 1, 2, 0.1f, true);
 	//AnimationRender->CreateAnimation("Pengy_Right.bmp", "Swallowed_Left", 7, 7, 0.1f, false);
-	AnimationRender->CreateAnimation("Pengy_Right.bmp", "Attack_Right", 3, 5, 0.1f, true);
+	AnimationRender->CreateAnimation("Pengy_Right.bmp", "Attack_Right", 3, 5, 0.1f, false);
 	AnimationRender->CreateAnimation("Pengy_Right.bmp", "Damaged_Right", 7, 7, 0.1f, false);
 
 	AnimationName_ = "Idle_";
@@ -95,8 +132,10 @@ void Pengy::Update()
 {
 	ColMapUpdate();
 
-	//DirAnimationCheck();
 	MonsterStateUpdate();
+	DirCheck();
+
+	MonsterColCheck();
 
 	// 항상 땅에 붙어있도록 체크
 	GroundPixelCheck();
@@ -109,28 +148,118 @@ void Pengy::Render()
 
 void Pengy::IdleUpdate()
 {
+	// 일정거리 안으로 들어오면 Walk로 전환
+	if (300.f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+	{
+		ChangeState(MonsterState::Walk);
+		return;
+	}
 
+	// 일정거리 안에서 더 가까워지면 Attack으로 전환
+	if (150.f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+	{
+		ChangeState(MonsterState::Attack);
+		return;
+	}
 }
 
 void Pengy::WalkUpdate()
 {
+	// 일정거리 밖으로 벗어나면 다시 Idle로 전환 
+	if (300.0f < std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+	{
+		ChangeState(MonsterState::Idle);
+		return;
+	}
+
+	// 일정거리 안에서 더 가까워지면 Attack으로 전환
+	if (150.f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+	{
+		ChangeState(MonsterState::Attack);
+		return;
+	}
+
 	if (RGB(0, 0, 0) == BottomPixelColorCheck(30.f))
 	{
 		WallPixelCheck(30.f, Speed_);
 	}
-
 }
 
 void Pengy::SwallowedUpdate()
 {
+	float4 PlayerPos = Player::MainPlayer->GetPosition();
+	float4 MonsterPos = GetPosition();
+
+	// 플레이어가 몬스터 왼쪽에 있다
+	if (PlayerPos.x < MonsterPos.x)
+	{
+		MoveDir.x -= 0.05f * GameEngineTime::GetDeltaTime();
+	}
+	else if (PlayerPos.x > MonsterPos.x)
+	{
+		// 몬스터 오른쪽에 있다
+		MoveDir.x += 0.05f * GameEngineTime::GetDeltaTime();
+	}
+
+	SetMove(MoveDir);
 }
 
 void Pengy::AttackUpdate()
 {
+	AttackEndTime_ -= GameEngineTime::GetDeltaTime();
+
+	//if (AnimationRender->IsEndAnimation())
+	//{
+	//	AnimationRender->ChangeAnimation("Idle_" + ChangeDirText_);
+	//}
+
+
+	if (AttackEndTime_ < 0)
+	{
+		IceBreath_->Death();
+
+		ChangeState(MonsterState::Idle);
+		return;
+	}
+}
+
+void Pengy::DamagedUpdate()
+{
+	float4 PlayerPos = Player::MainPlayer->GetPosition();
+	float4 MonsterPos = GetPosition();
+
+	// 플레이어가 몬스터 왼쪽에 있다
+	if (PlayerPos.x < MonsterPos.x)
+	{
+		MoveDir.x = 0.3f;
+	}
+	else if (PlayerPos.x > MonsterPos.x)
+	{
+		// 몬스터 오른쪽에 있다
+		MoveDir.x = -0.3f;
+	}
+
+	SetMove(MoveDir);
+
+	DamagedTime_ -= GameEngineTime::GetDeltaTime();
+
+	if (DamagedTime_ < 0)
+	{
+		//Death();
+
+		{
+			//GameEngineSound::SoundPlayOneShot("Damaged.wav");
+
+			Effect_MonsterDeath* Effect = GetLevel()->CreateActor<Effect_MonsterDeath>((int)ORDER::EFFECT);
+			Effect->SetPosition(GetPosition());
+		}
+	}
 }
 
 void Pengy::IdleStart()
 {
+	//IceBreath_->Death();
+
 	AnimationName_ = "Idle_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
@@ -150,7 +279,35 @@ void Pengy::SwallowedStart()
 
 void Pengy::AttackStart()
 {
+	{
+		IceBreath_ = GetLevel()->CreateActor<Effect_IceBreath>((int)ORDER::EFFECT);
+
+		if (CurDir_ == MonsterDir::Right)
+		{
+			IceBreath_->SetPosition(GetPosition() + float4{ 165.f, 10.f });
+			IceBreath_->SetDir(EffectDir::Right);
+
+		}
+		else if (CurDir_ == MonsterDir::Left)
+		{
+			IceBreath_->SetPosition(GetPosition() + float4{ -165.f, 10.f });
+			IceBreath_->SetDir(EffectDir::Left);
+		}
+	}
+
+	AttackEndTime_ = 1.5f;
+
+	GameEngineSound::SoundPlayOneShot("IceBreath1.wav");
+
 	AnimationName_ = "Attack_";
+	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Pengy::DamagedStart()
+{
+	GameEngineSound::SoundPlayOneShot("Damaged2.wav");
+
+	AnimationName_ = "Damaged_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 

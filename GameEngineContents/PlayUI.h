@@ -5,6 +5,7 @@ class PlayUI : public GameEngineActor
 {
 public:
 	static PlayUI* MainUI;
+
 	// constrcuter destructer
 	PlayUI();
 	~PlayUI();

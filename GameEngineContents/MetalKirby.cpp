@@ -52,7 +52,6 @@ void MetalKirby::LevelChangeStart(GameEngineLevel* _PrevLevel)
 
 void MetalKirby::Start()
 {
-	//SetScale({ 1000, 1000 });
 
 	PlayerCollision = CreateCollision("MetalCol", { 70, 70 });
 

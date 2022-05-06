@@ -5,6 +5,7 @@
 #include "Effect_Attack.h"
 #include "Effect_Star.h"
 #include "Effect_Inhale.h"
+#include "PlayUI.h"
 
 class GameEngineImage;
 class GameEngineCollision;
@@ -94,6 +95,15 @@ protected:
 	void MetalKirbyUpdate();
 	void IceKirbyUpdate();
 	void SparkKirbyUpdate();
+
+protected:
+	PlayUI* IconMetal_;
+	PlayUI* IconIce_;
+	PlayUI* IconSpark_;
+
+	PlayUI* UIMetal_;
+	PlayUI* UIIce_;
+	PlayUI* UISpark_;
 
 protected:
 	GameEngineRenderer* PlayerAnimationRender;

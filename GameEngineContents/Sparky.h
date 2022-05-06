@@ -17,6 +17,8 @@ public:
 private:
 	float Speed_;
 
+	float DamagedTime_;
+
 protected:
 	GameEngineRenderer* AnimationRender;
 
@@ -25,6 +27,7 @@ protected:
 private:
 	void ChangeState(MonsterState _State) override;
 	void MonsterStateUpdate() override;
+	void DirCheck();
 
 protected:
 	void WallPixelCheck(float _x, float _Speed);

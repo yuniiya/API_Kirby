@@ -19,6 +19,7 @@
 #include "Monster.h"
 #include "Scarfy.h"
 #include "Effect_ReleaseSkill.h"
+#include "PlayUI.h"
 
 Player* Player::MainPlayer = nullptr;
 GameEngineSoundPlayer Player::BgmPlayer;
@@ -982,14 +983,17 @@ void Player::DefaultKirbyUpdate()
 	if (CurSkill_ == KirbySkill::Metal)
 	{
 		MetalKirby::MetalPlayer->Off();
+		//IconMetal_->Death();
 	}
 	else if (CurSkill_ == KirbySkill::Ice)
 	{
 		IceKirby::IcePlayer->Off();
+		IconIce_->Death();
 	}
 	else if (CurSkill_ == KirbySkill::Spark)
 	{
 		SparkKirby::SparkPlayer->Off();
+		IconSpark_->Death();
 	}
 
 	// 스킬 해제 사운드
@@ -1030,15 +1034,23 @@ void Player::MetalKirbyUpdate()
 	else if (CurSkill_ == KirbySkill::Ice)
 	{
 		IceKirby::IcePlayer->Off();
+		IconIce_->Death();
 	}
 	else if (CurSkill_ == KirbySkill::Spark)
 	{
 		SparkKirby::SparkPlayer->Off();
+		IconSpark_->Death();
 	}
 
 	MetalKirby::MetalPlayer->SetPosition(GetPosition());
 	CurSkill_ = KirbySkill::Metal;
 	MetalKirby::MetalPlayer->On();
+
+	//IconMetal_ = GetLevel()->CreateActor<PlayUI>((int)ORDER::UI);
+	//GameEngineRenderer* IconRenderer = IconMetal_->CreateRenderer("Icon_Metal.bmp");
+	//IconRenderer->SetPivot({ 80.f,650.f });
+	//IconRenderer->CameraEffectOff();
+\
 }
 
 void Player::IceKirbyUpdate()
@@ -1055,15 +1067,22 @@ void Player::IceKirbyUpdate()
 	else if (CurSkill_ == KirbySkill::Metal)
 	{
 		MetalKirby::MetalPlayer->Off();
+		//IconMetal_->Death();
 	}
 	else if (CurSkill_ == KirbySkill::Spark)
 	{
 		SparkKirby::SparkPlayer->Off();
+		IconSpark_->Death();
 	}
 
 	IceKirby::IcePlayer->SetPosition(GetPosition());
 	CurSkill_ = KirbySkill::Ice;
 	IceKirby::IcePlayer->On();
+
+	IconIce_ = GetLevel()->CreateActor<PlayUI>((int)ORDER::UI);
+	GameEngineRenderer* IconRenderer = IconIce_->CreateRenderer("Icon_Ice.bmp");
+	IconRenderer->SetPivot({ 75.f,670.f });
+	IconRenderer->CameraEffectOff();
 }
 
 void Player::SparkKirbyUpdate()
@@ -1080,15 +1099,22 @@ void Player::SparkKirbyUpdate()
 	else if (CurSkill_ == KirbySkill::Metal)
 	{
 		MetalKirby::MetalPlayer->Off();
+		//IconMetal_->Death();
 	}
 	else if (CurSkill_ == KirbySkill::Ice)
 	{
 		IceKirby::IcePlayer->Off();
+		IconIce_->Death();
 	}
 
 	SparkKirby::SparkPlayer->SetPosition(GetPosition());
 	CurSkill_ = KirbySkill::Spark;
 	SparkKirby::SparkPlayer->On();
+
+	IconSpark_ = GetLevel()->CreateActor<PlayUI>((int)ORDER::UI);
+	GameEngineRenderer* IconRenderer = IconSpark_->CreateRenderer("Icon_Spark.bmp");
+	IconRenderer->SetPivot({ 80.f,650.f });
+	IconRenderer->CameraEffectOff();
 }
 
 

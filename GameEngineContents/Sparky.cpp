@@ -102,8 +102,10 @@ void Sparky::Update()
 {
 	ColMapUpdate();
 
-	//DirAnimationCheck();
 	MonsterStateUpdate();
+	DirCheck();
+
+	MonsterColCheck();
 
 	// 항상 땅에 붙어있도록 체크
 	GroundPixelCheck();
@@ -132,6 +134,10 @@ void Sparky::AttackUpdate()
 {
 }
 
+void Sparky::DamagedUpdate()
+{
+}
+
 void Sparky::IdleStart()
 {
 	AnimationName_ = "Idle_";
@@ -155,6 +161,10 @@ void Sparky::AttackStart()
 {
 	AnimationName_ = "Attack_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Sparky::DamagedStart()
+{
 }
 
 void Sparky::WallPixelCheck(float _x, float _Speed)

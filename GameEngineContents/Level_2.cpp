@@ -88,8 +88,8 @@ void Level_2::Loading()
 		//Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
 		//scarfy->SetPosition({ 500.f, 400.f });
 
-		//Pengy* pengy = CreateActor<Pengy>((int)ORDER::MONSTER, "Pengy");
-		//pengy->SetPosition({ 700.f, 300.f });
+		Pengy* pengy = CreateActor<Pengy>((int)ORDER::MONSTER, "Pengy");
+		pengy->SetPosition({ 700.f, 300.f });
 	}
 }
 
@@ -114,8 +114,8 @@ void Level_2::Update()
 void Level_2::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	{
-		//Player::MainPlayer->SetPosition({ 100.f, 490.f });
-		Player::MainPlayer->SetPosition({ 1000.f, 490.f });
+		Player::MainPlayer->SetPosition({ 100.f, 490.f });
+		//Player::MainPlayer->SetPosition({ 1000.f, 490.f });
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 490.f });
 		IceKirby::IcePlayer->SetPosition({ 100.f, 490.f });
 		SparkKirby::SparkPlayer->SetPosition({ 100.f, 490.f });

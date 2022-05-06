@@ -201,7 +201,7 @@ void Metalun::DamagedUpdate()
 
 	if (DamagedTime_ < 0)
 	{
-		Death();
+		//Death();
 
 		{
 			GameEngineSound::SoundPlayOneShot("Damaged.wav");
