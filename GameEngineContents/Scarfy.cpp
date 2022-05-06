@@ -39,6 +39,9 @@ void Scarfy::ChangeState(MonsterState _State)
 		case MonsterState::Damaged:
 			DamagedStart();
 			break;
+		case MonsterState::DamagedByMetal:
+			DamagedByMetalStart();
+			break;
 		}
 	}
 
@@ -60,6 +63,9 @@ void Scarfy::MonsterStateUpdate()
 		break;
 	case MonsterState::Damaged:
 		DamagedUpdate();
+		break;
+	case MonsterState::DamagedByMetal:
+		DamagedByMetalUpdate();
 		break;
 	}
 }
@@ -214,6 +220,11 @@ void Scarfy::DamagedUpdate()
 	}
 }
 
+void Scarfy::DamagedByMetalUpdate()
+{
+	DamagedUpdate();
+}
+
 void Scarfy::IdleStart()
 {
 	MoveDir = float4::ZERO;
@@ -244,6 +255,16 @@ void Scarfy::DamagedStart()
 {
 	MoveDir = float4::ZERO;
 	DamagedTime_ = 0.8f;
+
+	AnimationName_ = "Damaged_";
+	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Scarfy::DamagedByMetalStart()
+{
+	DamagedTime_ = 0.8f;
+
+	GameEngineSound::SoundPlayOneShot("Damaged2.wav");
 
 	AnimationName_ = "Damaged_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
@@ -295,7 +316,7 @@ void Scarfy::MonsterColCheck()
 
 		if (true == MonsterCollision->CollisionResult("MetalCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
-			ChangeState(MonsterState::Damaged);
+			ChangeState(MonsterState::DamagedByMetal);
 			return;
 		}
 	}

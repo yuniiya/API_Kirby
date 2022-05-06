@@ -324,10 +324,6 @@ void WaddleDee::MonsterColCheck()
 
 		if (true == MonsterCollision->CollisionResult("AttackCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
-		/*	{
-				AttackEffect_ = GetLevel()->CreateActor<Effect_AttackEnd>((int)ORDER::EFFECT);
-				AttackEffect_->SetPosition(GetPosition());
-			}*/
 			ChangeState(MonsterState::Damaged);
 			return;
 		}

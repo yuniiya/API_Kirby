@@ -57,8 +57,6 @@ private:
 	float StopTime_;
 	float DownTime_;
 
-	bool IsDamagedSound_;
-
 private:
 	void MonsterColCheck() override;
 

@@ -43,6 +43,9 @@ void BigWaddleDee::ChangeState(MonsterState _State)
 		case MonsterState::Damaged:
 			DamagedStart();
 			break;
+		case MonsterState::DamagedByMetal:
+			DamagedByMetalStart();
+			break;
 		}
 	}
 
@@ -67,6 +70,9 @@ void BigWaddleDee::MonsterStateUpdate()
 		break;
 	case MonsterState::Damaged:
 		DamagedUpdate();
+		break;
+	case MonsterState::DamagedByMetal:
+		DamagedByMetalUpdate();
 		break;
 	}
 }
@@ -171,6 +177,11 @@ void BigWaddleDee::DamagedUpdate()
 	}
 }
 
+void BigWaddleDee::DamagedByMetalUpdate()
+{
+	DamagedUpdate();
+}
+
 void BigWaddleDee::WalkStart()
 {
 	Speed_ = 50.0f;
@@ -189,6 +200,16 @@ void BigWaddleDee::SwallowedStart()
 void BigWaddleDee::DamagedStart()
 {
 	DamagedTime_ = 0.8f;
+
+	AnimationName_ = "Damaged_";
+	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void BigWaddleDee::DamagedByMetalStart()
+{
+	DamagedTime_ = 0.8f;
+
+	GameEngineSound::SoundPlayOneShot("Damaged2.wav");
 
 	AnimationName_ = "Damaged_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
@@ -288,7 +309,7 @@ void BigWaddleDee::MonsterColCheck()
 
 		if (true == MonsterCollision->CollisionResult("MetalCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
-			ChangeState(MonsterState::Damaged);
+			ChangeState(MonsterState::DamagedByMetal);
 			return;
 		}
 	}

@@ -283,18 +283,22 @@ void Monster::DirAnimationCheck()
 	// 처음 방향은 Left
 	MonsterDir PrevDir_ = CurDir_;
 
-	if (PrevDir_ == MonsterDir::Right)
+	float4 PlayerPos = Player::MainPlayer->GetPosition();
+	float4 MonsterPos = GetPosition();
+
+	// 플레이어가 몬스터 왼쪽에 있다
+	if (PlayerPos.x < MonsterPos.x)
+	{
+		PrevDir_ = MonsterDir::Left;
+		ChangeDirText_ = "Left";
+	}
+	else if (PlayerPos.x > MonsterPos.x)
 	{
 		PrevDir_ = MonsterDir::Right;
 		ChangeDirText_ = "Right";
 	}
 
-	if (PrevDir_ == MonsterDir::Left)
-	{
-		PrevDir_ = MonsterDir::Left;
-		ChangeDirText_ = "Left";
-	}
-
+	// 방향이 달라졌다
 	if (PrevDir_ != CurDir_)
 	{
 		MonsterAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText_);

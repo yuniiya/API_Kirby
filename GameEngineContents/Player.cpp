@@ -528,39 +528,112 @@ void Player::WallCheck()
 
 void Player::MonsterColCheck()
 {
-	std::vector<GameEngineCollision*> ColList;
+	// 디폴트 몬스터
+	{	
+		std::vector<GameEngineCollision*> ColList;
 
-	if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
-	{
-	/*	for (size_t i = 0; i < ColList.size(); i++)
+		if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
-			ColList[i]->GetActor()->Death();
-		}*/
+			/*	for (size_t i = 0; i < ColList.size(); i++)
+				{
+					ColList[i]->GetActor()->Death();
+				}*/
 
-		ChangeState(PlayerState::DamagedStart);
-		return;
-		
+			ChangeState(PlayerState::DamagedStart);
+			return;
+		}
 	}
+
+	// Skilled
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == PlayerCollision->CollisionResult("MetalunCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			ChangeState(PlayerState::DamagedStart);
+			return;
+		}
+	}
+
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == PlayerCollision->CollisionResult("PengyCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			ChangeState(PlayerState::DamagedStart);
+			return;
+		}
+	}
+
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == PlayerCollision->CollisionResult("SparkyCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			ChangeState(PlayerState::DamagedStart);
+			return;
+		}
+	}
+
+
 }
 
 void Player::InhaleColCheck()
 {
-	std::vector<GameEngineCollision*> ColList;
-
-	if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
+	// 디폴트 몬스터
 	{
-		/*	for (size_t i = 0; i < ColList.size(); i++)
-			{
-				ColList[i]->GetActor()->Death();
-			}*/
+		std::vector<GameEngineCollision*> ColList;
 
-		InhaleEffect_->Death();
-		InhaleEffSound_.Stop();
+		if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			InhaleEffect_->Death();
+			InhaleEffSound_.Stop();
 
-		ChangeState(PlayerState::Full);
-		return;
-
+			ChangeState(PlayerState::Full);
+			return;
+		}
 	}
+
+	// Skilled
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == PlayerCollision->CollisionResult("MetalunCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			InhaleEffect_->Death();
+			InhaleEffSound_.Stop();
+
+			ChangeState(PlayerState::Full);
+			return;
+		}
+	}
+
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == PlayerCollision->CollisionResult("PengyCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			InhaleEffect_->Death();
+			InhaleEffSound_.Stop();
+
+			ChangeState(PlayerState::Full);
+			return;
+		}
+	}
+
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == PlayerCollision->CollisionResult("SparkyCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			InhaleEffect_->Death();
+			InhaleEffSound_.Stop();
+
+			ChangeState(PlayerState::Full);
+			return;
+		}
+	}
+
 }
 
 

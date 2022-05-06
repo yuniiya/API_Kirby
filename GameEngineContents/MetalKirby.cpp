@@ -42,12 +42,7 @@ MetalKirby::~MetalKirby()
 
 void MetalKirby::MonsterColCheck()
 {
-//	std::vector<GameEngineCollision*> ColList;
-//
-//	if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
-//	{
-//		IsDamagedSound_ = true;
-//	}
+
 }
 
 void MetalKirby::LevelChangeStart(GameEngineLevel* _PrevLevel)

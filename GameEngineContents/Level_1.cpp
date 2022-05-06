@@ -87,11 +87,11 @@ void Level_1::Loading()
 
 	// ∏ÛΩ∫≈Õ
 	{
-		WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
-		Waddle->SetPosition({ 700.f, 400.f }); 
+		//WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		//Waddle->SetPosition({ 700.f, 400.f }); 
 
-		Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
-		Waddle->SetPosition({ 400.f, 400.f });
+		//Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		//Waddle->SetPosition({ 400.f, 400.f });
 
 
 	/*	WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
@@ -110,8 +110,11 @@ void Level_1::Loading()
 	
 
 	{
-		Metalun* metalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
-		metalun->SetPosition({ 4200.f, 300.f });
+		//Metalun* NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
+		//NewMetalun->SetPosition({ 4200.f, 300.f });
+
+		Metalun* NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
+		NewMetalun->SetPosition({ 700.f, 300.f });
 	}
 
 

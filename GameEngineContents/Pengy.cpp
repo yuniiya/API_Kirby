@@ -4,6 +4,8 @@
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineImageManager.h>
 #include <GameEngine/GameEngineCollision.h>
+#include "Player.h"
+#include "Effect_MonsterDeath.h"
 
 Pengy::Pengy()
 	: Speed_(80.f)
@@ -201,28 +203,32 @@ void Pengy::WallPixelCheck(float _x, float _Speed)
 
 void Pengy::MonsterColCheck()
 {
-	std::vector<GameEngineCollision*> ColList;
-
-	if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
-	{
-		for (size_t i = 0; i < ColList.size(); i++)
-		{
-			// (엑터 제외한) 콜리전만 파괴 
-			ColList[i]->Death();
-		}
-	}
-
+	// 흡수에 닿았을 때 -> Swallowed
 	std::vector<GameEngineCollision*> SwallowColList;
 
 	if (true == MonsterCollision->CollisionResult("InhaleCol", SwallowColList, CollisionType::Rect, CollisionType::Rect))
 	{
 		for (size_t i = 0; i < SwallowColList.size(); i++)
 		{
-			// (엑터 제외한) 콜리전만 파괴 
-
 			ChangeState(MonsterState::Swallowed);
 			return;
 		}
+	}
 
+	// 삼켜지고 있는 중이면 Death로 처리
+	if (CurState_ == MonsterState::Swallowed)
+	{
+		if (10.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+		{
+			Death();
+		}
+	}
+
+	std::vector<GameEngineCollision*> ColList;
+
+	if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
+	{
+		ChangeState(MonsterState::Damaged);
+		return;
 	}
 }

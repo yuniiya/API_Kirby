@@ -52,10 +52,12 @@ private:
 	void JumpStart() override;
 	void SwallowedStart() override;
 	void DamagedStart() override;
+	void DamagedByMetalStart() override;
 
 	void IdleUpdate() override;
 	void JumpUpdate() override;
 	void SwallowedUpdate() override;
 	void DamagedUpdate() override;
+	void DamagedByMetalUpdate() override;
 };
 

@@ -47,10 +47,10 @@ private:
 	void WalkStart() override;
 	void SwallowedStart() override;
 	void DamagedStart() override;
-	void DamagedByMetalStart();
+	void DamagedByMetalStart() override;
 
 	void WalkUpdate() override;
 	void SwallowedUpdate() override;
 	void DamagedUpdate() override;
-	void DamagedByMetalUpdate();
+	void DamagedByMetalUpdate() override;
 };
