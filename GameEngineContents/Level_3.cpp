@@ -13,6 +13,7 @@
 #include "ContentsEnum.h"
 #include "PlayUI.h"
 #include "Water.h"
+#include "FadeIn.h"
 
 Level_3::Level_3()
 {
@@ -88,6 +89,8 @@ void Level_3::Update()
 
 void Level_3::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);
+
 	{
 		Player::MainPlayer->SetPosition({ 100.f, 490.f });
 		//Player::MainPlayer->SetPosition({ 2700.f, 490.f });

@@ -21,6 +21,9 @@
 #include "BigWaddleDee.h"
 #include "Scarfy.h"
 #include "Metalun.h"
+#include "Sparky.h"
+#include "Fade.h"
+#include "FadeIn.h"
 
 Level_1::Level_1()
 {
@@ -113,10 +116,15 @@ void Level_1::Loading()
 		//Metalun* NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
 		//NewMetalun->SetPosition({ 4200.f, 300.f });
 
-		Metalun* NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
-		NewMetalun->SetPosition({ 700.f, 300.f });
+	/*	Metalun* NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
+		NewMetalun->SetPosition({ 700.f, 300.f });*/
+
+
+		Sparky* NewSparky = CreateActor<Sparky>((int)ORDER::MONSTER, "Sparky");
+		NewSparky->SetPosition({ 700.f, 300.f });
 	}
 
+	
 
 }
 
@@ -141,12 +149,13 @@ void Level_1::Update()
 
 void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
-	//Player::BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
+	// 페이드인
+	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);
 
 	{
-		Player::MainPlayer->SetPosition({ 100.f, 520.f });
+		//Player::MainPlayer->SetPosition({ 100.f, 520.f });
 		//Player::MainPlayer->SetPosition({ 1800.f, 420.f });
-		//Player::MainPlayer->SetPosition({ 5300.f, 450.f });
+		Player::MainPlayer->SetPosition({ 5300.f, 450.f });
 		//Player::MainPlayer->SetPosition({ 2900.f, 200.f });
 
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 520.f });

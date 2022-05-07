@@ -258,8 +258,6 @@ void Pengy::DamagedUpdate()
 
 void Pengy::IdleStart()
 {
-	//IceBreath_->Death();
-
 	AnimationName_ = "Idle_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }

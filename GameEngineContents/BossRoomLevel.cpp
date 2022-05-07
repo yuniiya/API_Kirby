@@ -13,6 +13,7 @@
 
 #include "ContentsEnum.h"
 #include "PlayUI.h"
+#include "FadeIn.h"
 
 BossRoomLevel::BossRoomLevel()
 {
@@ -67,6 +68,9 @@ void BossRoomLevel::Update()
 
 void BossRoomLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	// 페이드인
+	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);
+
 	Player::BgmPlayer.Stop();
 	Player::BgmPlayer = GameEngineSound::SoundPlayControl("BossRoom.mp3");
 

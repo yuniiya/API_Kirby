@@ -18,11 +18,14 @@ private:
 	float Speed_;
 
 	float DamagedTime_;
+	float AttReadyTime_;
+	float AttackTime_;
 
 protected:
 	GameEngineRenderer* AnimationRender;
 
 	GameEngineCollision* MonsterCollision;
+	GameEngineCollision* AttackCollision;
 
 private:
 	void ChangeState(MonsterState _State) override;

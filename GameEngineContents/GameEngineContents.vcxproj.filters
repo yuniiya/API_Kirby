@@ -164,6 +164,12 @@
     <ClCompile Include="Effect_BigIceBox.cpp">
       <Filter>Actor\Play\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Fade.cpp">
+      <Filter>Actor\Play\Global\Back</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeIn.cpp">
+      <Filter>Actor\Play\Global\Back</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Kirby.h" />
@@ -326,6 +332,12 @@
     </ClInclude>
     <ClInclude Include="Effect_BigIceBox.h">
       <Filter>Actor\Play\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Fade.h">
+      <Filter>Actor\Play\Global\Back</Filter>
+    </ClInclude>
+    <ClInclude Include="FadeIn.h">
+      <Filter>Actor\Play\Global\Back</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

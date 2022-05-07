@@ -20,6 +20,7 @@
 #include "BigWaddleDee.h"
 #include "Scarfy.h"
 #include "Pengy.h"
+#include "FadeIn.h"
 
 Level_2::Level_2()
 {
@@ -113,6 +114,9 @@ void Level_2::Update()
 
 void Level_2::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	// 페이드인
+	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);
+
 	{
 		Player::MainPlayer->SetPosition({ 100.f, 490.f });
 		//Player::MainPlayer->SetPosition({ 1000.f, 490.f });

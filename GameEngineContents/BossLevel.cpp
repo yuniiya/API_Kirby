@@ -14,6 +14,7 @@
 #include "MapActor.h"
 #include "ContentsEnum.h"
 #include "Kingdedede.h"
+#include "FadeIn.h"
 
 BossLevel::BossLevel()
 {
@@ -83,6 +84,9 @@ void BossLevel::Update()
 
 void BossLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	// 페이드인
+	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);
+
 	Player::BgmPlayer.Stop();
 	Player::BgmPlayer = GameEngineSound::SoundPlayControl("Boss.mp3");
 

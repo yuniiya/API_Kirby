@@ -20,6 +20,7 @@
 #include "Scarfy.h"
 #include "Effect_ReleaseSkill.h"
 #include "PlayUI.h"
+#include "Fade.h"
 
 Player* Player::MainPlayer = nullptr;
 GameEngineSoundPlayer Player::BgmPlayer;
@@ -298,6 +299,7 @@ void Player::Start()
 	PlayerAnimationRender->SetPivot({ 0.f, 140.f });
 
 	// Walk_Right이미지의 0~9인덱스를 0.1초동안 재생 (true = 루프on)
+	//Render->SetPivotType(RenderPivot::BOT);
 	//Render->SetPivotType(RenderPivot::BOT);
 
 	// Default Left
@@ -775,8 +777,7 @@ void Player::DoorCheck(std::string ChangeLevelName_)
 	if (RGB(0, 0, 255) == Color && true == GameEngineInput::GetInst()->IsDown("MoveUp"))
 	{
 		GameEngine::GetInst().ChangeLevel(ChangeLevelName_);
-	}
-		
+	}	
 }
 
 void Player::StagePixelCheck(float _Speed)
@@ -936,7 +937,6 @@ void Player::DoorPixelCheck()
 		DoorCheck("BossRoomLevel");
 	else if ("BossRoomLevel" == GetCurrentLevelName())
 		DoorCheck("BossLevel");
-
 }
 
 void Player::LevelChangeStart(GameEngineLevel* _PrevLevel)

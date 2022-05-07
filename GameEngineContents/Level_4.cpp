@@ -14,6 +14,7 @@
 #include "PlayUI.h"
 #include "Water_1.h"
 #include "Water_2.h"
+#include "FadeIn.h"
 
 Level_4::Level_4()
 {
@@ -93,6 +94,8 @@ void Level_4::Update()
 
 void Level_4::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);
+
 	//Player::BgmPlayer.Stop();
 	Player::BgmPlayer = GameEngineSound::SoundPlayControl("Play2.mp3");
 

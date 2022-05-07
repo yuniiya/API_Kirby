@@ -241,6 +241,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Fade.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FadeIn.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Grass.h">
       <SubType>
       </SubType>
@@ -468,6 +476,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="EndingLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Fade.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="FadeIn.cpp">
       <SubType>
       </SubType>
     </ClCompile>
