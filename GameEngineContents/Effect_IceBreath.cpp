@@ -2,6 +2,7 @@
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineImageManager.h>
+#include "GameEngine//GameEngineCollision.h"
 
 Effect_IceBreath::Effect_IceBreath()
 	: AnimationRenderer_(nullptr)
@@ -46,4 +47,5 @@ void Effect_IceBreath::Update()
 		ChangeDirText_ = "Left";
 	}
 	AnimationRenderer_->ChangeAnimation(AnimationName_ + ChangeDirText_);
+
 }

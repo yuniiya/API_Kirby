@@ -89,14 +89,16 @@ void Kingdedede::Start()
 	AnimationRender->SetPivot({ 0.f, 35.f });
 
 	// Boss - Left
-	AnimationRender->CreateAnimation("Boss_Left.bmp", "Idle_Left", 0, 3, 0.5f, true);
+	//AnimationRender->CreateAnimation("Boss_Left.bmp", "Idle_Left", 0, 3, 0.5f, true);
+	AnimationRender->CreateAnimation("King_Left.bmp", "Idle_Left", 0, 3, 0.5f, true);
 	//AnimationRender->CreateAnimation("Pengy_Left.bmp", "Walk_Left", 1, 2, 0.1f, true);
 	//AnimationRender->CreateAnimation("Pengy_Left.bmp", "Swallow_Left", 7, 7, 0.1f, false);
 	//AnimationRender->CreateAnimation("Pengy_Left.bmp", "Attack_Left", 3, 5, 0.1f, true);
 	//AnimationRender->CreateAnimation("Pengy_Left.bmp", "Damaged_Left", 7, 7, 0.1f, false);
 
 	// Boss - Right
-	AnimationRender->CreateAnimation("Boss_Right.bmp", "Idle_Right", 0, 3, 0.5f, true);
+	//AnimationRender->CreateAnimation("Boss_Right.bmp", "Idle_Right", 0, 3, 0.5f, true);
+	AnimationRender->CreateAnimation("King_Right.bmp", "Idle_Right", 0, 3, 0.5f, true);
 	//AnimationRender->CreateAnimation("Pengy_Right.bmp", "Walk_Right", 1, 2, 0.1f, true);
 	//AnimationRender->CreateAnimation("Pengy_Right.bmp", "Swallowe_Left", 7, 7, 0.1f, false);
 	//AnimationRender->CreateAnimation("Pengy_Right.bmp", "Attack_Right", 3, 5, 0.1f, true);

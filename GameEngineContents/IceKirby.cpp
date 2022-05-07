@@ -57,6 +57,7 @@ void IceKirby::MonsterColCheck()
 		CurSkill_ = KirbySkill::Default;
 		MainPlayer->On();
 	}
+
 }
 
 void IceKirby::LevelChangeStart(GameEngineLevel* _PrevLevel)

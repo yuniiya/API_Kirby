@@ -193,7 +193,13 @@ void Kirby::GameInit()
 		BossLeft->CutCount(5, 7);
 		GameEngineImage* BossRight = GameEngineImageManager::GetInst()->Find("Boss_Right.bmp");
 		BossRight->CutCount(5, 7);
+
+		GameEngineImage* BossLeft1 = GameEngineImageManager::GetInst()->Find("King_Left.bmp");
+		BossLeft1->CutCount(5, 7);
+		GameEngineImage* BossRight1 = GameEngineImageManager::GetInst()->Find("King_Right.bmp");
+		BossRight1->CutCount(5, 7);
 	}
+
 
 
 	// 레벨 생성 및 현재 레벨 설정

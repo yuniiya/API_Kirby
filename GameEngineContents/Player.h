@@ -280,7 +280,7 @@ protected:
 
 	void FullToSparkStart();
 	void SwallowSparkStart();
-	void SparkTrasformStart();
+	void SparkTransformStart();
 
 	void FullToMetalUpdate();
 	void SwallowMetalUpdate();

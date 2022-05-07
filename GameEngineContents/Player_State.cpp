@@ -1339,7 +1339,7 @@ void Player::SwallowSparkStart()
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
-void Player::SparkTrasformStart()
+void Player::SparkTransformStart()
 {
 	GameEngineSound::SoundPlayOneShot("Transform.wav");
 

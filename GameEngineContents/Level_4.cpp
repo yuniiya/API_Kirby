@@ -17,6 +17,7 @@
 #include "Water_2.h"
 #include "FadeIn.h"
 #include "Effect_DoorStar.h"
+#include "GameEngine/GameEngineCollision.h"
 
 Level_4::Level_4()
 {
@@ -56,6 +57,19 @@ void Level_4::Loading()
 		StageActor.y = (CurStage->GetRenderer()->GetImage()->GetScale().Half().y);
 
 		CurStage->GetRenderer()->SetPivot(StageActor);
+
+
+		// 강에 IceBreath닿으면 얼음 생성 
+		//GameEngineCollision* WaterCol = CurStage->CreateCollision("Water1", { 690.f, 205.f }, { 1216.f, 535.f });
+
+		//std::vector<GameEngineCollision*> ColList;
+
+		//if (true == WaterCol->CollisionResult("IceBreathCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		//{
+		//	
+		//}
+		//
+		//CurStage->CreateCollision("Water2", { 560.f, 215.f }, { 2400.f, 522.f });
 	}
 
 	{
@@ -65,6 +79,8 @@ void Level_4::Loading()
 		Water_2* Water2 = CreateActor<Water_2>((int)ORDER::GRASS);
 		Water2->SetPosition({ 2400.f, 433.f });
 	}
+
+
 }
 
 void Level_4::Update()

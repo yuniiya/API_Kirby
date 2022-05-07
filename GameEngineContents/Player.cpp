@@ -228,7 +228,7 @@ void Player::ChangeState(PlayerState _State)
 			SwallowSparkStart();
 			break;
 		case PlayerState::SparkTransform:
-			SparkTrasformStart();
+			SparkTransformStart();
 			break;
 		}
 	}
@@ -1114,77 +1114,20 @@ void Player::DefaultKirbyUpdate()
 
 void Player::MetalKirbyUpdate()
 {
-	if (CurSkill_ == KirbySkill::Metal)
-	{
-		return;
-	}
-
-	if (CurSkill_ == KirbySkill::Default)
-	{
-		MainPlayer->Off();
-	}
-	else if (CurSkill_ == KirbySkill::Ice)
-	{
-		IceKirby::IcePlayer->Off();
-	}
-	else if (CurSkill_ == KirbySkill::Spark)
-	{
-		SparkKirby::SparkPlayer->Off();
-	}
-
-	MetalKirby::MetalPlayer->SetPosition(GetPosition());
-	CurSkill_ = KirbySkill::Metal;
-	MetalKirby::MetalPlayer->On();
+	ChangeState(PlayerState::SwallowMetal);
+	return;
 }
 
 void Player::IceKirbyUpdate()
 {
-	if (CurSkill_ == KirbySkill::Ice)
-	{
-		return;
-	}
-
-	if (CurSkill_ == KirbySkill::Default)
-	{
-		MainPlayer->Off();
-	}
-	else if (CurSkill_ == KirbySkill::Metal)
-	{
-		MetalKirby::MetalPlayer->Off();
-	}
-	else if (CurSkill_ == KirbySkill::Spark)
-	{
-		SparkKirby::SparkPlayer->Off();
-	}
-
-	IceKirby::IcePlayer->SetPosition(GetPosition());
-	CurSkill_ = KirbySkill::Ice;
-	IceKirby::IcePlayer->On();
+	ChangeState(PlayerState::SwallowIce);
+	return;
 }
 
 void Player::SparkKirbyUpdate()
 {
-	if (CurSkill_ == KirbySkill::Spark)
-	{
-		return;
-	}
-
-	if (CurSkill_ == KirbySkill::Default)
-	{
-		MainPlayer->Off();
-	}
-	else if (CurSkill_ == KirbySkill::Metal)
-	{
-		MetalKirby::MetalPlayer->Off();
-	}
-	else if (CurSkill_ == KirbySkill::Ice)
-	{
-		IceKirby::IcePlayer->Off();
-	}
-
-	SparkKirby::SparkPlayer->SetPosition(GetPosition());
-	CurSkill_ = KirbySkill::Spark;
-	SparkKirby::SparkPlayer->On();
+	ChangeState(PlayerState::SwallowSpark);
+	return;
 }
 
 
