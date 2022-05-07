@@ -18,6 +18,7 @@ public:
 private:
 	float Speed_;
 
+	float IdleTime_;
 	float DamagedTime_;
 	float AttackEndTime_;
 

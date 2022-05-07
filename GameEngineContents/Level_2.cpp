@@ -154,6 +154,13 @@ void Level_2::LevelChangeEnd(GameEngineLevel* _NextLevel)
 
 		PlayUI::MainUI->NextLevelOn();
 		PlayerHP::MainHP->NextLevelOn();
+
+		MetalKirby::MetalSkill->NextLevelOn();
+		MetalKirby::MetalName->NextLevelOn();
+		IceKirby::IceSkill->NextLevelOn();
+		IceKirby::IceName->NextLevelOn();
+		SparkKirby::SparkSkill->NextLevelOn();
+		SparkKirby::SparkName->NextLevelOn();
 	}
 
 }

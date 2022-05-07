@@ -1,6 +1,8 @@
 #pragma once
 #include "Player.h"
 #include "Effect_IceBreath.h"
+#include "SkillUI.h"
+#include "SkillName.h"
 
 class GameEngineImage;
 class GameEngineCollision;
@@ -9,6 +11,8 @@ class IceKirby : public Player
 {
 public:
 	static IceKirby* IcePlayer;
+	static SkillUI* IceSkill;
+	static SkillName* IceName;
 
 	// constrcuter destructer
 	IceKirby();

@@ -47,10 +47,16 @@ enum class PlayerState
 	AttackEnd,
 	DamagedStart,
 	Damaged,
-	Enter,
+
 	FullToMetal,
 	SwallowMetal,
 	MetalTransform,
+	FullToIce,
+	SwallowIce,
+	IceTransform,
+	FullToSpark,
+	SwallowSpark,
+	SparkTransform,
 	
 	Max,
 };
@@ -101,15 +107,6 @@ protected:
 	void MetalKirbyUpdate();
 	void IceKirbyUpdate();
 	void SparkKirbyUpdate();
-
-protected:
-	PlayUI* IconMetal_;
-	PlayUI* IconIce_;
-	PlayUI* IconSpark_;
-
-	PlayUI* UIMetal_;
-	PlayUI* UIIce_;
-	PlayUI* UISpark_;
 
 protected:
 	GameEngineRenderer* PlayerAnimationRender;
@@ -241,12 +238,7 @@ protected:
 	virtual void DamagedStart();
 
 
-	void FullToMetalStart();
-	void SwallowMetalStart();
-	void MetalTrasformStart();
-
-
-	///////////////////////
+	/////////////////////// Update
 	virtual void IdleUpdate();
 	virtual void WalkUpdate();
 	virtual void RunUpdate();
@@ -276,9 +268,31 @@ protected:
 	virtual void DamagedUpdate();
 
 
+	// ========================= Transform
+protected:
+	void FullToMetalStart();
+	void SwallowMetalStart();
+	void MetalTrasformStart();
+
+	void FullToIceStart();
+	void SwallowIceStart();
+	void IceTransformStart();
+
+	void FullToSparkStart();
+	void SwallowSparkStart();
+	void SparkTrasformStart();
+
 	void FullToMetalUpdate();
 	void SwallowMetalUpdate();
 	void MetalTransformUpdate();
+
+	void FullToIceUpdate();
+	void SwallowIceUpdate();
+	void IceTransformUpdate();
+
+	void FullToSparkUpdate();
+	void SwallowSparkUpdate();
+	void SparkTransformUpdate();
 	
 
 };

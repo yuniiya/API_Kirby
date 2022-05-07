@@ -23,6 +23,9 @@
 #include "Effect_ReleaseSkill.h"
 
 MetalKirby* MetalKirby::MetalPlayer = nullptr;
+SkillUI* MetalKirby::MetalSkill = nullptr;
+SkillName* MetalKirby::MetalName = nullptr;
+
 
 MetalKirby::MetalKirby()
 	: PlayerAnimationRender(nullptr)
@@ -134,6 +137,14 @@ void MetalKirby::Start()
 
 	Off();
 	MetalPlayer = this;
+
+	MetalSkill = GetLevel()->CreateActor<SkillUI>((int)ORDER::UI);
+	MetalSkill->GetRenderer()->SetImage("Icon_Metal.bmp");
+	MetalSkill->Off();
+
+	MetalName = GetLevel()->CreateActor<SkillName>((int)ORDER::NAMEUI);
+	MetalName->GetRenderer()->SetImage("UI_Metal.bmp");
+	MetalName->Off();
 }
 
 void MetalKirby::Update()
@@ -151,6 +162,7 @@ void MetalKirby::Update()
 
 	// 카메라 위치 고정
 	CameraFix();
+
 
 	if (true == GameEngineInput::GetInst()->IsDown("SkillRelease"))
 	{
@@ -174,7 +186,10 @@ void MetalKirby::Update()
 		}
 
 		Off();
+		MetalSkill->Off();
+		MetalName->Off();
 
+		// 디폴트 커비 On
 		MainPlayer->SetPosition(GetPosition());
 		CurSkill_ = KirbySkill::Default;
 		MainPlayer->On();

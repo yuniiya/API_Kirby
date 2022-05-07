@@ -212,6 +212,24 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::MetalTransform:
 			MetalTrasformStart();
 			break;
+		case PlayerState::FullToIce:
+			FullToIceStart();
+			break;
+		case PlayerState::SwallowIce:
+			SwallowIceStart();
+			break;
+		case PlayerState::IceTransform:
+			IceTransformStart();
+			break;
+		case PlayerState::FullToSpark:
+			FullToSparkStart();
+			break;
+		case PlayerState::SwallowSpark:
+			SwallowSparkStart();
+			break;
+		case PlayerState::SparkTransform:
+			SparkTrasformStart();
+			break;
 		}
 	}
 
@@ -302,6 +320,24 @@ void Player::PlayerStateUpdate()
 		break;
 	case PlayerState::MetalTransform:
 		MetalTransformUpdate();
+		break;
+	case PlayerState::FullToIce:
+		FullToIceUpdate();
+		break;
+	case PlayerState::SwallowIce:
+		SwallowIceUpdate();
+		break;
+	case PlayerState::IceTransform:
+		IceTransformUpdate();
+		break;
+	case PlayerState::FullToSpark:
+		FullToSparkUpdate();
+		break;
+	case PlayerState::SwallowSpark:
+		SwallowSparkUpdate();
+		break;
+	case PlayerState::SparkTransform:
+		SparkTransformUpdate();
 		break;
 	}
 }
@@ -667,7 +703,7 @@ void Player::InhaleColCheck()
 			InhaleEffect_->Death();
 			InhaleEffSound_.Stop();
 
-			ChangeState(PlayerState::Full);
+			ChangeState(PlayerState::FullToIce);
 			return;
 		}
 	}
@@ -680,7 +716,7 @@ void Player::InhaleColCheck()
 			InhaleEffect_->Death();
 			InhaleEffSound_.Stop();
 
-			ChangeState(PlayerState::Full);
+			ChangeState(PlayerState::FullToSpark);
 			return;
 		}
 	}
@@ -1042,17 +1078,14 @@ void Player::DefaultKirbyUpdate()
 	if (CurSkill_ == KirbySkill::Metal)
 	{
 		MetalKirby::MetalPlayer->Off();
-		//IconMetal_->Death();
 	}
 	else if (CurSkill_ == KirbySkill::Ice)
 	{
 		IceKirby::IcePlayer->Off();
-		IconIce_->Death();
 	}
 	else if (CurSkill_ == KirbySkill::Spark)
 	{
 		SparkKirby::SparkPlayer->Off();
-		IconSpark_->Death();
 	}
 
 	// 스킬 해제 사운드
@@ -1093,23 +1126,15 @@ void Player::MetalKirbyUpdate()
 	else if (CurSkill_ == KirbySkill::Ice)
 	{
 		IceKirby::IcePlayer->Off();
-		IconIce_->Death();
 	}
 	else if (CurSkill_ == KirbySkill::Spark)
 	{
 		SparkKirby::SparkPlayer->Off();
-		IconSpark_->Death();
 	}
 
 	MetalKirby::MetalPlayer->SetPosition(GetPosition());
 	CurSkill_ = KirbySkill::Metal;
 	MetalKirby::MetalPlayer->On();
-
-	//IconMetal_ = GetLevel()->CreateActor<PlayUI>((int)ORDER::UI);
-	//GameEngineRenderer* IconRenderer = IconMetal_->CreateRenderer("Icon_Metal.bmp");
-	//IconRenderer->SetPivot({ 80.f,650.f });
-	//IconRenderer->CameraEffectOff();
-\
 }
 
 void Player::IceKirbyUpdate()
@@ -1126,22 +1151,15 @@ void Player::IceKirbyUpdate()
 	else if (CurSkill_ == KirbySkill::Metal)
 	{
 		MetalKirby::MetalPlayer->Off();
-		//IconMetal_->Death();
 	}
 	else if (CurSkill_ == KirbySkill::Spark)
 	{
 		SparkKirby::SparkPlayer->Off();
-		IconSpark_->Death();
 	}
 
 	IceKirby::IcePlayer->SetPosition(GetPosition());
 	CurSkill_ = KirbySkill::Ice;
 	IceKirby::IcePlayer->On();
-
-	IconIce_ = GetLevel()->CreateActor<PlayUI>((int)ORDER::UI);
-	GameEngineRenderer* IconRenderer = IconIce_->CreateRenderer("Icon_Ice.bmp");
-	IconRenderer->SetPivot({ 75.f,670.f });
-	IconRenderer->CameraEffectOff();
 }
 
 void Player::SparkKirbyUpdate()
@@ -1158,22 +1176,15 @@ void Player::SparkKirbyUpdate()
 	else if (CurSkill_ == KirbySkill::Metal)
 	{
 		MetalKirby::MetalPlayer->Off();
-		//IconMetal_->Death();
 	}
 	else if (CurSkill_ == KirbySkill::Ice)
 	{
 		IceKirby::IcePlayer->Off();
-		IconIce_->Death();
 	}
 
 	SparkKirby::SparkPlayer->SetPosition(GetPosition());
 	CurSkill_ = KirbySkill::Spark;
 	SparkKirby::SparkPlayer->On();
-
-	IconSpark_ = GetLevel()->CreateActor<PlayUI>((int)ORDER::UI);
-	GameEngineRenderer* IconRenderer = IconSpark_->CreateRenderer("Icon_Spark.bmp");
-	IconRenderer->SetPivot({ 80.f,650.f });
-	IconRenderer->CameraEffectOff();
 }
 
 

@@ -48,6 +48,7 @@ void Level_1::Loading()
 		// UI 
 		PlayUI::MainUI = CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
 		PlayerHP::MainHP = CreateActor<PlayerHP>((int)ORDER::UI);
+		//SkillUI::MainSkillUI = CreateActor<SkillUI>((int)ORDER::UI);
 	}
 
 	// 백그라운드 엑터
@@ -128,8 +129,8 @@ void Level_1::Loading()
 		NewMetalun->SetPosition({ 700.f, 300.f });
 
 
-		//Sparky* NewSparky = CreateActor<Sparky>((int)ORDER::MONSTER, "Sparky");
-		//NewSparky->SetPosition({ 700.f, 300.f });
+		Sparky* NewSparky = CreateActor<Sparky>((int)ORDER::MONSTER, "Sparky");
+		NewSparky->SetPosition({ 300.f, 300.f });
 	}
 
 	
@@ -192,7 +193,15 @@ void Level_1::LevelChangeEnd(GameEngineLevel* _NextLevel)
 		MetalKirby::MetalPlayer->NextLevelOn();
 		IceKirby::IcePlayer->NextLevelOn();
 		SparkKirby::SparkPlayer->NextLevelOn();
+
 		PlayUI::MainUI->NextLevelOn();
 		PlayerHP::MainHP->NextLevelOn();
+
+		MetalKirby::MetalSkill->NextLevelOn();
+		MetalKirby::MetalName->NextLevelOn();
+		IceKirby::IceSkill->NextLevelOn();
+		IceKirby::IceName->NextLevelOn();
+		SparkKirby::SparkSkill->NextLevelOn();
+		SparkKirby::SparkName->NextLevelOn();
 	}
 }

@@ -20,8 +20,11 @@
 #include "Effect_RunToStop.h"
 #include "Effect_Star.h"
 #include "Effect_Exhale.h"
+#include "Effect_ReleaseSkill.h"
 
 SparkKirby* SparkKirby::SparkPlayer = nullptr;
+SkillUI* SparkKirby::SparkSkill = nullptr;
+SkillName* SparkKirby::SparkName = nullptr;
 
 SparkKirby::SparkKirby()
 	: CurSkill_(KirbySkill::Spark)
@@ -139,6 +142,15 @@ void SparkKirby::Start()
 
 	Off();
 	SparkPlayer = this;
+
+	SparkSkill = GetLevel()->CreateActor<SkillUI>((int)ORDER::UI);
+	SparkSkill->GetRenderer()->SetImage("Icon_Spark.bmp");
+	SparkSkill->SetPosition({ 67.f, 661.f });
+	SparkSkill->Off();
+
+	SparkName = GetLevel()->CreateActor<SkillName>((int)ORDER::NAMEUI);
+	SparkName->GetRenderer()->SetImage("UI_Spark.bmp");
+	SparkName->Off();
 }
 
 void SparkKirby::Update()
@@ -156,6 +168,37 @@ void SparkKirby::Update()
 
 	// 카메라 위치 고정
 	CameraFix();
+
+	if (true == GameEngineInput::GetInst()->IsDown("SkillRelease"))
+	{
+		// 스킬 해제 사운드
+		GameEngineSound::SoundPlayOneShot("Release1.wav");
+
+		{
+			Effect_ReleaseSkill* Effect = GetLevel()->CreateActor<Effect_ReleaseSkill>((int)ORDER::EFFECT);
+
+			if (CurDir_ == PlayerDir::Right)
+			{
+				Effect->SetPosition(GetPosition());
+				Effect->SetDir(EffectDir::Right);
+
+			}
+			else if (CurDir_ == PlayerDir::Left)
+			{
+				Effect->SetPosition(GetPosition());
+				Effect->SetDir(EffectDir::Left);
+			}
+		}
+
+		Off();
+		SparkSkill->Off();
+		SparkName->Off();
+
+		// 디폴트 커비 On
+		MainPlayer->SetPosition(GetPosition());
+		CurSkill_ = KirbySkill::Default;
+		MainPlayer->On();
+	}
 
 }
 

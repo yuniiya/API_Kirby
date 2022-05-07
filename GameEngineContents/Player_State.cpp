@@ -18,6 +18,8 @@
 #include "Effect_Transform.h"
 
 #include "MetalKirby.h"
+#include "IceKirby.h"
+#include "SparkKirby.h"
 
 void Player::IdleUpdate()
 {
@@ -815,6 +817,96 @@ void Player::MetalTransformUpdate()
 	}
 }
 
+void Player::FullToIceUpdate()
+{
+	if (true == GameEngineInput::GetInst()->IsPress("Down"))
+	{
+		ChangeState(PlayerState::SwallowIce);
+		return;
+	}
+
+	if (true == IsMoveKey())
+	{
+		ChangeState(PlayerState::FullWalk);
+		return;
+	}
+
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::FullJump);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
+	{
+		ChangeState(PlayerState::AttackStart);
+		return;
+	}
+}
+
+void Player::SwallowIceUpdate()
+{
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::IceTransform);
+		return;
+	}
+}
+
+void Player::IceTransformUpdate()
+{
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+}
+
+void Player::FullToSparkUpdate()
+{
+	if (true == GameEngineInput::GetInst()->IsPress("Down"))
+	{
+		ChangeState(PlayerState::SwallowSpark);
+		return;
+	}
+
+	if (true == IsMoveKey())
+	{
+		ChangeState(PlayerState::FullWalk);
+		return;
+	}
+
+	if (true == IsJumpKey())
+	{
+		ChangeState(PlayerState::FullJump);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
+	{
+		ChangeState(PlayerState::AttackStart);
+		return;
+	}
+}
+
+void Player::SwallowSparkUpdate()
+{
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::SparkTransform);
+		return;
+	}
+}
+
+void Player::SparkTransformUpdate()
+{
+	if (PlayerAnimationRender->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+}
+
 
 
 
@@ -1186,7 +1278,79 @@ void Player::MetalTrasformStart()
 	MetalKirby::MetalPlayer->SetPosition(GetPosition());
 	CurSkill_ = KirbySkill::Metal;
 	MetalKirby::MetalPlayer->On();
-	CurSkill_ = KirbySkill::Metal;
+
+	MetalKirby::MetalSkill->On();
+	MetalKirby::MetalName->On();
+}
+
+void Player::FullToIceStart()
+{
+	GameEngineSound::SoundPlayOneShot("Full.wav");
+
+	AnimationName_ = "Full_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Player::SwallowIceStart()
+{
+	GameEngineSound::SoundPlayOneShot("Swallow.wav");
+
+	{
+		Effect_Transform* Effect = GetLevel()->CreateActor<Effect_Transform>((int)ORDER::EFFECT);
+		Effect->SetPosition(GetPosition());
+	}
+
+	AnimationName_ = "Swallow_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Player::IceTransformStart()
+{
+	GameEngineSound::SoundPlayOneShot("Transform.wav");
+
+	MainPlayer->Off();
+
+	IceKirby::IcePlayer->SetPosition(GetPosition());
+	CurSkill_ = KirbySkill::Ice;
+	IceKirby::IcePlayer->On();
+
+	IceKirby::IceSkill->On();
+	IceKirby::IceName->On();
+}
+
+void Player::FullToSparkStart()
+{
+	GameEngineSound::SoundPlayOneShot("Full.wav");
+
+	AnimationName_ = "Full_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Player::SwallowSparkStart()
+{
+	GameEngineSound::SoundPlayOneShot("Swallow.wav");
+
+	{
+		Effect_Transform* Effect = GetLevel()->CreateActor<Effect_Transform>((int)ORDER::EFFECT);
+		Effect->SetPosition(GetPosition());
+	}
+
+	AnimationName_ = "Swallow_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Player::SparkTrasformStart()
+{
+	GameEngineSound::SoundPlayOneShot("Transform.wav");
+
+	MainPlayer->Off();
+
+	SparkKirby::SparkPlayer->SetPosition(GetPosition());
+	CurSkill_ = KirbySkill::Spark;
+	SparkKirby::SparkPlayer->On();
+
+	SparkKirby::SparkSkill->On();
+	SparkKirby::SparkName->On();
 }
 
 

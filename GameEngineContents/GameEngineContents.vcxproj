@@ -361,6 +361,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="SkillName.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="SkillUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="SparkKirby.h">
       <SubType>
       </SubType>
@@ -374,10 +382,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Stage.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="Status.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -608,6 +612,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="SkillName.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="SkillUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="SparkKirby.cpp">
       <SubType>
       </SubType>
@@ -621,10 +633,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Stage.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Status.cpp">
       <SubType>
       </SubType>
     </ClCompile>

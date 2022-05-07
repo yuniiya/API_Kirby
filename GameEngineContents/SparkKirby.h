@@ -1,5 +1,7 @@
 #pragma once
 #include "Player.h"
+#include "SkillUI.h"
+#include "SkillName.h"
 
 class GameEngineImage;
 class GameEngineCollision;
@@ -8,6 +10,8 @@ class SparkKirby : public Player
 {
 public:
 	static SparkKirby* SparkPlayer;
+	static SkillUI* SparkSkill;
+	static SkillName* SparkName;
 
 	// constrcuter destructer
 	SparkKirby();

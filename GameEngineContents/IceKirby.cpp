@@ -22,9 +22,12 @@
 #include "Effect_IceBreath.h"
 #include "Effect_IceBox.h"
 #include "Effect_Exhale.h"
+#include "Effect_ReleaseSkill.h"
 
 
 IceKirby* IceKirby::IcePlayer = nullptr;
+SkillUI* IceKirby::IceSkill = nullptr;
+SkillName* IceKirby::IceName = nullptr;
 
 IceKirby::IceKirby()
 	: CurSkill_(KirbySkill::Ice)
@@ -137,6 +140,15 @@ void IceKirby::Start()
 
 	Off();
 	IcePlayer = this;
+
+	IceSkill = GetLevel()->CreateActor<SkillUI>((int)ORDER::UI);
+	IceSkill->GetRenderer()->SetImage("Icon_Ice.bmp");
+	IceSkill->SetPosition({ 67.f, 665.f });
+	IceSkill->Off();
+
+	IceName = GetLevel()->CreateActor<SkillName>((int)ORDER::NAMEUI);
+	IceName->GetRenderer()->SetImage("UI_Ice.bmp");
+	IceName->Off();
 }
 
 void IceKirby::Update()
@@ -155,6 +167,36 @@ void IceKirby::Update()
 	// 카메라 위치 고정
 	CameraFix();
 
+	if (true == GameEngineInput::GetInst()->IsDown("SkillRelease"))
+	{
+		// 스킬 해제 사운드
+		GameEngineSound::SoundPlayOneShot("Release1.wav");
+
+		{
+			Effect_ReleaseSkill* Effect = GetLevel()->CreateActor<Effect_ReleaseSkill>((int)ORDER::EFFECT);
+
+			if (CurDir_ == PlayerDir::Right)
+			{
+				Effect->SetPosition(GetPosition());
+				Effect->SetDir(EffectDir::Right);
+
+			}
+			else if (CurDir_ == PlayerDir::Left)
+			{
+				Effect->SetPosition(GetPosition());
+				Effect->SetDir(EffectDir::Left);
+			}
+		}
+
+		Off();
+		IceSkill->Off();
+		IceName->Off();
+
+		// 디폴트 커비 On
+		MainPlayer->SetPosition(GetPosition());
+		CurSkill_ = KirbySkill::Default;
+		MainPlayer->On();
+	}
 }
 
 void IceKirby::ChangeState(PlayerState _State)

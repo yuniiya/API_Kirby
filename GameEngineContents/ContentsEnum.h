@@ -9,7 +9,8 @@ enum class ORDER
 	MONSTER,
 	PLAYER,
 	EFFECT,
-	UI
+	UI,
+	NAMEUI,
 };
 
 enum class EffectDir

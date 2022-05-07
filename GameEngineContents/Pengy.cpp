@@ -12,6 +12,7 @@ Pengy::Pengy()
 	: Speed_(100.f)
 	, DamagedTime_(0.8f)
 	, AttackEndTime_(1.f)
+	, IdleTime_(3.f)
 {
 	CurState_ = MonsterState::Max;
 	MoveDir = float4::LEFT;
@@ -148,19 +149,27 @@ void Pengy::Render()
 
 void Pengy::IdleUpdate()
 {
-	// 일정거리 안으로 들어오면 Walk로 전환
-	if (300.f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+	IdleTime_ -= GameEngineTime::GetDeltaTime();
+
+
+	if (IdleTime_ < 0)
 	{
-		ChangeState(MonsterState::Walk);
-		return;
+
+		// 일정거리 안으로 들어오면 Walk로 전환
+		if (300.f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+		{
+			ChangeState(MonsterState::Walk);
+			return;
+		}
+
+		// 일정거리 안에서 더 가까워지면 Attack으로 전환
+		if (170.f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+		{
+			ChangeState(MonsterState::Attack);
+			return;
+		}
 	}
 
-	// 일정거리 안에서 더 가까워지면 Attack으로 전환
-	if (170.f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
-	{
-		ChangeState(MonsterState::Attack);
-		return;
-	}
 }
 
 void Pengy::WalkUpdate()
@@ -258,6 +267,8 @@ void Pengy::DamagedUpdate()
 
 void Pengy::IdleStart()
 {
+	IdleTime_ = 3.f;
+
 	MoveDir = float4::ZERO;
 
 	AnimationName_ = "Idle_";
@@ -275,6 +286,8 @@ void Pengy::WalkStart()
 
 void Pengy::SwallowedStart()
 {
+	//IceBreath_->Death();
+
 	MoveDir = float4::ZERO;
 
 	AnimationName_ = "Damaged_";
@@ -373,8 +386,6 @@ void Pengy::MonsterColCheck()
 	{
 		for (size_t i = 0; i < SwallowColList.size(); i++)
 		{
-			IceBreath_->Death();
-			
 			ChangeState(MonsterState::Swallowed);
 			return;
 		}
