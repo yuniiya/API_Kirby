@@ -121,15 +121,15 @@ void Level_1::Loading()
 	
 
 	{
-		//Metalun* NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
-		//NewMetalun->SetPosition({ 4200.f, 300.f });
+		Metalun* NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
+		NewMetalun->SetPosition({ 4200.f, 300.f });
 
-	/*	Metalun* NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
-		NewMetalun->SetPosition({ 700.f, 300.f });*/
+		NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
+		NewMetalun->SetPosition({ 700.f, 300.f });
 
 
-		Sparky* NewSparky = CreateActor<Sparky>((int)ORDER::MONSTER, "Sparky");
-		NewSparky->SetPosition({ 700.f, 300.f });
+		//Sparky* NewSparky = CreateActor<Sparky>((int)ORDER::MONSTER, "Sparky");
+		//NewSparky->SetPosition({ 700.f, 300.f });
 	}
 
 	

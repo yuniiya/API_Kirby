@@ -88,6 +88,8 @@ void Kirby::GameInit()
 		Effect1->CutCount(10, 6);
 		GameEngineImage* Effect2 = GameEngineImageManager::GetInst()->Find("Effect2.bmp");
 		Effect2->CutCount(10, 6);
+		GameEngineImage* Effect3 = GameEngineImageManager::GetInst()->Find("Effect_Transform.bmp");
+		Effect3->CutCount(5, 1);
 		GameEngineImage* EffectLeft2 = GameEngineImageManager::GetInst()->Find("Effect_Left.bmp");
 		EffectLeft2->CutCount(10, 6);
 		GameEngineImage* EffectRight2 = GameEngineImageManager::GetInst()->Find("Effect_Right.bmp");
@@ -144,6 +146,8 @@ void Kirby::GameInit()
 		GameEngineInput::GetInst()->CreateKey("NextLevel", VK_SPACE);
 
 		GameEngineInput::GetInst()->CreateKey("DebugMode", 'O');
+
+		GameEngineInput::GetInst()->CreateKey("SkillRelease", VK_SHIFT);
 	}
 
 	// ∏ÛΩ∫≈Õ 

@@ -20,6 +20,7 @@
 #include "Effect_Slide.h"
 #include "Effect_Star.h"
 #include "Effect_Exhale.h"
+#include "Effect_ReleaseSkill.h"
 
 MetalKirby* MetalKirby::MetalPlayer = nullptr;
 
@@ -150,6 +151,34 @@ void MetalKirby::Update()
 
 	// 카메라 위치 고정
 	CameraFix();
+
+	if (true == GameEngineInput::GetInst()->IsDown("SkillRelease"))
+	{
+		// 스킬 해제 사운드
+		GameEngineSound::SoundPlayOneShot("Release1.wav");
+
+		{
+			Effect_ReleaseSkill* Effect = GetLevel()->CreateActor<Effect_ReleaseSkill>((int)ORDER::EFFECT);
+
+			if (CurDir_ == PlayerDir::Right)
+			{
+				Effect->SetPosition(GetPosition());
+				Effect->SetDir(EffectDir::Right);
+
+			}
+			else if (CurDir_ == PlayerDir::Left)
+			{
+				Effect->SetPosition(GetPosition());
+				Effect->SetDir(EffectDir::Left);
+			}
+		}
+
+		Off();
+
+		MainPlayer->SetPosition(GetPosition());
+		CurSkill_ = KirbySkill::Default;
+		MainPlayer->On();
+	}
 }
 
 void MetalKirby::ChangeState(PlayerState _State)

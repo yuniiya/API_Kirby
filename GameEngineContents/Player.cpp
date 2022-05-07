@@ -203,8 +203,14 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::Damaged:
 			DamagedStart();
 			break;
-		case PlayerState::Enter:
-			EnterStart();
+		case PlayerState::FullToMetal:
+			FullToMetalStart();
+			break;
+		case PlayerState::SwallowMetal:
+			SwallowMetalStart();
+			break;
+		case PlayerState::MetalTransform:
+			MetalTrasformStart();
 			break;
 		}
 	}
@@ -288,8 +294,14 @@ void Player::PlayerStateUpdate()
 	case PlayerState::Damaged:
 		DamagedUpdate();
 		break;
-	case PlayerState::Enter:
-		EnterUpdate();
+	case PlayerState::FullToMetal:
+		FullToMetalUpdate();
+		break;
+	case PlayerState::SwallowMetal:
+		SwallowMetalUpdate();
+		break;
+	case PlayerState::MetalTransform:
+		MetalTransformUpdate();
 		break;
 	}
 }
@@ -642,7 +654,7 @@ void Player::InhaleColCheck()
 			InhaleEffect_->Death();
 			InhaleEffSound_.Stop();
 
-			ChangeState(PlayerState::Full);
+			ChangeState(PlayerState::FullToMetal);
 			return;
 		}
 	}

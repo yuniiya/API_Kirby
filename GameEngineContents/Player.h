@@ -48,6 +48,9 @@ enum class PlayerState
 	DamagedStart,
 	Damaged,
 	Enter,
+	FullToMetal,
+	SwallowMetal,
+	MetalTransform,
 	
 	Max,
 };
@@ -237,9 +240,9 @@ protected:
 	virtual void DamagedStartStart();
 	virtual void DamagedStart();
 
-	virtual void EnterStart();
 
 	void FullToMetalStart();
+	void SwallowMetalStart();
 	void MetalTrasformStart();
 
 
@@ -272,10 +275,10 @@ protected:
 	virtual void DamagedStartUpdate();
 	virtual void DamagedUpdate();
 
-	virtual void EnterUpdate();
 
 	void FullToMetalUpdate();
-	void MetalTransfromUpdate();
+	void SwallowMetalUpdate();
+	void MetalTransformUpdate();
 	
 
 };
