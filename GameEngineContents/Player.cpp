@@ -20,13 +20,15 @@
 #include "Scarfy.h"
 #include "Effect_ReleaseSkill.h"
 #include "PlayUI.h"
-#include "Fade.h"
+#include "PlayerHP.h"
 
 Player* Player::MainPlayer = nullptr;
 GameEngineSoundPlayer Player::BgmPlayer;
+//PlayerHP* PlayerHP::MainHP = nullptr;
 
 Player::Player()
-	: Speed_(350.0f)
+	: PlayerHP_(100)	// ¿­ Ä­
+	, Speed_(350.0f)
 	, AccSpeed_(20.f)
 	, JumpPower_(1000.f)
 	, Gravity_(1500.f)
@@ -465,6 +467,8 @@ void Player::Update()
 	//WallCheck();
 
 	DebugKirbySkillChange();
+
+	PlayerHPUpdate();
 }
 
 void Player::Render()
@@ -768,6 +772,16 @@ void Player::MakeStarEffect()
 	{
 		StarEffect_->SetPosition(GetPosition() + float4{ 30.f, 0.f });
 	}
+}
+
+void Player::PlayerHPUpdate()
+{
+
+	/*if (PlayerHP_ = 90)
+	{
+		HP.PlayerHPBar->SetPivot({ 294.f, 740.f });
+		HP.PlayerHPBar->SetScale({250.f, 30.f});
+	}*/
 }
 
 void Player::DoorCheck(std::string ChangeLevelName_)

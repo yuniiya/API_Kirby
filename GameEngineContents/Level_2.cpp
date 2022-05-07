@@ -12,6 +12,7 @@
 
 #include "ContentsEnum.h"
 #include "PlayUI.h"
+#include "PlayerHP.h"
 #include "Grass_2.h"
 #include "Grass_3.h"
 #include "Grass_4.h"
@@ -21,6 +22,7 @@
 #include "Scarfy.h"
 #include "Pengy.h"
 #include "FadeIn.h"
+#include "Effect_DoorStar.h"
 
 Level_2::Level_2()
 {
@@ -56,6 +58,10 @@ void Level_2::Loading()
 		CurBack->GetRenderer()->SetPivot(BackActor);
 	}
 
+	{
+		Effect_DoorStar* DoorStar = CreateActor<Effect_DoorStar>((int)ORDER::STAGEACTOR);
+		DoorStar->SetPosition({ 5256.f, 325.f });
+	}
 
 	{
 		Stage* CurStage = CreateActor<Stage>((int)ORDER::STAGE);
@@ -119,6 +125,7 @@ void Level_2::LevelChangeStart(GameEngineLevel* _PrevLevel)
 
 	{
 		Player::MainPlayer->SetPosition({ 100.f, 490.f });
+		//Player::MainPlayer->SetPosition({ 5100.f, 490.f });
 		//Player::MainPlayer->SetPosition({ 1000.f, 490.f });
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 490.f });
 		IceKirby::IcePlayer->SetPosition({ 100.f, 490.f });
@@ -144,6 +151,7 @@ void Level_2::LevelChangeEnd(GameEngineLevel* _NextLevel)
 		SparkKirby::SparkPlayer->NextLevelOn();
 
 		PlayUI::MainUI->NextLevelOn();
+		PlayerHP::MainHP->NextLevelOn();
 	}
 
 }

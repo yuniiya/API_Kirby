@@ -44,9 +44,6 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Actor\Play\Kirby</Filter>
     </ClCompile>
-    <ClCompile Include="PlayUI.cpp">
-      <Filter>Actor\Play\Global</Filter>
-    </ClCompile>
     <ClCompile Include="Player_State.cpp">
       <Filter>Actor\Play\Global</Filter>
     </ClCompile>
@@ -170,6 +167,12 @@
     <ClCompile Include="FadeIn.cpp">
       <Filter>Actor\Play\Global\Back</Filter>
     </ClCompile>
+    <ClCompile Include="PlayUI.cpp">
+      <Filter>Actor\Play\Global\Back</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_DoorStar.cpp">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Kirby.h" />
@@ -215,9 +218,6 @@
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="Bullet.h">
       <Filter>Actor\Play\Kirby</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayUI.h">
-      <Filter>Actor\Play\Global</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Actor\Play\Global</Filter>
@@ -338,6 +338,12 @@
     </ClInclude>
     <ClInclude Include="FadeIn.h">
       <Filter>Actor\Play\Global\Back</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayUI.h">
+      <Filter>Actor\Play\Global\Back</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_DoorStar.h">
+      <Filter>Actor\Play\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

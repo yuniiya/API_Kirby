@@ -12,8 +12,10 @@
 
 #include "ContentsEnum.h"
 #include "PlayUI.h"
+#include "PlayerHP.h"
 #include "Water.h"
 #include "FadeIn.h"
+#include "Effect_DoorStar.h"
 
 Level_3::Level_3()
 {
@@ -26,18 +28,6 @@ Level_3::~Level_3()
 
 void Level_3::Loading()
 {
-	// UI 
-	//CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
-
-
-	//{
-	//	// 플레이어 엑터
-	//	Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
-	//	Kirby->SetPosition({ 100.f, 490.f });
-	//	Kirby->MapScale(5960.f, 768.f);
-
-	//}
-
 	// 백그라운드 엑터
 	{
 		BackGround * CurBack = CreateActor<BackGround>(0);
@@ -48,6 +38,11 @@ void Level_3::Loading()
 		BackActor.y = (CurBack->GetRenderer()->GetImage()->GetScale().Half().y);
 
 		CurBack->GetRenderer()->SetPivot(BackActor);
+	}
+
+	{
+		Effect_DoorStar* DoorStar = CreateActor<Effect_DoorStar>((int)ORDER::STAGEACTOR);
+		DoorStar->SetPosition({ 5776.f, 165.f });
 	}
 
 	{
@@ -94,6 +89,7 @@ void Level_3::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	{
 		Player::MainPlayer->SetPosition({ 100.f, 490.f });
 		//Player::MainPlayer->SetPosition({ 2700.f, 490.f });
+		//Player::MainPlayer->SetPosition({ 5600.f, 490.f });
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 490.f });
 		IceKirby::IcePlayer->SetPosition({ 100.f, 490.f });
 		SparkKirby::SparkPlayer->SetPosition({ 100.f, 490.f });
@@ -118,5 +114,6 @@ void Level_3::LevelChangeEnd(GameEngineLevel* _NextLevel)
 		SparkKirby::SparkPlayer->NextLevelOn();
 
 		PlayUI::MainUI->NextLevelOn();
+		PlayerHP::MainHP->NextLevelOn();
 	}
 }

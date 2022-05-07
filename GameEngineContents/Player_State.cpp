@@ -1104,6 +1104,8 @@ void Player::DamagedStartStart()
 
 void Player::DamagedStart()
 {
+	PlayerHP_ = -10.f;
+
 	GameEngineSound::SoundPlayOneShot("Damaged2.wav");
 
 	MoveDir = float4::ZERO;

@@ -5,6 +5,7 @@
 #include "SparkKirby.h"
 
 #include "PlayUI.h"
+#include "PlayerHP.h"
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngine/GameEngine.h>
 #include <GameEngine/GameEngineRenderer.h>
@@ -118,6 +119,7 @@ void BossLevel::LevelChangeEnd(GameEngineLevel* _NextLevel)
 		SparkKirby::SparkPlayer->NextLevelOn();
 
 		PlayUI::MainUI->NextLevelOn();
+		PlayerHP::MainHP->NextLevelOn();
 	};
 }
 

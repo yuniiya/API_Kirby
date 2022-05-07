@@ -14,6 +14,7 @@
 
 #include "ContentsEnum.h"
 #include "PlayUI.h"
+#include "PlayerHP.h"
 #include "Grass.h"
 #include "Grass_1.h"
 #include "Monster.h"
@@ -24,6 +25,7 @@
 #include "Sparky.h"
 #include "Fade.h"
 #include "FadeIn.h"
+#include "Effect_DoorStar.h"
 
 Level_1::Level_1()
 {
@@ -45,6 +47,7 @@ void Level_1::Loading()
 
 		// UI 
 		PlayUI::MainUI = CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
+		PlayerHP::MainHP = CreateActor<PlayerHP>((int)ORDER::UI);
 	}
 
 	// 백그라운드 엑터
@@ -57,6 +60,11 @@ void Level_1::Loading()
 		BackActor.y = (CurBack->GetRenderer()->GetImage()->GetScale().Half().y);
 
 		CurBack->GetRenderer()->SetPivot(BackActor);
+	}
+
+	{
+		Effect_DoorStar* DoorStar = CreateActor<Effect_DoorStar>((int)ORDER::STAGEACTOR);
+		DoorStar->SetPosition({ 5594.f, 385.f });
 	}
 
 
@@ -185,5 +193,6 @@ void Level_1::LevelChangeEnd(GameEngineLevel* _NextLevel)
 		IceKirby::IcePlayer->NextLevelOn();
 		SparkKirby::SparkPlayer->NextLevelOn();
 		PlayUI::MainUI->NextLevelOn();
+		PlayerHP::MainHP->NextLevelOn();
 	}
 }

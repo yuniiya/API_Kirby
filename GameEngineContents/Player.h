@@ -6,6 +6,7 @@
 #include "Effect_Star.h"
 #include "Effect_Inhale.h"
 #include "PlayUI.h"
+//#include "PlayerHP.h"
 
 class GameEngineImage;
 class GameEngineCollision;
@@ -64,6 +65,7 @@ class Player : public GameEngineActor
 public:
 	static Player* MainPlayer;
 	static GameEngineSoundPlayer BgmPlayer;
+	//static PlayerHP* MainHP;
 
 	// constrcuter destructer
 	Player();
@@ -125,8 +127,11 @@ protected:
 protected:
 	void MakeStarEffect();
 
+	void PlayerHPUpdate();
 
 protected:
+	int PlayerHP_;
+
 	float Speed_;
 	float AccSpeed_;
 

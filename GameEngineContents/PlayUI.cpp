@@ -28,9 +28,11 @@ void PlayUI::Start()
 	PlayerHP->SetPivot({ 305.f,740.f });
 	PlayerHP->CameraEffectOff();
 
-	GameEngineRenderer* PlayerHPBar = CreateRenderer("Player_HPBar.bmp");
-	PlayerHPBar->SetPivot({ 304.f,740.f });
-	PlayerHPBar->CameraEffectOff();
+	//GameEngineRenderer* PlayerHPBar = CreateRenderer("Player_HPBar.bmp");
+	//PlayerHPBar->SetPivot({ 304.f,740.f });
+	//PlayerHPBar->CameraEffectOff();
+	//PlayerHPBar->SetPivot({294.f, 740.f});
+	//PlayerHPBar->SetScale({ 250.f, 30.f });
 
 	GameEngineRenderer* LifeUI = CreateRenderer("LifeUI.bmp");
 	LifeUI->SetPivot({ 257.f,686.f });

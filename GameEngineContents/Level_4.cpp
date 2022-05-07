@@ -12,9 +12,11 @@
 
 #include "ContentsEnum.h"
 #include "PlayUI.h"
+#include "PlayerHP.h"
 #include "Water_1.h"
 #include "Water_2.h"
 #include "FadeIn.h"
+#include "Effect_DoorStar.h"
 
 Level_4::Level_4()
 {
@@ -27,20 +29,6 @@ Level_4::~Level_4()
 
 void Level_4::Loading()
 {
-	// UI 
-	//CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
-
-
-	// 플레이어 엑터
-	/*{
-		Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER, "Player");
-		Kirby->SetPosition({ 100.f, 440.f });
-		Kirby->MapScale(3073.f, 768.f);
-	}
-	*/
-
-	
-
 	// 백그라운드 엑터
 	{
 		BackGround* CurBack = CreateActor<BackGround>((int)ORDER::BACKGROUND, "BackGround");
@@ -51,6 +39,11 @@ void Level_4::Loading()
 		BackActor.y = (CurBack->GetRenderer()->GetImage()->GetScale().Half().y);
 
 		CurBack->GetRenderer()->SetPivot(BackActor);
+	}
+
+	{
+		Effect_DoorStar* DoorStar = CreateActor<Effect_DoorStar>((int)ORDER::STAGEACTOR);
+		DoorStar->SetPosition({ 2856.f, 265.f });
 	}
 
 	{
@@ -100,8 +93,8 @@ void Level_4::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	Player::BgmPlayer = GameEngineSound::SoundPlayControl("Play2.mp3");
 
 	{
-		Player::MainPlayer->SetPosition({ 100.f, 440.f });
-		//Player::MainPlayer->SetPosition({ 1000.f, 440.f });
+		//Player::MainPlayer->SetPosition({ 100.f, 440.f });
+		Player::MainPlayer->SetPosition({ 2700.f, 440.f });
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 440.f });
 		IceKirby::IcePlayer->SetPosition({ 100.f, 440.f });
 		SparkKirby::SparkPlayer->SetPosition({ 100.f, 440.f });
@@ -126,5 +119,6 @@ void Level_4::LevelChangeEnd(GameEngineLevel* _NextLevel)
 		SparkKirby::SparkPlayer->NextLevelOn();
 
 		PlayUI::MainUI->NextLevelOn();
+		PlayerHP::MainHP->NextLevelOn();
 	}
 }
