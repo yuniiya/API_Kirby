@@ -49,7 +49,6 @@ void BossRoomLevel::Loading()
 
 void BossRoomLevel::Update()
 {
-	GameEngineSound::SoundPlayOneShot("Enter.wav");
 
 	if (true == GameEngineInput::GetInst()->IsDown("TitleLevel"))
 	{
@@ -69,6 +68,8 @@ void BossRoomLevel::Update()
 
 void BossRoomLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	GameEngineSound::SoundPlayOneShot("Enter.wav");
+
 	// 페이드인
 	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);
 

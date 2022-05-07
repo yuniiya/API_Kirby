@@ -16,6 +16,8 @@
 #include "ContentsEnum.h"
 #include "Kingdedede.h"
 #include "FadeIn.h"
+#include "MonsterHP.h"
+#include "MonsterHPNull.h"
 
 BossLevel::BossLevel()
 {
@@ -29,13 +31,14 @@ BossLevel::~BossLevel()
 void BossLevel::Loading()
 {
 	// UI 
-	//CreateActor<PlayUI>((int)ORDER::UI, "PlayUI");
+	CreateActor<MonsterHPNull>((int)ORDER::UI);
+	CreateActor<MonsterHP>((int)ORDER::UI);
 
-	//{
-	//	Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
-	//	Kirby->SetPosition({ 100.f, 500.f });
-	//	Kirby->MapScale(1024.f, 768.f);
-	//}
+	{
+		Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
+		Kirby->SetPosition({ 100.f, 500.f });
+		Kirby->MapScale(1024.f, 768.f);
+	}
 
 	// 백그라운드 엑터
 	{
@@ -85,11 +88,13 @@ void BossLevel::Update()
 
 void BossLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	//GameEngineSound::SoundPlayOneShot("Enter.wav");
+
 	// 페이드인
 	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);
 
 	Player::BgmPlayer.Stop();
-	Player::BgmPlayer = GameEngineSound::SoundPlayControl("Boss.mp3");
+	//Player::BgmPlayer = GameEngineSound::SoundPlayControl("Boss.mp3");
 
 	{
 		Player::MainPlayer->SetPosition({ 100.f, 500.f });

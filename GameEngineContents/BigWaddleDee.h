@@ -18,8 +18,6 @@ private:
 	float Speed_;
 	float DamagedTime_;
 
-public:
-
 protected:
 	GameEngineRenderer* AnimationRender;
 

@@ -721,6 +721,20 @@ void Player::InhaleColCheck()
 		}
 	}
 
+	// Boss Star -> 먹어서 공격 가능
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == PlayerCollision->CollisionResult("BossStarCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			InhaleEffect_->Death();
+			InhaleEffSound_.Stop();
+
+			ChangeState(PlayerState::Full);
+			return;
+		}
+	}
+
 }
 
 

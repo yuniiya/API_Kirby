@@ -1205,13 +1205,13 @@ void Player::AttackStart()
 
 		if (CurDir_ == PlayerDir::Right)
 		{
-			AttEffect_->SetPosition(GetPosition() + float4{ 30.f, -5.f });
+			AttEffect_->SetPosition(GetPosition() + float4{ 30.f, 10.f });
 			AttEffect_->SetDir(EffectDir::Right);
 
 		}
 		else if (CurDir_ == PlayerDir::Left)
 		{
-			AttEffect_->SetPosition(GetPosition() + float4{ -80.f, -5.f });
+			AttEffect_->SetPosition(GetPosition() + float4{ -80.f, 10.f });
 			AttEffect_->SetDir(EffectDir::Left);
 		}
 	}

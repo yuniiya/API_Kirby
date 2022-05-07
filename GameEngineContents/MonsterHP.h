@@ -1,7 +1,10 @@
 #pragma once
-class MonsterHP
+#include <GameEngine/GameEngineActor.h>
+
+class MonsterHP : public GameEngineActor
 {
 public:
+
 	// constrcuter destructer
 	MonsterHP();
 	~MonsterHP();
@@ -12,8 +15,10 @@ public:
 	MonsterHP& operator=(const MonsterHP& _Other) = delete;
 	MonsterHP& operator=(MonsterHP&& _Other) noexcept = delete;
 
+public:
+	GameEngineRenderer* MonsterHPBar;
+
 protected:
-
-private:
-
+	void Start() override;
+	void Update() override;
 };

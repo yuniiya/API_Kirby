@@ -63,7 +63,8 @@ void Effect_Attack::Start()
 	AttackCollision_ = CreateCollision("AttackCol", { 70.f, 70.f }, {});
 
 
-	AnimationRenderer_->CreateAnimation("Effect.bmp", "Attack_", 6, 7, 0.1f, true);
+	//AnimationRenderer_->CreateAnimation("Effect.bmp", "Attack_", 6, 7, 0.1f, true);
+	AnimationRenderer_->CreateAnimation("Default_Att_Right.bmp", "Attack_", 23, 26, 0.08f, true);
 	AnimationRenderer_->CreateAnimation("Effect.bmp", "Attack_End", 15, 19, 0.08f, false);
 
 	AnimationName_ = "Attack_";
@@ -112,11 +113,11 @@ void Effect_Attack::Update()
 
 		if (Dir_ == EffectDir::Right)
 		{
-			MoveDir.x = 2.f;
+			MoveDir.x = 2.5f;
 		}
 		else
 		{
-			MoveDir.x = -2.f;
+			MoveDir.x = -2.5f;
 		}
 	}
 

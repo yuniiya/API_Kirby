@@ -7,6 +7,7 @@
 PlayerHP* PlayerHP::MainHP = nullptr;
 
 PlayerHP::PlayerHP()
+	: PlayerHPBar(nullptr)
 {
 
 }

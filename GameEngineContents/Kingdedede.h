@@ -1,9 +1,11 @@
 #pragma once
 #include "Monster.h"
+#include "MonsterHP.h"
 
 class Kingdedede : public Monster
 {
 public:
+
 	// constrcuter destructer
 	Kingdedede();
 	~Kingdedede();
@@ -16,7 +18,15 @@ public:
 private:
 	float Speed_;
 
+	float IdleTime_;
+	float WalkTime_;
+	float JumpTime_;
 	float DamagedTime_;
+	float ScreamTime_;
+
+protected:
+	GameEngineSoundPlayer WalkSound_;
+	GameEngineSoundPlayer JumpSound_;
 
 protected:
 	GameEngineRenderer* AnimationRender;
@@ -42,16 +52,18 @@ private:
 	void IdleStart() override;
 	void WalkStart() override;
 	void JumpStart() override;
-	void SwallowStart() override;
+	void JumpDownStart();
 	void ScreamStart() override;
 	void AttackStart() override;
 	void DamagedStart() override;
+	void DeadStart() override;
 
 	void IdleUpdate() override;
 	void WalkUpdate() override;
 	void JumpUpdate() override;
-	void SwallowUpdate() override;
+	void JumpDownUpdate();
 	void ScreamUpdate() override;
 	void AttackUpdate() override;
 	void DamagedUpdate() override;
+	void DeadUpdate() override;
 };
