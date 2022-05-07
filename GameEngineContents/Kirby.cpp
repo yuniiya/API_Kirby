@@ -58,6 +58,10 @@ void Kirby::GameInit()
 		KirbyLeft6->CutCount(5, 1);
 		GameEngineImage* KirbyRight6 = GameEngineImageManager::GetInst()->Find("Default_Attack_Right.bmp");
 		KirbyRight6->CutCount(5, 1);
+		GameEngineImage* KirbyLeft7 = GameEngineImageManager::GetInst()->Find("Default_Enter_Left.bmp");
+		KirbyLeft7->CutCount(10, 4);
+		GameEngineImage* KirbyRight7 = GameEngineImageManager::GetInst()->Find("Default_Enter_Right.bmp");
+		KirbyRight7->CutCount(10, 4);
 	}
 
 	// Skilled Kirby

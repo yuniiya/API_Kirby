@@ -20,12 +20,23 @@ private:
 	float DamagedTime_;
 	float AttReadyTime_;
 	float AttackTime_;
+	float JumpTime_;
+	float JumpDownTime_;
+
+	int HitCount_;
+	bool IsHit;
+
+protected:
+	void Hit();
 
 protected:
 	GameEngineRenderer* AnimationRender;
 
 	GameEngineCollision* MonsterCollision;
 	GameEngineCollision* AttackCollision;
+
+	GameEngineSoundPlayer AttackEffSound_;
+	GameEngineSoundPlayer JumpEffSound_;
 
 private:
 	void ChangeState(MonsterState _State) override;
@@ -44,12 +55,14 @@ protected:
 private:
 	void IdleStart() override;
 	void JumpStart() override;
+	void JumpDownStart();
 	void SwallowedStart() override;
 	void AttackStart() override;
 	void DamagedStart() override;
 
 	void IdleUpdate() override;
 	void JumpUpdate() override;
+	void JumpDownUpdate();
 	void SwallowedUpdate() override;
 	void AttackUpdate() override;
 	void DamagedUpdate() override;

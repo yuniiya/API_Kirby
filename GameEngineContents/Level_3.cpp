@@ -84,6 +84,8 @@ void Level_3::Update()
 
 void Level_3::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	GameEngineSound::SoundPlayOneShot("Enter.wav");
+
 	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);
 
 	{

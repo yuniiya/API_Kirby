@@ -47,6 +47,7 @@ enum class PlayerState
 	AttackEnd,
 	DamagedStart,
 	Damaged,
+	Enter,
 	
 	Max,
 };
@@ -171,7 +172,7 @@ protected:
 	void DoorPixelCheck();
 	void DoorCheck(std::string ChangeLevelName_);
 
-	//void DoorCheck();
+	void DoorCheck();
 	void WallCheck();
 	virtual void MonsterColCheck();
 	void InhaleColCheck();
@@ -236,6 +237,8 @@ protected:
 	virtual void DamagedStartStart();
 	virtual void DamagedStart();
 
+	virtual void EnterStart();
+
 	void FullToMetalStart();
 	void MetalTrasformStart();
 
@@ -268,6 +271,8 @@ protected:
 	virtual void AttackEndUpdate();
 	virtual void DamagedStartUpdate();
 	virtual void DamagedUpdate();
+
+	virtual void EnterUpdate();
 
 	void FullToMetalUpdate();
 	void MetalTransfromUpdate();

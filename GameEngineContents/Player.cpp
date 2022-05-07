@@ -203,6 +203,9 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::Damaged:
 			DamagedStart();
 			break;
+		case PlayerState::Enter:
+			EnterStart();
+			break;
 		}
 	}
 
@@ -285,6 +288,9 @@ void Player::PlayerStateUpdate()
 	case PlayerState::Damaged:
 		DamagedUpdate();
 		break;
+	case PlayerState::Enter:
+		EnterUpdate();
+		break;
 	}
 }
 
@@ -350,6 +356,8 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "FallToBounce_Left", 5, 11, 0.02f, false);
 		PlayerAnimationRender->CreateAnimation("Default_Fall_Left.bmp", "BounceToIdle_Left", 12, 12, 0.2f, false);
 
+		//PlayerAnimationRender->CreateAnimation("Default_Enter_Left.bmp", "Enter_Left", 0, 3, 0.15f, false);
+
 	}
 	
 
@@ -398,6 +406,8 @@ void Player::Start()
 		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "Fall_Right", 0, 4, 0.15f, false);
 		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "FallToBounce_Right", 5, 11, 0.02f, false);
 		PlayerAnimationRender->CreateAnimation("Default_Fall_Right.bmp", "BounceToIdle_Right", 12, 12, 0.2f, false);
+
+		PlayerAnimationRender->CreateAnimation("Default_Enter_Right.bmp", "Enter_Right", 0, 3, 0.15f, false);
 	}
 	
 	AnimationName_ = "Idle_";
@@ -453,6 +463,7 @@ void Player::Update()
 	// 지형 충돌, 문 스테이지 이동 체크
 	//StagePixelCheck();
 	DoorPixelCheck();
+	//DoorCheck();
 
 	DirAnimationCheck();
 	PlayerStateUpdate();
@@ -575,6 +586,16 @@ void Player::MonsterColCheck()
 	{
 		std::vector<GameEngineCollision*> ColList;
 
+		if (true == PlayerCollision->CollisionResult("IceBreathCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			ChangeState(PlayerState::DamagedStart);
+			return;
+		}
+	}
+
+	{
+		std::vector<GameEngineCollision*> ColList;
+
 		if (true == PlayerCollision->CollisionResult("SparkyCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
 			ChangeState(PlayerState::DamagedStart);
@@ -582,6 +603,17 @@ void Player::MonsterColCheck()
 		}
 	}
 
+
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == PlayerCollision->CollisionResult("SparkyAttackCol", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			ChangeState(PlayerState::DamagedStart);
+			return;
+		}
+
+	}
 
 }
 
@@ -956,6 +988,7 @@ void Player::DoorPixelCheck()
 void Player::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	MainPlayer = this;
+
 }
 
 //////////////////////////////////////////////////////////////////////// 디버그용
@@ -1136,10 +1169,13 @@ void Player::SparkKirbyUpdate()
 // 충돌 -> 다음 스테이지로 이동
 //void Player::DoorCheck()
 //{
-//
 //	if (true == PlayerCollision->CollisionCheck("Door", CollisionType::Rect, CollisionType::Rect))
 //	{
-//		// if (true == GameEngineInput::GetInst()->IsDown("Down"))
-//		GameEngine::GetInst().ChangeLevel("Level_2");
+//		if (true == GameEngineInput::GetInst()->IsDown("MoveUp"))
+//		{
+//			ChangeState(PlayerState::Enter);
+//			GameEngine::GetInst().ChangeLevel("Level_2");
+//		}
+//		
 //	}
 //}

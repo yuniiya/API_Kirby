@@ -10,6 +10,7 @@ enum class MonsterState
 	Idle,
 	Walk,
 	Jump,
+	JumpDown,
 	Attack,
 	Swallowed,
 	Damaged,

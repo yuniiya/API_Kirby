@@ -10,6 +10,7 @@ PlayerHP::PlayerHP()
 {
 
 }
+
 PlayerHP::~PlayerHP()
 {
 

@@ -765,6 +765,10 @@ void Player::DamagedUpdate()
 	}
 }
 
+void Player::EnterUpdate()
+{
+}
+
 void Player::FullToMetalUpdate()
 {
 }
@@ -1111,6 +1115,12 @@ void Player::DamagedStart()
 	MoveDir = float4::ZERO;
 
 	AnimationName_ = "Damaged_";
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
+}
+
+void Player::EnterStart()
+{
+	AnimationName_ = "Enter_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 

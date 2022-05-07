@@ -80,7 +80,7 @@ void Level_1::Loading()
 		CurStage->GetRenderer()->SetPivot(StageActor);
 
 		// 장애물 콜리전
-		//CurStage->CreateCollision("Wall", { 100, 100 }, { 300, 200 });
+		//CurStage->CreateCollision("Door", { 100.f, 100.f }, { 5595.f, 400.f });
 	}
 
 	// Grass 
@@ -161,9 +161,9 @@ void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);
 
 	{
-		//Player::MainPlayer->SetPosition({ 100.f, 520.f });
+		Player::MainPlayer->SetPosition({ 100.f, 520.f });
 		//Player::MainPlayer->SetPosition({ 1800.f, 420.f });
-		Player::MainPlayer->SetPosition({ 5300.f, 450.f });
+		//Player::MainPlayer->SetPosition({ 5300.f, 450.f });
 		//Player::MainPlayer->SetPosition({ 2900.f, 200.f });
 
 		MetalKirby::MetalPlayer->SetPosition({ 100.f, 520.f });

@@ -168,12 +168,12 @@ void Metalun::SwallowedUpdate()
 	// 플레이어가 몬스터 왼쪽에 있다
 	if (PlayerPos.x < MonsterPos.x)
 	{
-		MoveDir.x -= 0.02f * GameEngineTime::GetDeltaTime();
+		MoveDir.x -= 2.5f * GameEngineTime::GetDeltaTime();
 	}
 	else if (PlayerPos.x > MonsterPos.x)
 	{
 		// 몬스터 오른쪽에 있다
-		MoveDir.x += 0.02f * GameEngineTime::GetDeltaTime();
+		MoveDir.x += 2.5f * GameEngineTime::GetDeltaTime();
 	}
 
 	SetMove(MoveDir);
@@ -214,18 +214,24 @@ void Metalun::DamagedUpdate()
 
 void Metalun::IdleStart()
 {
+	MoveDir = float4::ZERO;
+
 	AnimationName_ = "Idle_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Metalun::WalkStart()
 {
+	MoveDir = float4::ZERO;
+
 	AnimationName_ = "Walk_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Metalun::SwallowedStart()
 {
+	MoveDir = float4::ZERO;
+
 	AnimationName_ = "Damaged_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }

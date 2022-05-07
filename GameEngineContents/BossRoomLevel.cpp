@@ -49,6 +49,8 @@ void BossRoomLevel::Loading()
 
 void BossRoomLevel::Update()
 {
+	GameEngineSound::SoundPlayOneShot("Enter.wav");
+
 	if (true == GameEngineInput::GetInst()->IsDown("TitleLevel"))
 	{
 		GameEngine::GetInst().ChangeLevel("TitleLevel");
