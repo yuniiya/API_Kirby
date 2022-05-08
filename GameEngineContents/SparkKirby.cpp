@@ -666,6 +666,8 @@ void SparkKirby::FloatUpdate()
 	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+
+		MonsterColCheck();
 	}
 
 	// Float상태에서 이동

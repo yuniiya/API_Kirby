@@ -357,7 +357,7 @@ void Player::FloatUpdate()
 			if (true == PlayerCollision->CollisionResult("BossHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
 			{
 				FloatEffSound_.Stop();
-				ChangeState(PlayerState::DamagedStart);
+				ChangeState(PlayerState::Damaged);
 				return;
 			}
 
@@ -374,7 +374,7 @@ void Player::FloatUpdate()
 			if (true == PlayerCollision->CollisionResult("BossHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
 			{
 				FloatEffSound_.Stop();
-				ChangeState(PlayerState::DamagedStart);
+				ChangeState(PlayerState::Damaged);
 				return;
 			}
 

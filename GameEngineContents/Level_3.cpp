@@ -76,10 +76,10 @@ void Level_3::Loading()
 
 
 		Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
-		scarfy->SetPosition({2200.f, 230.f});
+		scarfy->SetPosition({3600.f, 240.f});
 
-		scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
-		scarfy->SetPosition({ 4030.f, 60.f });
+		//scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
+		//scarfy->SetPosition({ 4030.f, 60.f });
 
 		WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
 		Waddle->SetPosition({ 4700.f, 500.f });
