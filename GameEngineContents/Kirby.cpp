@@ -205,8 +205,26 @@ void Kirby::GameInit()
 		BossLeft2->CutCount(5, 7);
 		GameEngineImage* BossRight2 = GameEngineImageManager::GetInst()->Find("King_Jump_Right.bmp");
 		BossRight2->CutCount(5, 7);
+		GameEngineImage* BossLeft3 = GameEngineImageManager::GetInst()->Find("King_Hammer_Left.bmp");
+		BossLeft3->CutCount(5, 7);
+		//GameEngineImage* BossRight3 = GameEngineImageManager::GetInst()->Find("King_Jump_Right.bmp");
+		//BossRight3->CutCount(5, 7);
+		GameEngineImage* BossLeft4 = GameEngineImageManager::GetInst()->Find("King_Jump_Hammer_Left.bmp");
+		BossLeft4->CutCount(5, 7);
+		//GameEngineImage* BossRight4 = GameEngineImageManager::GetInst()->Find("King_Jump_Right.bmp");
+		//BossRight4->CutCount(5, 7);
 	}
 
+	{
+		GameEngineImage* BossLeft1 = GameEngineImageManager::GetInst()->Find("Hammer_Left.bmp");
+		BossLeft1->CutCount(5, 4);
+		GameEngineImage* BossRight1 = GameEngineImageManager::GetInst()->Find("Hammer_Right.bmp");
+		BossRight1->CutCount(5, 4);
+		GameEngineImage* BossLeft2 = GameEngineImageManager::GetInst()->Find("Jump_Hammer_Left.bmp");
+		BossLeft2->CutCount(5, 1);
+		GameEngineImage* BossRight2 = GameEngineImageManager::GetInst()->Find("Jump_Hammer_Right.bmp");
+		BossRight2->CutCount(5, 1);
+	}
 
 
 	// 레벨 생성 및 현재 레벨 설정
@@ -366,6 +384,23 @@ void Kirby::ResourceLoad()
 		ResourcesDir.Move("Resources");
 		ResourcesDir.Move("Actor");
 		ResourcesDir.Move("Effect");
+
+		std::vector<GameEngineFile> AllImageFileList = ResourcesDir.GetAllFile("bmp");
+		AllImageFileList = ResourcesDir.GetAllFile("bmp");
+
+		for (size_t i = 0; i < AllImageFileList.size(); i++)
+		{
+			GameEngineImageManager::GetInst()->Load(AllImageFileList[i].GetFullPath());
+		}
+	}
+
+	{
+		GameEngineDirectory ResourcesDir;
+		ResourcesDir.MoveParent("API");
+		ResourcesDir.Move("Resources");
+		ResourcesDir.Move("Actor");
+		ResourcesDir.Move("Monster");
+		ResourcesDir.Move("Boss");
 
 		std::vector<GameEngineFile> AllImageFileList = ResourcesDir.GetAllFile("bmp");
 		AllImageFileList = ResourcesDir.GetAllFile("bmp");

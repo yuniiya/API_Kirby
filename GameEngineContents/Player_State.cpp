@@ -1279,7 +1279,7 @@ void Player::DamagedStart()
 {
 	PrevState_ = PlayerState::Damaged;
 
-	PlayerHP_ = -10.f;
+	PlayerHP_ = -10;
 
 	GameEngineSound::SoundPlayOneShot("Damaged2.wav");
 

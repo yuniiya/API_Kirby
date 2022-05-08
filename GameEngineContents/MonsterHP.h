@@ -4,6 +4,7 @@
 class MonsterHP : public GameEngineActor
 {
 public:
+	static MonsterHP* MainBossHP;
 
 	// constrcuter destructer
 	MonsterHP();
@@ -16,7 +17,20 @@ public:
 	MonsterHP& operator=(MonsterHP&& _Other) noexcept = delete;
 
 public:
-	GameEngineRenderer* MonsterHPBar;
+	void SetHP(float _CurHP, float _MaxHP);
+
+	static GameEngineRenderer* GetRenderer()
+	{
+		return MonsterHPBar;
+	}
+
+	//GameEngineRenderer* GetRenderer()
+	//{
+	//	return MonsterHPBar;
+	//}
+
+private:
+	static GameEngineRenderer* MonsterHPBar;
 
 protected:
 	void Start() override;

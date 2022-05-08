@@ -43,13 +43,11 @@ public:
 	Monster& operator=(const Monster& _Other) = delete;
 	Monster& operator=(Monster&& _Other) noexcept = delete;
 
-public:
-	bool IsDamaged;
+protected:
+	int HP_;
 
-	void DamagedOn()
-	{
-		IsDamaged = true;
-	}
+	bool IsHit_;
+	virtual void Hit() {};
 
 protected:
 	GameEngineRenderer* MonsterAnimationRenderer;

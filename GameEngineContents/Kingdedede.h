@@ -1,6 +1,7 @@
 #pragma once
 #include "Monster.h"
 #include "MonsterHP.h"
+#include "Effect_Hammer.h"
 
 class Kingdedede : public Monster
 {
@@ -15,6 +16,15 @@ public:
 	Kingdedede(Kingdedede&& _Other) noexcept = delete;
 	Kingdedede& operator=(const Kingdedede& _Other) = delete;
 	Kingdedede& operator=(Kingdedede&& _Other) noexcept = delete;
+
+protected:
+	float CurHP_;
+	float MaxHP_;
+
+	bool IsHit_;
+	void Hit() override;
+
+
 private:
 	float Speed_;
 
@@ -32,6 +42,12 @@ private:
 protected:
 	GameEngineSoundPlayer WalkSound_;
 	GameEngineSoundPlayer JumpSound_;
+
+protected:
+	Effect_Hammer* HDefault_;
+	Effect_Hammer* HSwing_;
+	Effect_Hammer* HAttack_;
+	Effect_Hammer* HScream_;
 
 protected:
 	GameEngineRenderer* AnimationRender;

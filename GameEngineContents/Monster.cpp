@@ -14,6 +14,7 @@ Monster::Monster()
 	, InputDir_(CurDir_)
 	, MapColImage_(nullptr)
 	, MonsterAnimationRenderer(nullptr)
+	, IsHit_(false)
 {
 
 }

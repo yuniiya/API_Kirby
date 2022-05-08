@@ -185,6 +185,9 @@
     <ClCompile Include="MonsterHPNull.cpp">
       <Filter>UI\HP</Filter>
     </ClCompile>
+    <ClCompile Include="Effect_Hammer.cpp">
+      <Filter>Actor\Play\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Kirby.h" />
@@ -368,6 +371,9 @@
     </ClInclude>
     <ClInclude Include="MonsterHPNull.h">
       <Filter>UI\HP</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_Hammer.h">
+      <Filter>Actor\Play\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

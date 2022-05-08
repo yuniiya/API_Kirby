@@ -7,6 +7,9 @@
 #include "Effect_BossStar.h"
 #include "Player.h"
 #include "WaddleDee.h"
+#include "MonsterHP.h"
+
+//MonsterHP* Kingdedede::MainBossHP = nullptr;
 
 Kingdedede::Kingdedede()
 	: Speed_(100.f)
@@ -15,6 +18,9 @@ Kingdedede::Kingdedede()
 	, JumpTime_(1.3f)
 	, ScreamTime_(1.f)
 	, CurDir_(MonsterDir::Left)
+	, MaxHP_(100.f)
+	, IsHit_(false)
+	, CurHP_(100.f)
 {
 	CurState_ = MonsterState::Max;
 	MoveDir = float4::LEFT;
@@ -23,6 +29,26 @@ Kingdedede::Kingdedede()
 Kingdedede::~Kingdedede()
 {
 
+}
+
+void Kingdedede::Hit()
+{
+	//if (CurHP_ <= 0)
+	//{
+	//	ChangeState(MonsterState::Dead);
+	//	return;
+	//}
+
+	CurHP_ = CurHP_ - 20;
+
+	MonsterHP::MainBossHP->SetHP(CurHP_, MaxHP_);
+	//CurHP_ = CurHP_;
+	//if (CurHP_ == 80)
+	//{
+
+	//}
+
+	
 }
 
 void Kingdedede::ChangeState(MonsterState _State)
@@ -128,7 +154,7 @@ void Kingdedede::Start()
 
 	AnimationRender = CreateRenderer();
 	AnimationRender->SetPivotType(RenderPivot::CENTER);
-	AnimationRender->SetPivot({ 0.f, 55.f });
+	AnimationRender->SetPivot({ 0.f, 75.f });
 
 	// Boss - Left
 	AnimationRender->CreateAnimation("King_Left.bmp", "Idle_Left", 0, 3, 0.2f, true);
@@ -139,7 +165,24 @@ void Kingdedede::Start()
 	AnimationRender->CreateAnimation("King_Left.bmp", "Attack_Left", 14, 17, 0.3f, false);
 	AnimationRender->CreateAnimation("King_Left.bmp", "Damaged_Left", 27, 27, 0.5f, false);
 	AnimationRender->CreateAnimation("King_Left.bmp", "Dead_Left", 29, 30, 0.3f, true);
+	//AnimationRender->CreateAnimation("King_Hammer_Left.bmp", "Idle_Left", 0, 3, 0.2f, true);
+	//AnimationRender->CreateAnimation("King_Hammer_Left.bmp", "Walk_Left", 4, 7, 0.3f, true);
+	//AnimationRender->CreateAnimation("King_Jump_Hammer_Left.bmp", "Jump_Left", 8, 9, 0.5f, false);
+	//AnimationRender->CreateAnimation("King_Jump_Hammer_Left.bmp", "JumpDown_Left", 10, 10, 0.3f, false);
+	//AnimationRender->CreateAnimation("King_Hammer_Left.bmp", "Scream_Left", 21, 22, 0.3f, true);
+	//AnimationRender->CreateAnimation("King_Hammer_Left.bmp", "Attack_Left", 14, 17, 0.3f, false);
+	//AnimationRender->CreateAnimation("King_Hammer_Left.bmp", "Damaged_Left", 27, 27, 0.5f, false);
+	//AnimationRender->CreateAnimation("King_Left.bmp", "Dead_Left", 29, 30, 0.3f, true);
 
+	/*AnimationRender->CreateAnimation("Hammer_Left.bmp", "Idle_Left", 0, 3, 0.2f, true);
+	AnimationRender->CreateAnimation("Hammer_Left.bmp", "Walk_Left", 4, 7, 0.3f, true);
+	AnimationRender->CreateAnimation("Jump_Hammer_Left.bmp", "Jump_Left", 0, 1, 0.5f, false);
+	AnimationRender->CreateAnimation("Jump_Hammer_Left.bmp", "JumpDown_Left", 2, 2, 0.3f, false);
+	AnimationRender->CreateAnimation("Hammer_Left.bmp", "Scream_Left", 13, 14, 0.3f, true);
+	AnimationRender->CreateAnimation("Hammer_Left.bmp", "Attack_Left", 9, 12, 0.3f, false);
+	AnimationRender->CreateAnimation("Hammer_Left.bmp", "Damaged_Left", 17, 17, 0.5f, false);
+	AnimationRender->CreateAnimation("King_Left.bmp", "Dead_Left", 29, 30, 0.3f, true);*/
+	 
 
 	// Boss - Right
 	AnimationRender->CreateAnimation("King_Right.bmp", "Idle_Right", 0, 3, 0.2f, true);
@@ -151,9 +194,20 @@ void Kingdedede::Start()
 	AnimationRender->CreateAnimation("King_Right.bmp", "Damaged_Right", 27, 27, 0.5f, false);
 	AnimationRender->CreateAnimation("King_Right.bmp", "Dead_Right", 29, 30, 0.3f, true);
 
+	//AnimationRender->CreateAnimation("Hammer_Right.bmp", "Idle_Right", 0, 3, 0.2f, true);
+	//AnimationRender->CreateAnimation("Hammer_Right.bmp", "Walk_Right", 4, 7, 0.3f, true);
+	//AnimationRender->CreateAnimation("Jump_Hammer_Right.bmp", "Jump_Right", 0, 1, 0.5f, false);
+	//AnimationRender->CreateAnimation("Jump_Hammer_Right.bmp", "JumpDown_Right", 2, 2, 0.3f, false);
+	//AnimationRender->CreateAnimation("Hammer_Right.bmp", "Scream_Right", 13, 14, 0.3f, true);
+	//AnimationRender->CreateAnimation("Hammer_Right.bmp", "Attack_Right", 9, 12, 0.3f, false);
+	//AnimationRender->CreateAnimation("Hammer_Right.bmp", "Damaged_Right", 17, 17, 0.5f, false);
+	//AnimationRender->CreateAnimation("King_Right.bmp", "Dead_Right", 29, 30, 0.3f, true);
+
 	AnimationName_ = "Idle_";
 	ChangeDirText_ = "Left";
 	ChangeState(MonsterState::Idle);
+
+	//CurHP_ = CurHP_;
 }
 
 void Kingdedede::Update()
@@ -166,7 +220,7 @@ void Kingdedede::Update()
 	MonsterColCheck();
 
 	// 항상 땅에 붙어있도록 체크
-	if (RGB(0, 0, 0) != BottomPixelColorCheck(50.f))
+	if (RGB(0, 0, 0) != BottomPixelColorCheck(70.f))
 	{
 		SetMove(float4{ 0, 1.f });
 	}
@@ -186,6 +240,8 @@ void Kingdedede::Update()
 		MoveDir = float4{ -1.f, 0.0f };
 		SetMove(MoveDir);
 	}
+
+
 }
 
 void Kingdedede::Render()
@@ -195,6 +251,8 @@ void Kingdedede::Render()
 
 void Kingdedede::IdleUpdate()
 {
+
+
 	DirCheck();
 
 	if (PrevState_ != MonsterState::Scream) 
@@ -346,10 +404,18 @@ void Kingdedede::AttackUpdate()
 
 void Kingdedede::DamagedUpdate()
 {
+	if (CurHP_ <= 0)
+	{
+		ChangeState(MonsterState::Dead);
+		return;
+	}
+
+
 	DamagedTime_ -= GameEngineTime::GetDeltaTime();
 
 	if (DamagedTime_ < 0)
 	{
+		IsHit_ = false;
 		ChangeState(MonsterState::Walk);
 		return;
 	}
@@ -361,9 +427,28 @@ void Kingdedede::DeadUpdate()
 
 void Kingdedede::IdleStart()
 {
+	//{
+	//	HDefault_ = GetLevel()->CreateActor<Effect_Hammer>((int)ORDER::EFFECT);
+
+	//	if (CurDir_ == MonsterDir::Right)
+	//	{
+	//		HDefault_->SetPosition(GetPosition() + float4{ 30.f, 10.f });
+	//		HDefault_->SetDir(EffectDir::Right);
+
+	//	}
+	//	else if (CurDir_ == MonsterDir::Left)
+	//	{
+	//		HDefault_->SetPosition(GetPosition() + float4{ -80.f, 10.f });
+	//		HDefault_->SetDir(EffectDir::Left);
+	//	}
+	//}
+
+
 	MoveDir = float4::ZERO;
 
+	
 	IdleTime_ = 2.f;
+	IsHit_ = false;
 
 	AnimationName_ = "Idle_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
@@ -378,6 +463,8 @@ void Kingdedede::WalkStart()
 	WalkSound_.Stop();
 	WalkSound_ = GameEngineSound::SoundPlayControl("BossWalk2.wav");
 
+	//IsHit_ = false;
+
 	AnimationName_ = "Walk_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
@@ -385,6 +472,7 @@ void Kingdedede::WalkStart()
 void Kingdedede::JumpStart()
 {
 	JumpTime_ = 1.5f;
+	IsHit_ = false;
 
 	MoveDir = float4::ZERO;
 
@@ -400,6 +488,8 @@ void Kingdedede::JumpDownStart()
 {
 	MoveDir = float4::ZERO;
 
+	IsHit_ = false;
+
 
 	AnimationName_ = "JumpDown_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
@@ -412,6 +502,7 @@ void Kingdedede::ScreamStart()
 	MoveDir = float4::ZERO;
 
 	ScreamTime_ = 1.f;
+	IsHit_ = false;
 
 	GameEngineSound::SoundPlayOneShot("BossSound.wav");
 
@@ -423,12 +514,19 @@ void Kingdedede::AttackStart()
 {
 	MoveDir = float4::ZERO;
 
+	IsHit_ = false;
+
 	AnimationName_ = "Attack_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Kingdedede::DamagedStart()
 {
+	if (true == IsHit_)
+	{
+		Hit();
+	}
+
 	MoveDir = float4::ZERO;
 
 	GameEngineSound::SoundPlayOneShot("Damaged2.wav");
@@ -498,16 +596,18 @@ void Kingdedede::WallPixelCheck(float _x, float _Speed)
 
 void Kingdedede::MonsterColCheck()
 {
-	//{
-	//	std::vector<GameEngineCollision*> ColList;
+	{
+		std::vector<GameEngineCollision*> ColList;
 
-	//	if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
-	//	{
-	//		
-	//		ChangeState(MonsterState::Damaged);
-	//		return;
-	//	}
-	//}
+		if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			
+			IsHit_ = true;
+
+			ChangeState(MonsterState::Damaged);
+			return;
+		}
+	}
 
 	{
 		std::vector<GameEngineCollision*> ColList;
@@ -515,6 +615,8 @@ void Kingdedede::MonsterColCheck()
 		if (true == MonsterCollision->CollisionResult("AttackCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
 			WalkSound_.Stop();
+
+			IsHit_ = true;
 
 			ChangeState(MonsterState::Damaged);
 			return;
