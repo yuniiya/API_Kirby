@@ -100,6 +100,8 @@ public:
 	//void DebugKirbySkillChange(KirbySkill _Skill);
 	void DebugKirbySkillChange();
 
+	void DebugHP();
+
 protected:
 	KirbySkill CurSkill_;
 
@@ -166,10 +168,13 @@ protected:
 
 	std::string CurrentLevel;
 
+public:
+	GameEngineCollision* InhaleCollision;
+
 protected:
 	// Ãæµ¹
 	GameEngineCollision* PlayerCollision;
-	GameEngineCollision* InhaleCollision;
+
 	GameEngineCollision* SlideCollision;
 
 	float4 InhalePos;

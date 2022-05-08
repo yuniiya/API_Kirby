@@ -508,6 +508,8 @@ void Player::Start()
 		GameEngineInput::GetInst()->CreateKey("Metal", 'X');
 		GameEngineInput::GetInst()->CreateKey("Ice", 'C');
 		GameEngineInput::GetInst()->CreateKey("Spark", 'V');
+
+		GameEngineInput::GetInst()->CreateKey("DebugHP", '0');
 	}
 	
 }
@@ -538,6 +540,7 @@ void Player::Update()
 	//WallCheck();
 
 	DebugKirbySkillChange();
+	DebugHP();
 
 	PlayerHPUpdate();
 }
@@ -621,7 +624,7 @@ void Player::MonsterColCheck()
 
 			IsHit_ = true;
 
-			ChangeState(PlayerState::DamagedStart);
+			ChangeState(PlayerState::Damaged);
 			return;
 		}
 	}
@@ -650,7 +653,7 @@ void Player::MonsterColCheck()
 			IsHit_ = true;
 
 			FloatEffSound_.Stop();
-			ChangeState(PlayerState::DamagedStart);
+			ChangeState(PlayerState::Damaged);
 			return;
 		}
 	}
@@ -663,7 +666,7 @@ void Player::MonsterColCheck()
 			IsHit_ = true;
 
 			FloatEffSound_.Stop();
-			ChangeState(PlayerState::DamagedStart);
+			ChangeState(PlayerState::Damaged);
 			return;
 		}
 	}
@@ -706,7 +709,7 @@ void Player::MonsterColCheck()
 
 			FloatEffSound_.Stop();
 
-			ChangeState(PlayerState::DamagedStart);
+			ChangeState(PlayerState::Damaged);
 			return;
 
 		}
@@ -719,7 +722,7 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("Item1", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
-			CurHP_ = CurHP_ + 20.f;
+			CurHP_ = CurHP_ + 10.f;
 			PlayerHP::MainHP->SetHP(CurHP_, MaxHP_);
 
 
@@ -735,7 +738,7 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("Item2", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
-			CurHP_ = CurHP_ + 20.f;
+			CurHP_ = CurHP_ + 10.f;
 			PlayerHP::MainHP->SetHP(CurHP_, MaxHP_);
 
 			for (size_t i = 0; i < ColList.size(); i++)
@@ -1161,6 +1164,14 @@ void Player::DebugKirbySkillChange()
 	else if (true == GameEngineInput::GetInst()->IsDown("Spark"))
 	{
 		SparkKirbyUpdate();
+	}
+}
+
+void Player::DebugHP()
+{
+	if (true == GameEngineInput::GetInst()->IsDown("DebugHP"))
+	{
+		Hit();
 	}
 }
 

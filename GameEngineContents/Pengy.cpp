@@ -406,6 +406,7 @@ void Pengy::MonsterColCheck()
 
 	if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
 	{
+		IceBreath_->Death();
 		ChangeState(MonsterState::Damaged);
 		return;
 	}

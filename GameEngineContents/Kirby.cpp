@@ -241,7 +241,7 @@ void Kirby::GameInit()
 	CreateLevel<BossLevel>("BossLevel");
 	CreateLevel<EndingLevel>("EndingLevel");
 
-	ChangeLevel("Level_1");
+	ChangeLevel("TitleLevel");
 }
 
 void Kirby::GameLoop()

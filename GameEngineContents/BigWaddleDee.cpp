@@ -134,12 +134,12 @@ void BigWaddleDee::SwallowedUpdate()
 	// 플레이어가 몬스터 왼쪽에 있다
 	if (PlayerPos.x < MonsterPos.x)
 	{
-		MoveDir.x -= 2.f * GameEngineTime::GetDeltaTime();
+		MoveDir.x -= 1.3f * GameEngineTime::GetDeltaTime();
 	}
 	else if (PlayerPos.x > MonsterPos.x)
 	{
 		// 몬스터 오른쪽에 있다
-		MoveDir.x += 2.f * GameEngineTime::GetDeltaTime();
+		MoveDir.x += 1.3f * GameEngineTime::GetDeltaTime();
 	}
 
 	SetMove(MoveDir);
@@ -282,7 +282,7 @@ void BigWaddleDee::MonsterColCheck()
 	// 삼켜지고 있는 중이면 Death로 처리
 	if (CurState_ == MonsterState::Swallowed)
 	{
-		if (15.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+		if (13.0f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
 		{
 			Death();
 		}

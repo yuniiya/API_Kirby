@@ -7,6 +7,7 @@
 #include <GameEngine/GameEngineCollision.h>
 #include "Effect_MonsterDeath.h"
 #include "Effect_IceBox.h"
+#include "SparkKirby.h"
 
 
 Scarfy::Scarfy()
@@ -73,7 +74,20 @@ void Scarfy::MonsterStateUpdate()
 void Scarfy::DirCheck()
 {
 	float4 PlayerPos = Player::MainPlayer->GetPosition();
+	float4 SparkPlayerPos = SparkKirby::SparkPlayer->GetPosition();
 	float4 MonsterPos = GetPosition();
+
+	if (SparkPlayerPos.x < MonsterPos.x)
+	{
+		CurDir_ = MonsterDir::Left;
+		ChangeDirText_ = "Left";
+	}
+	else if (SparkPlayerPos.x > MonsterPos.x)
+	{
+		CurDir_ = MonsterDir::Right;
+		ChangeDirText_ = "Right";
+	}
+
 
 	// 플레이어가 몬스터 왼쪽에 있다
 	if (PlayerPos.x < MonsterPos.x)

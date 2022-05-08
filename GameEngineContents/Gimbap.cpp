@@ -45,6 +45,6 @@ void Gimbap::Update()
 
 	if (true == IsSound)
 	{
-		GameEngineSound::SoundPlayOneShot("Item1.wav");
+		GameEngineSound::SoundPlayOneShot("Item2.wav");
 	}
 }

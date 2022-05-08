@@ -113,11 +113,11 @@ void Effect_Attack::Update()
 
 		if (Dir_ == EffectDir::Right)
 		{
-			MoveDir.x = 2.5f;
+			MoveDir.x = 4.f;
 		}
 		else
 		{
-			MoveDir.x = -2.5f;
+			MoveDir.x = -4.f;
 		}
 	}
 

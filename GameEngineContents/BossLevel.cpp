@@ -96,7 +96,7 @@ void BossLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);
 
 	Player::BgmPlayer.Stop();
-	//Player::BgmPlayer = GameEngineSound::SoundPlayControl("Boss.mp3");
+	Player::BgmPlayer = GameEngineSound::SoundPlayControl("Boss.mp3");
 
 	{
 		Player::MainPlayer->SetPosition({ 100.f, 500.f });

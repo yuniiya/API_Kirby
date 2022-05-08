@@ -47,11 +47,17 @@ void SparkKirby::MonsterColCheck()
 
 	if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
 	{
-		SparkPlayer->Off();
+		AttackEffSound_.Stop();
+	/*	Off();
+		SparkSkill->Off();
+		SparkName->Off();
+
 
 		MainPlayer->SetPosition(GetPosition());
 		CurSkill_ = KirbySkill::Default;
 		MainPlayer->On();
+		MainPlayer->InhaleCollision->Off();
+		*/
 	}
 }
 
@@ -67,7 +73,7 @@ void SparkKirby::LevelChangeStart(GameEngineLevel* _PrevLevel)
 void SparkKirby::Start()
 {
 	PlayerCollision = CreateCollision("PlayerHitBox", { 70, 70 });
-	SparkAttackCollision_ = CreateCollision("SparkAttackCol", { 150.f,150.f });
+	SparkAttackCollision_ = CreateCollision("SparkAttackCol", { 175.f,175.f });
 	SparkAttackCollision_->Off();
 
 	// 애니메이션을 하나라도 만들면 애니메이션이 재생된다.
@@ -151,6 +157,8 @@ void SparkKirby::Start()
 	SparkName = GetLevel()->CreateActor<SkillName>((int)ORDER::NAMEUI);
 	SparkName->GetRenderer()->SetImage("UI_Spark.bmp");
 	SparkName->Off();
+
+	MainPlayer->InhaleCollision->Off();
 }
 
 void SparkKirby::Update()
@@ -198,6 +206,7 @@ void SparkKirby::Update()
 		MainPlayer->SetPosition(GetPosition());
 		CurSkill_ = KirbySkill::Default;
 		MainPlayer->On();
+		MainPlayer->InhaleCollision->Off();
 	}
 
 }
@@ -1077,4 +1086,3 @@ void SparkKirby::AttackEndStart()
 	AnimationName_ = "AttackStart_";
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
-

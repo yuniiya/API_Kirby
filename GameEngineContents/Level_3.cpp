@@ -16,6 +16,10 @@
 #include "Water.h"
 #include "FadeIn.h"
 #include "Effect_DoorStar.h"
+#include "WaddleDee.h"
+#include "Sparky.h"
+#include "Scarfy.h"
+#include "BigWaddleDee.h"
 
 Level_3::Level_3()
 {
@@ -57,10 +61,33 @@ void Level_3::Loading()
 		CurStage->GetRenderer()->SetPivot(StageActor);
 	}
 
+	//{
+	//	Water* Water1 = CreateActor<Water>((int)ORDER::STAGEACTOR);
+	//	Water1->SetPosition({ 2734.f, 425.f });
+	//}
+
 	{
-		Water* Water1 = CreateActor<Water>((int)ORDER::STAGEACTOR);
-		Water1->SetPosition({ 2734.f, 425.f });
+		BigWaddleDee* BigWaddle = CreateActor<BigWaddleDee>((int)ORDER::MONSTER, "BigWaddleDee");
+		BigWaddle->SetPosition({ 700.f, 400.f });
+
+
+		Sparky* NewSparky = CreateActor<Sparky>((int)ORDER::MONSTER, "Sparky");
+		NewSparky->SetPosition({ 1700.f, 400.f });
+
+
+		Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
+		scarfy->SetPosition({2200.f, 230.f});
+
+		scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
+		scarfy->SetPosition({ 4030.f, 60.f });
+
+		WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 4700.f, 500.f });
+
+		Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 2900.f, 500.f });
 	}
+
 }
 
 void Level_3::Update()

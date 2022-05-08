@@ -90,7 +90,6 @@ protected:
 	void AttackStart() override;
 	void AttackEndStart() override;
 
-
 	/////////////////////////////////
 	void IdleUpdate() override;
 	void WalkUpdate() override;

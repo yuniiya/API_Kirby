@@ -51,11 +51,13 @@ void IceKirby::MonsterColCheck()
 
 	if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
 	{
-		IcePlayer->Off();
+	/*	Off();
+		IceSkill->Off();
+		IceName->Off();
 
 		MainPlayer->SetPosition(GetPosition());
 		CurSkill_ = KirbySkill::Default;
-		MainPlayer->On();
+		MainPlayer->On();*/
 	}
 
 }
@@ -197,6 +199,8 @@ void IceKirby::Update()
 		MainPlayer->SetPosition(GetPosition());
 		CurSkill_ = KirbySkill::Default;
 		MainPlayer->On();
+
+		MainPlayer->InhaleCollision->Off();
 	}
 }
 

@@ -26,6 +26,7 @@
 #include "Fade.h"
 #include "FadeIn.h"
 #include "Effect_DoorStar.h"
+#include "Pengy.h"
 
 Level_1::Level_1()
 {
@@ -109,15 +110,23 @@ void Level_1::Loading()
 		WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
 		Waddle->SetPosition({ 1500.f, 400.f });
 
-		//Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
-		//Waddle->SetPosition({ 5200.f, 400.f });
+		Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 2700.f, 400.f });
 
-		BigWaddleDee* BigWaddle = CreateActor<BigWaddleDee>((int)ORDER::MONSTER, "BigWaddleDee");
-		BigWaddle->SetPosition({ 2700.f, 400.f });
+		Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 4230.f, 400.f });
+
+		Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 3600.f, 400.f });
+		//BigWaddleDee* BigWaddle = CreateActor<BigWaddleDee>((int)ORDER::MONSTER, "BigWaddleDee");
+		//BigWaddle->SetPosition({ 3600.f, 400.f });
 
 
-		Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
-		scarfy->SetPosition({1300.f, 300.f});
+		Pengy* pengy = CreateActor<Pengy>((int)ORDER::MONSTER, "Pengy");
+		pengy->SetPosition({ 5400.f, 400.f });
+
+		//Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
+		//scarfy->SetPosition({1300.f, 300.f});
 	}
 	
 
@@ -158,6 +167,11 @@ void Level_1::Update()
 
 void Level_1::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
+	GameEngineSound::SoundPlayOneShot("Enter.wav");
+
+	// BGM
+	Player::BgmPlayer = GameEngineSound::SoundPlayControl("Play1.mp3");
+
 	// 페이드인
 	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);
 

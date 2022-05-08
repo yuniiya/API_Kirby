@@ -23,6 +23,8 @@
 #include "Pengy.h"
 #include "FadeIn.h"
 #include "Effect_DoorStar.h"
+#include "Scarfy.h"
+#include "Metalun.h"
 
 Level_2::Level_2()
 {
@@ -92,11 +94,26 @@ void Level_2::Loading()
 	
 	// 몬스터
 	{
+		WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 600.f, 450.f });
+
+		BigWaddleDee* BigWaddle = CreateActor<BigWaddleDee>((int)ORDER::MONSTER, "BigWaddleDee");
+		BigWaddle->SetPosition({ 1900.f, 500.f });
+
+		Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 2300.f, 500.f });
+
+		Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 3600.f, 400.f });
+
+
+		Metalun* NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
+		NewMetalun->SetPosition({ 4800.f, 500.f });
+
+
 		//Scarfy* scarfy = CreateActor<Scarfy>((int)ORDER::MONSTER, "Scarfy");
 		//scarfy->SetPosition({ 500.f, 400.f });
 
-		Pengy* pengy = CreateActor<Pengy>((int)ORDER::MONSTER, "Pengy");
-		pengy->SetPosition({ 700.f, 300.f });
 	}
 }
 
@@ -121,6 +138,7 @@ void Level_2::Update()
 void Level_2::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	GameEngineSound::SoundPlayOneShot("Enter.wav");
+
 
 	// 페이드인
 	FadeIn* Fade = CreateActor<FadeIn>((int)ORDER::UI);

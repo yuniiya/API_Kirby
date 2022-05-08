@@ -153,10 +153,10 @@ void Effect_IceBox::Update()
 		SlideOn();
 	}
 
-	if (true == IsSlideSound)
+	/*if (true == IsSlideSound)
 	{
 		GameEngineSound::SoundPlayOneShot("IcePush2.wav");
-	}
+	}*/
 
 	if (true == IsCrack)
 	{

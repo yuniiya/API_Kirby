@@ -193,6 +193,8 @@ void MetalKirby::Update()
 		MainPlayer->SetPosition(GetPosition());
 		CurSkill_ = KirbySkill::Default;
 		MainPlayer->On();
+
+		MainPlayer->InhaleCollision->Off();
 	}
 }
 

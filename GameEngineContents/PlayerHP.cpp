@@ -26,6 +26,11 @@ void PlayerHP::SetHP(float _CurHP, float _MaxHP)
 		return;
 	}
 
+	if (_CurHP == 100.f)
+	{
+		return;
+	}
+
 	PlayerHPBar->SetScale({ 270.f * ratio, PlayerHPBar->GetScale().y });
 
 	if (ratio == 0.9f)
