@@ -17,7 +17,15 @@ public:
 	PlayerHP& operator=(PlayerHP&& _Other) noexcept = delete;
 
 public:
-	GameEngineRenderer* PlayerHPBar;
+	void SetHP(float _CurHP, float _MaxHP);
+
+	static GameEngineRenderer* GetRenderer()
+	{
+		return PlayerHPBar;
+	}
+
+private:
+	static GameEngineRenderer* PlayerHPBar;
 
 protected:
 	void Start() override;

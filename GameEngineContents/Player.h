@@ -124,6 +124,7 @@ protected:
 
 	GameEngineSoundPlayer FloatEffSound_;
 	GameEngineSoundPlayer InhaleEffSound_;
+	GameEngineSoundPlayer DamagedEffSound_;
 
 protected:
 	void MakeStarEffect();
@@ -131,7 +132,8 @@ protected:
 	void PlayerHPUpdate();
 
 protected:
-	int PlayerHP_;
+	float CurHP_;
+	float MaxHP_;
 
 	float Speed_;
 	float AccSpeed_;
@@ -151,6 +153,9 @@ protected:
 	float RunEffTime_;
 	float AttackTime_;
 
+	float SlideColTime_;
+
+
 	// 스테이지 관련
 	float MapScaleX_;
 	float MapScaleY_;
@@ -165,14 +170,15 @@ protected:
 	// 충돌
 	GameEngineCollision* PlayerCollision;
 	GameEngineCollision* InhaleCollision;
+	GameEngineCollision* SlideCollision;
 
 	float4 InhalePos;
+	float4 SlidePos;
 
 	void StagePixelCheck(float _Speed);
 	void DoorPixelCheck();
 	void DoorCheck(std::string ChangeLevelName_);
 
-	void DoorCheck();
 	void WallCheck();
 	virtual void MonsterColCheck();
 	void InhaleColCheck();
@@ -201,6 +207,9 @@ protected:
 
 	void Move();
 	void GravityOn();
+
+	bool IsHit_;
+	virtual void Hit();
 
 
 protected:

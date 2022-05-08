@@ -16,6 +16,8 @@
 #include "PlayerHP.h"
 #include "FadeIn.h"
 #include "Effect_DoorStar.h"
+#include "Item.h"
+#include "Gimbap.h"
 
 BossRoomLevel::BossRoomLevel()
 {
@@ -45,6 +47,19 @@ void BossRoomLevel::Loading()
 		DoorStar->SetPosition({ 545.f, 510.f });
 	}
 
+	{
+		Item* Item1 = CreateActor<Item>((int)ORDER::STAGEACTOR);
+		Item1->GetRenderer()->SetImage("Item1.bmp");
+		Item1->SetPosition({ 282.f, 308.f });
+		//Item1->CreateCollision("Item1", { 50.f, 50.f });
+
+		Gimbap* Item2 = CreateActor<Gimbap>((int)ORDER::STAGEACTOR);
+		Item2->GetRenderer()->SetImage("Item2.bmp");
+		Item2->SetPosition({ 734.f, 308.f });
+		//Item2->CreateCollision("Item2", { 50.f, 50.f });
+	}
+
+
 }
 
 void BossRoomLevel::Update()
@@ -64,6 +79,8 @@ void BossRoomLevel::Update()
 	{
 		GameEngine::GetInst().ChangeLevel("BossLevel");
 	}
+
+
 }
 
 void BossRoomLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)

@@ -70,16 +70,20 @@ void Level_3::Update()
 		GameEngine::GetInst().ChangeLevel("TitleLevel");
 	}
 
-	if (true == GameEngineInput::GetInst()->IsDown("Level_4"))
-	{
-		GameEngine::GetInst().ChangeLevel("Level_4");
-	}
+	//if (true == GameEngineInput::GetInst()->IsDown("Level_4"))
+	//{
+	//	GameEngine::GetInst().ChangeLevel("Level_4");
+	//}
+
+	//if (true == GameEngineInput::GetInst()->IsDown("NextLevel"))
+	//{
+	//	GameEngine::GetInst().ChangeLevel("Level_4");
+	//}
 
 	if (true == GameEngineInput::GetInst()->IsDown("NextLevel"))
 	{
-		GameEngine::GetInst().ChangeLevel("Level_4");
+		GameEngine::GetInst().ChangeLevel("BossRoomLevel");
 	}
-
 }
 
 void Level_3::LevelChangeStart(GameEngineLevel* _PrevLevel)

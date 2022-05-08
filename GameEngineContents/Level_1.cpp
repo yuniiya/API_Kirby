@@ -106,8 +106,8 @@ void Level_1::Loading()
 		//Waddle->SetPosition({ 400.f, 400.f });
 
 
-	/*	WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
-		Waddle->SetPosition({ 1500.f, 400.f });*/
+		WaddleDee* Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
+		Waddle->SetPosition({ 1500.f, 400.f });
 
 		//Waddle = CreateActor<WaddleDee>((int)ORDER::MONSTER, "WaddleDee");
 		//Waddle->SetPosition({ 5200.f, 400.f });
@@ -121,17 +121,17 @@ void Level_1::Loading()
 	}
 	
 
-	{
-		Metalun* NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
-		NewMetalun->SetPosition({ 4200.f, 300.f });
+	//{
+	//	Metalun* NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
+	//	NewMetalun->SetPosition({ 4200.f, 300.f });
 
-		NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
-		NewMetalun->SetPosition({ 700.f, 300.f });
+	//	NewMetalun = CreateActor<Metalun>((int)ORDER::MONSTER, "Metalun");
+	//	NewMetalun->SetPosition({ 700.f, 300.f });
 
 
-		Sparky* NewSparky = CreateActor<Sparky>((int)ORDER::MONSTER, "Sparky");
-		NewSparky->SetPosition({ 300.f, 300.f });
-	}
+	//	Sparky* NewSparky = CreateActor<Sparky>((int)ORDER::MONSTER, "Sparky");
+	//	NewSparky->SetPosition({ 300.f, 300.f });
+	//}
 
 	
 

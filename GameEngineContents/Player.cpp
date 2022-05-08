@@ -27,7 +27,8 @@ GameEngineSoundPlayer Player::BgmPlayer;
 //PlayerHP* PlayerHP::MainHP = nullptr;
 
 Player::Player()
-	: PlayerHP_(100)	// 열 칸
+	: MaxHP_(100.f)	// 열 칸
+	, CurHP_(100.f)
 	, Speed_(350.0f)
 	, AccSpeed_(20.f)
 	, JumpPower_(1000.f)
@@ -46,6 +47,8 @@ Player::Player()
 	, DownTime_(0.5f)
 	, InhaleTime_(2.5f)
 	, FallTime_(1.5f)
+	, IsHit_(false)
+	, SlideColTime_(0.5f)
 	//, CurSkill_(KirbySkill::Default)
 {
 
@@ -120,6 +123,13 @@ void Player::Move()
 void Player::GravityOn()
 {
 	MoveDir.y += 1.f * GameEngineTime::GetDeltaTime() * Gravity_;
+}
+
+void Player::Hit()
+{
+	CurHP_ = CurHP_ - 10;
+
+	PlayerHP::MainHP->SetHP(CurHP_, MaxHP_);
 }
 
 
@@ -347,6 +357,9 @@ void Player::Start()
 	PlayerCollision = CreateCollision("PlayerHitBox", { 70, 70 });
 	InhaleCollision = CreateCollision("InhaleCol", { 100, 100 });
 	InhaleCollision->Off();
+
+	//SlideCollision = CreateCollision("SlideCol", { 35, 35 });
+	//SlideCollision->Off();
 
 	// 애니메이션을 하나라도 만들면 애니메이션이 재생된다.
 	PlayerAnimationRender = CreateRenderer();
@@ -606,6 +619,8 @@ void Player::MonsterColCheck()
 
 			FloatEffSound_.Stop();
 
+			IsHit_ = true;
+
 			ChangeState(PlayerState::DamagedStart);
 			return;
 		}
@@ -617,8 +632,12 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("MetalunCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
+			IsHit_ = true;
+
 			FloatEffSound_.Stop();
-			ChangeState(PlayerState::DamagedStart);
+			DamagedEffSound_.Stop();
+
+			ChangeState(PlayerState::Damaged);
 			return;
 		}
 	}
@@ -628,6 +647,8 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("PengyCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
+			IsHit_ = true;
+
 			FloatEffSound_.Stop();
 			ChangeState(PlayerState::DamagedStart);
 			return;
@@ -639,6 +660,8 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("IceBreathCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
+			IsHit_ = true;
+
 			FloatEffSound_.Stop();
 			ChangeState(PlayerState::DamagedStart);
 			return;
@@ -650,8 +673,11 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("SparkyCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
+			IsHit_ = true;
+
+			DamagedEffSound_.Stop();
 			FloatEffSound_.Stop();
-			ChangeState(PlayerState::DamagedStart);
+			ChangeState(PlayerState::Damaged);
 			return;
 		}
 	}
@@ -662,8 +688,10 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("SparkyAttackCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
+			IsHit_ = true;
+
 			FloatEffSound_.Stop();
-			ChangeState(PlayerState::DamagedStart);
+			ChangeState(PlayerState::Damaged);
 			return;
 		}
 
@@ -674,6 +702,8 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("BossHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
+			IsHit_ = true;
+
 			FloatEffSound_.Stop();
 
 			ChangeState(PlayerState::DamagedStart);
@@ -683,6 +713,37 @@ void Player::MonsterColCheck()
 
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////// 아이템
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == PlayerCollision->CollisionResult("Item1", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			CurHP_ = CurHP_ + 20.f;
+			PlayerHP::MainHP->SetHP(CurHP_, MaxHP_);
+
+
+			for (size_t i = 0; i < ColList.size(); i++)
+			{
+				ColList[i]->GetActor()->Death();
+			}
+		}
+	}
+
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == PlayerCollision->CollisionResult("Item2", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			CurHP_ = CurHP_ + 20.f;
+			PlayerHP::MainHP->SetHP(CurHP_, MaxHP_);
+
+			for (size_t i = 0; i < ColList.size(); i++)
+			{
+				ColList[i]->GetActor()->Death();
+			}
+		}
+	}
 }
 
 void Player::InhaleColCheck()
@@ -1060,11 +1121,12 @@ void Player::DoorPixelCheck()
 	else if ("Level_2" == GetCurrentLevelName())
 		DoorCheck("Level_3");
 	else if ("Level_3" == GetCurrentLevelName())
-		DoorCheck("Level_4");
-	else if ("Level_4" == GetCurrentLevelName())
 		DoorCheck("BossRoomLevel");
 	else if ("BossRoomLevel" == GetCurrentLevelName())
 		DoorCheck("BossLevel");
+
+	//else if ("Level_3" == GetCurrentLevelName())
+	//	DoorCheck("Level_4");
 }
 
 void Player::LevelChangeStart(GameEngineLevel* _PrevLevel)

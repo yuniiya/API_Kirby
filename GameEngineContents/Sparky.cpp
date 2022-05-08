@@ -160,7 +160,6 @@ void Sparky::Update()
 	ColMapUpdate();
 
 	MonsterStateUpdate();
-	DirCheck();
 
 	MonsterColCheck();
 
@@ -175,7 +174,7 @@ void Sparky::Render()
 
 void Sparky::IdleUpdate()
 {
-
+	DirCheck();
 
 	// 일정거리 안으로 들어오면 Jump로 전환
 	if (350.f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
@@ -203,6 +202,7 @@ void Sparky::IdleUpdate()
 
 void Sparky::JumpUpdate()
 {
+	DirCheck();
 	// 일정거리 밖으로 벗어나면 다시 Idle로 전환 
 	//if (220.0f < std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
 	//{
@@ -277,6 +277,7 @@ void Sparky::JumpDownUpdate()
 
 void Sparky::SwallowedUpdate()
 {
+	DirCheck();
 	float4 PlayerPos = Player::MainPlayer->GetPosition();
 	float4 MonsterPos = GetPosition();
 
@@ -308,6 +309,7 @@ void Sparky::AttackUpdate()
 
 void Sparky::DamagedUpdate()
 {
+	DirCheck();
 
 	float4 PlayerPos = Player::MainPlayer->GetPosition();
 	float4 MonsterPos = GetPosition();
@@ -329,7 +331,9 @@ void Sparky::DamagedUpdate()
 
 	if (DamagedTime_ < 0)
 	{
-		if (HitCount_ = 0)
+		ChangeState(MonsterState::Idle);
+		return;
+		/*if (HitCount_ = 0)
 		{
 			Death();
 
@@ -339,10 +343,9 @@ void Sparky::DamagedUpdate()
 				Effect_MonsterDeath* Effect = GetLevel()->CreateActor<Effect_MonsterDeath>((int)ORDER::EFFECT);
 				Effect->SetPosition(GetPosition());
 			}
-;
-		}
-		
 
+		}*/
+		
 	}
 }
 
@@ -488,8 +491,19 @@ void Sparky::MonsterColCheck()
 
 	if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
 	{
-		Hit();
+		//Hit();
 		ChangeState(MonsterState::Damaged);
 		return;
 	}
+
+	//{
+	//	std::vector<GameEngineCollision*> ColList;
+
+	//	if (true == MonsterCollision->CollisionResult("SlideCol", ColList, CollisionType::Rect, CollisionType::Rect))
+	//	{
+
+	//		ChangeState(MonsterState::Damaged);
+	//		return;
+	//	}
+	//}
 }

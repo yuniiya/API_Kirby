@@ -17,10 +17,20 @@ public:
 	Item& operator=(const Item& _Other) = delete;
 	Item& operator=(Item&& _Other) noexcept = delete;
 
-protected:
+public:
+	GameEngineRenderer* GetRenderer()
+	{
+		return Image_;
+	}
+
+	bool IsSound;
 
 private:
 	void Start() override;
 	void Update() override;
 
+private:
+	GameEngineRenderer* Image_;
+
+	GameEngineCollision* Collision_;
 };

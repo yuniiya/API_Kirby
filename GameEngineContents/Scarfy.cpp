@@ -368,5 +368,14 @@ void Scarfy::MonsterColCheck()
 		}
 	}
 
+	//{
+	//	std::vector<GameEngineCollision*> ColList;
 
+	//	if (true == MonsterCollision->CollisionResult("SlideCol", ColList, CollisionType::Rect, CollisionType::Rect))
+	//	{
+
+	//		ChangeState(MonsterState::Damaged);
+	//		return;
+	//	}
+	//}
 }

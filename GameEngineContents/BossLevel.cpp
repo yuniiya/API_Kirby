@@ -35,11 +35,11 @@ void BossLevel::Loading()
 	CreateActor<MonsterHPNull>((int)ORDER::UI);
 	CreateActor<MonsterHP>((int)ORDER::UI);
 
-	{
-		Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
-		Kirby->SetPosition({ 100.f, 500.f });
-		Kirby->MapScale(1024.f, 768.f);
-	}
+	//{
+	//	Player* Kirby = CreateActor<Player>((int)ORDER::PLAYER);
+	//	Kirby->SetPosition({ 100.f, 500.f });
+	//	Kirby->MapScale(1024.f, 768.f);
+	//}
 
 	// 백그라운드 엑터
 	{

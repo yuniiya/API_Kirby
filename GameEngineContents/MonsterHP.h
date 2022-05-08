@@ -23,12 +23,6 @@ public:
 	{
 		return MonsterHPBar;
 	}
-
-	//GameEngineRenderer* GetRenderer()
-	//{
-	//	return MonsterHPBar;
-	//}
-
 private:
 	static GameEngineRenderer* MonsterHPBar;
 

@@ -222,9 +222,30 @@ void Player::SlideUpdate()
 	{
 		RunningTime_ = 0;
 
+		PlayerCollision->On();
 		ChangeState(PlayerState::Idle);
 		return;
 	}
+
+	//SlideColTime_ -= GameEngineTime::GetDeltaTime();
+
+	//// 슬라이드 콜리전
+	//if (CurDir_ == PlayerDir::Left)
+	//{
+	//	SlidePos = { -80.f, 10.f };
+	//}
+	//else
+	//{
+	//	SlidePos = { 80.f, 10.f };
+	//}
+
+	//SlideCollision->SetPivot({ SlidePos });
+	//SlideCollision->On();
+
+	//if (SlideColTime_ < 0)
+	//{
+	//	SlideCollision->Off();
+	//}
 
 	// 오르막, 내리막길 
 	HillPixelCheck();
@@ -771,11 +792,11 @@ void Player::DamagedUpdate()
 
 	if (CurDir_ == PlayerDir::Right)
 	{
-		MoveDir.x = -1.2f;
+		MoveDir.x = -0.8f;
 	}
 	else if (CurDir_ == PlayerDir::Left)
 	{
-		MoveDir.x = 1.2f;
+		MoveDir.x = 0.8f;
 	}
 	
 	int LeftCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.f, 0.f });
@@ -797,6 +818,8 @@ void Player::DamagedUpdate()
 
 	if (PlayerAnimationRender->IsEndAnimation())
 	{
+		DamagedEffSound_.Stop();
+		IsHit_ = false;
 		ChangeState(PlayerState::Idle);
 		return;
 	}
@@ -1052,6 +1075,9 @@ void Player::SlideStart()
 
 	Speed_ = 500.f;
 	SlidingTime_ = 1.2f;
+	SlideColTime_ = 0.5f;
+
+	PlayerCollision->Off();
 
 	if (true == GameEngineInput::GetInst()->IsDown("MoveLeft"))
 	{
@@ -1268,7 +1294,6 @@ void Player::AttackEndStart()
 
 void Player::DamagedStartStart()
 {
-
 	MoveDir = float4::ZERO;
 
 	AnimationName_ = "DamagedStart_";
@@ -1277,11 +1302,16 @@ void Player::DamagedStartStart()
 
 void Player::DamagedStart()
 {
+	if (true == IsHit_)
+	{
+		Hit();
+	}
+
+
 	PrevState_ = PlayerState::Damaged;
 
-	PlayerHP_ = -10;
-
-	GameEngineSound::SoundPlayOneShot("Damaged2.wav");
+	DamagedEffSound_.Stop();
+	DamagedEffSound_ = GameEngineSound::SoundPlayControl("Damaged2.wav");
 
 	MoveDir = float4::ZERO;
 

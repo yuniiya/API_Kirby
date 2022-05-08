@@ -33,12 +33,12 @@ void Effect_Hammer::Start()
 	AnimationRenderer_->CreateAnimation("Effect_Boss_Right.bmp", "Default_Right", 11, 11, 0.03f, false);
 
 
-	AnimationName_ = "Default_";
+	AnimationName_ = "Scream_";
 	//ChangeDirText_ = "Left";
 	//AnimationRenderer_->ChangeAnimation("Slide_Left");
 
 
-	//Death(1.2f);
+	Death(1.2f);
 }
 
 void Effect_Hammer::Update()

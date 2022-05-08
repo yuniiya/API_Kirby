@@ -50,9 +50,6 @@
     <ClCompile Include="Monster.cpp">
       <Filter>Actor\Play\Global</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Actor\Play\Global</Filter>
-    </ClCompile>
     <ClCompile Include="WaddleDee.cpp">
       <Filter>Actor\Play\Monster\Default</Filter>
     </ClCompile>
@@ -188,6 +185,12 @@
     <ClCompile Include="Effect_Hammer.cpp">
       <Filter>Actor\Play\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Actor\Play\Global\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Gimbap.cpp">
+      <Filter>Actor\Play\Global\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Kirby.h" />
@@ -235,9 +238,6 @@
       <Filter>Actor\Play\Global</Filter>
     </ClInclude>
     <ClInclude Include="Monster.h">
-      <Filter>Actor\Play\Global</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
       <Filter>Actor\Play\Global</Filter>
     </ClInclude>
     <ClInclude Include="WaddleDee.h">
@@ -375,6 +375,12 @@
     <ClInclude Include="Effect_Hammer.h">
       <Filter>Actor\Play\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Actor\Play\Global\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Gimbap.h">
+      <Filter>Actor\Play\Global\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level">
@@ -424,6 +430,9 @@
     </Filter>
     <Filter Include="Actor\Play\Effect">
       <UniqueIdentifier>{b4f8f212-580c-435b-b69f-c79f78845c61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Play\Global\Item">
+      <UniqueIdentifier>{c6dd766f-068f-4834-a232-a468caa0a16a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

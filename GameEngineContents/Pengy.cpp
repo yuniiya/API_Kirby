@@ -254,14 +254,16 @@ void Pengy::DamagedUpdate()
 
 	if (DamagedTime_ < 0)
 	{
-		//Death();
+		ChangeState(MonsterState::Idle);
+		return;
+		/*Death();
 
 		{
-			//GameEngineSound::SoundPlayOneShot("Damaged.wav");
+			GameEngineSound::SoundPlayOneShot("Damaged.wav");
 
 			Effect_MonsterDeath* Effect = GetLevel()->CreateActor<Effect_MonsterDeath>((int)ORDER::EFFECT);
 			Effect->SetPosition(GetPosition());
-		}
+		}*/
 	}
 }
 
@@ -407,4 +409,15 @@ void Pengy::MonsterColCheck()
 		ChangeState(MonsterState::Damaged);
 		return;
 	}
+
+	//{
+	//	std::vector<GameEngineCollision*> ColList;
+
+	//	if (true == MonsterCollision->CollisionResult("SlideCol", ColList, CollisionType::Rect, CollisionType::Rect))
+	//	{
+
+	//		ChangeState(MonsterState::Damaged);
+	//		return;
+	//	}
+	//}
 }
