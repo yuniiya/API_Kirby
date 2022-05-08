@@ -131,12 +131,61 @@ void Effect_Attack::Update()
 		{
 			MoveDir = float4::ZERO;
 
-			////AnimationRenderer_->ChangeAnimation("Attack_End");
+			Death();
 
-			//if (AnimationRenderer_->IsEndAnimation())
-			//{
-			//	Death();
-			//}
+			Effect_AttackEnd* Effect = GetLevel()->CreateActor<Effect_AttackEnd>((int)ORDER::EFFECT);
+			Effect->SetPosition(GetPosition());
+
+		}
+	}
+
+	{
+		std::vector<GameEngineCollision*> ColList;
+		if (true == AttackCollision_->CollisionCheck("MetalunCol", CollisionType::Rect, CollisionType::Rect))
+		{
+			MoveDir = float4::ZERO;
+
+			Death();
+
+			Effect_AttackEnd* Effect = GetLevel()->CreateActor<Effect_AttackEnd>((int)ORDER::EFFECT);
+			Effect->SetPosition(GetPosition());
+
+		}
+	}
+
+	{
+		std::vector<GameEngineCollision*> ColList;
+		if (true == AttackCollision_->CollisionCheck("PengyCol", CollisionType::Rect, CollisionType::Rect))
+		{
+			MoveDir = float4::ZERO;
+
+			Death();
+
+			Effect_AttackEnd* Effect = GetLevel()->CreateActor<Effect_AttackEnd>((int)ORDER::EFFECT);
+			Effect->SetPosition(GetPosition());
+
+		}
+	}
+
+	{
+		std::vector<GameEngineCollision*> ColList;
+		if (true == AttackCollision_->CollisionCheck("SparkyCol", CollisionType::Rect, CollisionType::Rect))
+		{
+			MoveDir = float4::ZERO;
+
+			Death();
+
+			Effect_AttackEnd* Effect = GetLevel()->CreateActor<Effect_AttackEnd>((int)ORDER::EFFECT);
+			Effect->SetPosition(GetPosition());
+
+		}
+	}
+
+	{
+		std::vector<GameEngineCollision*> ColList;
+		if (true == AttackCollision_->CollisionCheck("BossHitBox", CollisionType::Rect, CollisionType::Rect))
+		{
+			MoveDir = float4::ZERO;
 
 			Death();
 

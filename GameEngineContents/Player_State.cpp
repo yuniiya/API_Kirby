@@ -320,6 +320,9 @@ void Player::FloatUpdate()
 	if (true == PlayerAnimationRender->IsEndAnimation())
 	{
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
+
+		MonsterColCheck();
+
 	}
 
 	// Float상태에서 이동
@@ -327,11 +330,35 @@ void Player::FloatUpdate()
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
+		{
+			std::vector<GameEngineCollision*> ColList;
+
+			if (true == PlayerCollision->CollisionResult("BossHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
+			{
+				FloatEffSound_.Stop();
+				ChangeState(PlayerState::DamagedStart);
+				return;
+			}
+
+		}
+
 		MoveDir = float4{-200.f, MoveDir.y};
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 	}
 	else if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
 	{
+		{
+			std::vector<GameEngineCollision*> ColList;
+
+			if (true == PlayerCollision->CollisionResult("BossHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
+			{
+				FloatEffSound_.Stop();
+				ChangeState(PlayerState::DamagedStart);
+				return;
+			}
+
+		}
+
 		MoveDir = float4{200.f, MoveDir.y };
 		PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_ + "_Loop");
 	}
@@ -726,6 +753,9 @@ void Player::DamagedStartUpdate()
 		MoveDir.x = 0.5f;
 	}
 
+	MoveDir.y += 1.f * GameEngineTime::GetDeltaTime() * 10.f;
+	SetMove(MoveDir);
+
 	StagePixelCheck(Speed_);
 
 
@@ -762,6 +792,7 @@ void Player::DamagedUpdate()
 		MoveDir.x = -1.f;
 	}
 	
+	MoveDir.y += 1.f * GameEngineTime::GetDeltaTime() * 10.f;
 	SetMove(MoveDir);
 
 	if (PlayerAnimationRender->IsEndAnimation())
@@ -769,6 +800,9 @@ void Player::DamagedUpdate()
 		ChangeState(PlayerState::Idle);
 		return;
 	}
+
+
+	StagePixelCheck(Speed_);
 }
 
 
@@ -914,6 +948,8 @@ void Player::SparkTransformUpdate()
 
 void Player::IdleStart()
 {
+	PrevState_ = PlayerState::Idle;
+
 	RunEffTime_ = 1.f;
 	MoveDir = float4::ZERO;;
 
@@ -925,6 +961,8 @@ void Player::IdleStart()
 
 void Player::WalkStart()
 {
+	
+
 	Speed_ = 350.f;
 
 	AnimationName_ = "Walk_";
@@ -1230,6 +1268,7 @@ void Player::AttackEndStart()
 
 void Player::DamagedStartStart()
 {
+
 	MoveDir = float4::ZERO;
 
 	AnimationName_ = "DamagedStart_";
@@ -1238,6 +1277,8 @@ void Player::DamagedStartStart()
 
 void Player::DamagedStart()
 {
+	PrevState_ = PlayerState::Damaged;
+
 	PlayerHP_ = -10.f;
 
 	GameEngineSound::SoundPlayOneShot("Damaged2.wav");

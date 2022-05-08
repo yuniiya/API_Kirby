@@ -47,7 +47,6 @@ Player::Player()
 	, InhaleTime_(2.5f)
 	, FallTime_(1.5f)
 	//, CurSkill_(KirbySkill::Default)
-
 {
 
 }
@@ -605,6 +604,8 @@ void Player::MonsterColCheck()
 					ColList[i]->GetActor()->Death();
 				}*/
 
+			FloatEffSound_.Stop();
+
 			ChangeState(PlayerState::DamagedStart);
 			return;
 		}
@@ -616,6 +617,7 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("MetalunCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
+			FloatEffSound_.Stop();
 			ChangeState(PlayerState::DamagedStart);
 			return;
 		}
@@ -626,6 +628,7 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("PengyCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
+			FloatEffSound_.Stop();
 			ChangeState(PlayerState::DamagedStart);
 			return;
 		}
@@ -636,6 +639,7 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("IceBreathCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
+			FloatEffSound_.Stop();
 			ChangeState(PlayerState::DamagedStart);
 			return;
 		}
@@ -646,6 +650,7 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("SparkyCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
+			FloatEffSound_.Stop();
 			ChangeState(PlayerState::DamagedStart);
 			return;
 		}
@@ -657,8 +662,23 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("SparkyAttackCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
+			FloatEffSound_.Stop();
 			ChangeState(PlayerState::DamagedStart);
 			return;
+		}
+
+	}
+
+	{
+		std::vector<GameEngineCollision*> ColList;
+
+		if (true == PlayerCollision->CollisionResult("BossHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
+		{
+			FloatEffSound_.Stop();
+
+			ChangeState(PlayerState::DamagedStart);
+			return;
+
 		}
 
 	}

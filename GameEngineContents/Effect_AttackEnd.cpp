@@ -43,6 +43,8 @@ void Effect_AttackEnd::Update()
 		Death();
 	}
 
+
+
 }
 
 

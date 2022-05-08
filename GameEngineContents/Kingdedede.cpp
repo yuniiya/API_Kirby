@@ -6,6 +6,7 @@
 #include <GameEngine/GameEngineCollision.h>
 #include "Effect_BossStar.h"
 #include "Player.h"
+#include "WaddleDee.h"
 
 Kingdedede::Kingdedede()
 	: Speed_(100.f)
@@ -13,6 +14,7 @@ Kingdedede::Kingdedede()
 	, DamagedTime_(1.5f)
 	, JumpTime_(1.3f)
 	, ScreamTime_(1.f)
+	, CurDir_(MonsterDir::Left)
 {
 	CurState_ = MonsterState::Max;
 	MoveDir = float4::LEFT;
@@ -168,6 +170,22 @@ void Kingdedede::Update()
 	{
 		SetMove(float4{ 0, 1.f });
 	}
+
+	int LeftCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ -70.f, 0.f });
+	int RightCheck = MapColImage_->GetImagePixel(GetPosition() + float4{ 70.f, 0.f });
+
+	float4 Pos = MoveDir;
+
+	if (RGB(0, 0, 0) == LeftCheck)
+	{
+		MoveDir = float4{ 1.f, 0.0f };
+		SetMove(MoveDir);
+	}
+	else if (RGB(0, 0, 0) == RightCheck)
+	{
+		MoveDir = float4{ -1.f, 0.0f };
+		SetMove(MoveDir);
+	}
 }
 
 void Kingdedede::Render()
@@ -179,13 +197,17 @@ void Kingdedede::IdleUpdate()
 {
 	DirCheck();
 
-	if (420.f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x)
-		&& 400.f < std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+	if (PrevState_ != MonsterState::Scream) 
 	{
-		WalkSound_.Stop();
-		ChangeState(MonsterState::Scream);
-		return;
+		if (410.f >= std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x)
+			&& 400.f < std::abs(GetPosition().x - Player::MainPlayer->GetPosition().x))
+		{
+			WalkSound_.Stop();
+			ChangeState(MonsterState::Scream);
+			return;
+		}
 	}
+	
 
 	IdleTime_ -= GameEngineTime::GetDeltaTime();
 
@@ -215,9 +237,9 @@ void Kingdedede::WalkUpdate()
 	}
 
 
-	if (RGB(0, 0, 0) == BottomPixelColorCheck(50.f))
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(70.f))
 	{
-		WallPixelCheck(50.f, Speed_);
+		WallPixelCheck(80.f, Speed_);
 	}
 }
 
@@ -260,9 +282,19 @@ void Kingdedede::JumpDownUpdate()
 
 	SetMove(MoveDir);
 
-	if (RGB(0, 0, 0) == BottomPixelColorCheck(50.f))
+	if (RGB(0, 0, 0) == BottomPixelColorCheck(70.f))
 	{
 		GameEngineSound::SoundPlayOneShot("BossJumpDown.wav");
+
+		// 착지 후 양 쪽에 Star 생성 
+		{
+			Effect_BossStar* Effect = GetLevel()->CreateActor<Effect_BossStar>((int)ORDER::EFFECT);
+			Effect->SetPosition(GetPosition() + float4{ 200.f, 50.f });
+
+			Effect = GetLevel()->CreateActor<Effect_BossStar>((int)ORDER::EFFECT);
+			Effect->SetPosition(GetPosition() + float4{ -200.f, 50.f });
+		}
+	
 
 		ChangeState(MonsterState::Idle);
 		return;
@@ -273,8 +305,15 @@ void Kingdedede::ScreamUpdate()
 {
 	ScreamTime_ -= GameEngineTime::GetDeltaTime();
 
+	// 웨이들 생성
 	if (ScreamTime_ < 0)
 	{
+		WaddleDee* Waddle = GetLevel()->CreateActor<WaddleDee>((int)ORDER::MONSTER);
+		Waddle->SetPosition({ 280.f, -30.f });
+
+	/*	Waddle = GetLevel()->CreateActor<WaddleDee>((int)ORDER::MONSTER);
+		Waddle->SetPosition({ -280.f, -30.f });*/
+
 		ChangeState(MonsterState::Idle);
 		return;
 	}
@@ -284,6 +323,22 @@ void Kingdedede::AttackUpdate()
 {
 	if (AnimationRender->IsEndAnimation())
 	{
+		GameEngineSound::SoundPlayOneShot("BossHammer.wav");
+
+		{
+			Effect_BossStar* Effect = GetLevel()->CreateActor<Effect_BossStar>((int)ORDER::EFFECT);
+			if (CurDir_ == MonsterDir::Right)
+			{
+				Effect->SetPosition(GetPosition() + float4{ 200.f, 50.f });
+			}
+			else
+			{
+				Effect->SetPosition(GetPosition() + float4{ -200.f, 50.f });
+			}
+		}
+
+
+
 		ChangeState(MonsterState::Idle);
 		return;
 	}
@@ -316,6 +371,8 @@ void Kingdedede::IdleStart()
 
 void Kingdedede::WalkStart()
 {
+	PrevState_ = MonsterState::Idle;
+
 	MoveDir = float4::ZERO;
 
 	WalkSound_.Stop();
@@ -343,12 +400,15 @@ void Kingdedede::JumpDownStart()
 {
 	MoveDir = float4::ZERO;
 
+
 	AnimationName_ = "JumpDown_";
 	AnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
 void Kingdedede::ScreamStart()
 {
+	PrevState_ = MonsterState::Scream;
+
 	MoveDir = float4::ZERO;
 
 	ScreamTime_ = 1.f;
@@ -438,21 +498,24 @@ void Kingdedede::WallPixelCheck(float _x, float _Speed)
 
 void Kingdedede::MonsterColCheck()
 {
+	//{
+	//	std::vector<GameEngineCollision*> ColList;
+
+	//	if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
+	//	{
+	//		
+	//		ChangeState(MonsterState::Damaged);
+	//		return;
+	//	}
+	//}
+
 	{
 		std::vector<GameEngineCollision*> ColList;
 
-		if (true == MonsterCollision->CollisionResult("PlayerHitBox", ColList, CollisionType::Rect, CollisionType::Rect))
+		if (true == MonsterCollision->CollisionResult("AttackCol", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
-			ChangeState(MonsterState::Damaged);
-			return;
-		}
-	}
+			WalkSound_.Stop();
 
-	{
-		std::vector<GameEngineCollision*> ColList;
-
-		if (true == MonsterCollision->CollisionResult("BossStarCol", ColList, CollisionType::Rect, CollisionType::Rect))
-		{
 			ChangeState(MonsterState::Damaged);
 			return;
 		}

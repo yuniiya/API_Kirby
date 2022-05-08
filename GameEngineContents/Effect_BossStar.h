@@ -21,6 +21,8 @@ protected:
 
 	GameEngineCollision* AttackCollision_;
 
+	float4 MoveDir;
+
 private:
 	void Start() override;
 	void Update() override;

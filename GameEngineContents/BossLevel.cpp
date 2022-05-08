@@ -18,6 +18,7 @@
 #include "FadeIn.h"
 #include "MonsterHP.h"
 #include "MonsterHPNull.h"
+#include "Effect_BossStar.h"
 
 BossLevel::BossLevel()
 {
@@ -66,6 +67,7 @@ void BossLevel::Loading()
 		Kingdedede* Boss = CreateActor<Kingdedede>((int)ORDER::MONSTER, "Boss");
 		Boss->SetPosition({900.f, 500.f });
 	}
+
 }
 
 void BossLevel::Update()

@@ -24,6 +24,11 @@ private:
 	float DamagedTime_;
 	float ScreamTime_;
 
+	MonsterDir CurDir_;
+
+	MonsterState CurState_;
+	MonsterState PrevState_;
+
 protected:
 	GameEngineSoundPlayer WalkSound_;
 	GameEngineSoundPlayer JumpSound_;
