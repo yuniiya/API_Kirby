@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{aa33d242-a716-40cf-ac42-289b5943b0c2}</ProjectGuid>
+    <RootNamespace>GameContents</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>GameEngineContents</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)$(SolutionDir)Bin\$(Configuration)\$(PlatformTarget)\</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)$(SolutionDir)Bin\$(Configuration)\$(PlatformTarget)\</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Bin\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)Bin\$(Configuration)\$(PlatformTarget)\$(ProjectName)\</IntDir>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)$(SolutionDir)Bin\$(Configuration)\$(PlatformTarget)\</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Bin\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)Bin\$(Configuration)\$(PlatformTarget)\$(ProjectName)\</IntDir>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)$(SolutionDir)Bin\$(Configuration)\$(PlatformTarget)\</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\;</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\;</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="BackGround.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="BigWaddleDee.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="BossLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="BossRoomLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="Effect_Attack.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_AttackEnd.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_BigIceBox.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_BossStar.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_DoorStar.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_Exhale.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_Hammer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_IceBoxEnd.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_IceBreath.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_IceBox.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_Inhale.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_MonsterDeath.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_ReleaseSkill.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_RunToStop.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_Slide.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_Star.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_Transform.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="EndingCredit.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="EndingLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Fade.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FadeIn.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Gimbap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Grass.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Grass_1.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Grass_2.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Grass_3.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Grass_4.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Grass_5.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="IceKirby.h">
+      <SubType>
+      </SubType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Kingdedede.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Kirby.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Level_1.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Level_2.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Level_3.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Level_4.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MapActor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MetalKirby.h">
+      <SubType>
+      </SubType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Metalun.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MonsterHP.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MonsterHPNull.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Pengy.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PlayerHP.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PlayUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Scarfy.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="SkillName.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="SkillUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="SparkKirby.h">
+      <SubType>
+      </SubType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Sparky.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TitleLogo.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="WaddleDee.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Water.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Water_1.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Water_2.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BackGround.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="BigWaddleDee.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="BossLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="BossRoomLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_Attack.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_AttackEnd.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_BigIceBox.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_BossStar.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_DoorStar.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_Exhale.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_Hammer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_IceBoxEnd.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_IceBreath.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_IceBox.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_Inhale.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_MonsterDeath.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_ReleaseSkill.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_RunToStop.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_Slide.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_Star.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_Transform.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="EndingCredit.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="EndingLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Fade.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="FadeIn.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Gimbap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Grass.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Grass_1.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Grass_2.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Grass_3.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Grass_4.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Grass_5.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="IceKirby.cpp">
+      <SubType>
+      </SubType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Kingdedede.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Kirby.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Level_1.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Level_2.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Level_3.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Level_4.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MapActor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MetalKirby.cpp">
+      <SubType>
+      </SubType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Metalun.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MonsterHP.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MonsterHPNull.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Pengy.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PlayerHP.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Player_State.cpp" />
+    <ClCompile Include="PlayUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Scarfy.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="SkillName.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="SkillUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="SparkKirby.cpp">
+      <SubType>
+      </SubType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Sparky.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TitleLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TitleLogo.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="WaddleDee.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Water.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Water_1.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Water_2.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameEngineBase\GameEngineBase.vcxproj">
+      <Project>{543b7e00-d3d6-4dfd-aa59-7eb716cb32cd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
+      <Project>{89feb26b-1aff-453a-abdc-ece8f9a92eb5}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
