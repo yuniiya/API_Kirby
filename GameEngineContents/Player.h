@@ -48,16 +48,19 @@ enum class PlayerState
 	DamagedStart,
 	Damaged,
 
-	FullToMetal,
-	SwallowMetal,
-	MetalTransform,
-	FullToIce,
-	SwallowIce,
-	IceTransform,
-	FullToSpark,
-	SwallowSpark,
-	SparkTransform,
-	
+	FullToSkill,
+	SwallowToSkill,
+	TransformToSkill,
+
+	Max,
+};
+
+enum class SwallowMonsterType 
+{
+	Metal,
+	Ice,
+	Spark,
+
 	Max,
 };
 
@@ -100,6 +103,7 @@ public:
 
 protected:
 	KirbySkill CurSkill_;
+	SwallowMonsterType CurSwallowMonster_;
 
 	void DefaultKirbyUpdate();
 	void MetalKirbyUpdate();
@@ -218,6 +222,7 @@ protected:
 	virtual void ChangeState(PlayerState _State);
 	virtual void PlayerStateUpdate();
 	virtual void DirAnimationCheck();
+	void SkillRelease();
 
 protected:
 	virtual void IdleStart();
@@ -248,6 +253,9 @@ protected:
 	virtual void DamagedStartStart();
 	virtual void DamagedStart();
 
+	void FullToSkillStart();
+	void SwallowToSkillStart();
+	void TransformToSkillStart();
 
 	/////////////////////// Update
 	virtual void IdleUpdate();
@@ -278,32 +286,8 @@ protected:
 	virtual void DamagedStartUpdate();
 	virtual void DamagedUpdate();
 
-
-	// ========================= Transform
-protected:
-	void FullToMetalStart();
-	void SwallowMetalStart();
-	void MetalTrasformStart();
-
-	void FullToIceStart();
-	void SwallowIceStart();
-	void IceTransformStart();
-
-	void FullToSparkStart();
-	void SwallowSparkStart();
-	void SparkTransformStart();
-
-	void FullToMetalUpdate();
-	void SwallowMetalUpdate();
-	void MetalTransformUpdate();
-
-	void FullToIceUpdate();
-	void SwallowIceUpdate();
-	void IceTransformUpdate();
-
-	void FullToSparkUpdate();
-	void SwallowSparkUpdate();
-	void SparkTransformUpdate();
-	
+	void FullToSkillUpdate();
+	void SwallowToSkillUpdate();
+	void TransformToSkillUpdate();
 
 };

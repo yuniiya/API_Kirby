@@ -23,6 +23,7 @@ public:
 	SparkKirby& operator=(const SparkKirby& _Other) = delete;
 	SparkKirby& operator=(SparkKirby&& _Other) noexcept = delete;
 
+	void SparkKirbyOff();
 
 protected:
 
@@ -37,7 +38,6 @@ private:
 
 private:
 	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
-
 	void Start() override;
 	void Update() override;
 

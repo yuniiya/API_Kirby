@@ -83,6 +83,8 @@ void IceKirby::Start()
 		PlayerAnimationRender->CreateAnimation("Ice_Left.bmp", "IceAttackStart_Left", 93, 98, 0.06f, false);
 		PlayerAnimationRender->CreateAnimation("Ice_Left.bmp", "IceAttack_Left", 99, 100, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Ice_Left.bmp", "IceAttackEnd_Left", 101, 102, 0.05f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Damaged_Left", 70, 78, 0.04f, true);
+
 	}
 
 
@@ -112,6 +114,7 @@ void IceKirby::Start()
 		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "IceAttackStart_Right", 93, 98, 0.06f, false);
 		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "IceAttack_Right", 99, 100, 0.07f, true);
 		PlayerAnimationRender->CreateAnimation("Ice_Right.bmp", "IceAttackEnd_Right", 101, 102, 0.05f, false);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Damaged_Right", 71, 78, 0.04f, true);
 	}
 	
 	SkillName_ = "Ice";
@@ -134,44 +137,30 @@ void IceKirby::Start()
 
 void IceKirby::Update()
 {
+	Player::Update();
 	if (true == GameEngineInput::GetInst()->IsDown("SkillRelease"))
 	{
-		// 스킬 해제 사운드
-		GameEngineSound::SoundPlayOneShot("Release1.wav");
-
-		{
-			Effect_ReleaseSkill* Effect = GetLevel()->CreateActor<Effect_ReleaseSkill>((int)ORDER::EFFECT);
-
-			if (CurDir_ == PlayerDir::Right)
-			{
-				Effect->SetPosition(GetPosition());
-				Effect->SetDir(EffectDir::Right);
-
-			}
-			else if (CurDir_ == PlayerDir::Left)
-			{
-				Effect->SetPosition(GetPosition());
-				Effect->SetDir(EffectDir::Left);
-			}
-		}
-
-		IceSkill->Off();
-		IceName->Off();
-
-		// 디폴트 커비 On
-		MainPlayer->SetPosition(GetPosition());
-	//	CurSkill_ = KirbySkill::Default;
-		MainPlayer->On();
-
-		MainPlayer->InhaleCollision->Off();
-		Off();
+		SkillRelease();
+		IceKirbyOff();
 	}
 	else if(CurSkill_ != KirbySkill::Ice)
 	{
 		CurSkill_ = KirbySkill::Ice;
 	}
 
-	Player::Update();
+}
+
+void IceKirby::IceKirbyOff()
+{
+	IceSkill->Off();
+	IceName->Off();
+
+	// 디폴트 커비 On
+	MainPlayer->SetPosition(GetPosition());
+	MainPlayer->On();
+
+	MainPlayer->InhaleCollision->Off();
+	Off();
 }
 
 

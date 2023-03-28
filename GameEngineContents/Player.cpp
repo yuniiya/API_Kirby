@@ -52,6 +52,15 @@ Player::Player()
 	, SkillName_("")
 	, CurSkill_(KirbySkill::Default)
 	, SlidingTime_(1.2f)
+	, CurSwallowMonster_(SwallowMonsterType::Max)
+	, StarEffect_(nullptr)
+	, SlideCollision(nullptr)
+	, RunEffTime_(0.f)
+	, InputDir_(PlayerDir::Max)
+	, InhaleEffect_(nullptr)
+	, InhaleCollision(nullptr)
+	, AttEffect_(nullptr)
+	, AttackTime_(0.f)
 {
 
 }
@@ -77,8 +86,6 @@ bool Player::IsMoveKey()
 {
 	if (false == GameEngineInput::GetInst()->IsPress("MoveLeft") &&
 		false == GameEngineInput::GetInst()->IsPress("MoveRight") 
-		/*false == GameEngineInput::GetInst()->IsPress("MoveUp") &&
-		false == GameEngineInput::GetInst()->IsPress("MoveDown")*/
 		) 
 	{
 		return false;
@@ -138,6 +145,27 @@ void Player::Hit()
 	CurHP_ = CurHP_ - 10;
 
 	PlayerHP::MainHP->SetHP(CurHP_, MaxHP_);
+
+	if (CurSkill_ != KirbySkill::Default)
+	{
+		switch (CurSkill_)
+		{
+		case KirbySkill::Ice: 
+		{
+			IceKirby::IcePlayer->IceKirbyOff();
+		}
+			break;
+		case KirbySkill::Spark:
+		{
+			SparkKirby::SparkPlayer->SparkKirbyOff();
+		}
+			break;
+		default:
+			break;
+		}
+	}
+
+
 }
 
 
@@ -220,32 +248,14 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::Damaged:
 			DamagedStart();
 			break;
-		case PlayerState::FullToMetal:
-			FullToMetalStart();
+		case PlayerState::FullToSkill:
+			FullToSkillStart();
 			break;
-		case PlayerState::SwallowMetal:
-			SwallowMetalStart();
+		case PlayerState::SwallowToSkill:
+			SwallowToSkillStart();
 			break;
-		case PlayerState::MetalTransform:
-			MetalTrasformStart();
-			break;
-		case PlayerState::FullToIce:
-			FullToIceStart();
-			break;
-		case PlayerState::SwallowIce:
-			SwallowIceStart();
-			break;
-		case PlayerState::IceTransform:
-			IceTransformStart();
-			break;
-		case PlayerState::FullToSpark:
-			FullToSparkStart();
-			break;
-		case PlayerState::SwallowSpark:
-			SwallowSparkStart();
-			break;
-		case PlayerState::SparkTransform:
-			SparkTransformStart();
+		case PlayerState::TransformToSkill:
+			TransformToSkillStart();
 			break;
 		}
 	}
@@ -329,32 +339,14 @@ void Player::PlayerStateUpdate()
 	case PlayerState::Damaged:
 		DamagedUpdate();
 		break;
-	case PlayerState::FullToMetal:
-		FullToMetalUpdate();
+	case PlayerState::FullToSkill:
+		FullToSkillUpdate();
 		break;
-	case PlayerState::SwallowMetal:
-		SwallowMetalUpdate();
+	case PlayerState::SwallowToSkill:
+		SwallowToSkillUpdate();
 		break;
-	case PlayerState::MetalTransform:
-		MetalTransformUpdate();
-		break;
-	case PlayerState::FullToIce:
-		FullToIceUpdate();
-		break;
-	case PlayerState::SwallowIce:
-		SwallowIceUpdate();
-		break;
-	case PlayerState::IceTransform:
-		IceTransformUpdate();
-		break;
-	case PlayerState::FullToSpark:
-		FullToSparkUpdate();
-		break;
-	case PlayerState::SwallowSpark:
-		SwallowSparkUpdate();
-		break;
-	case PlayerState::SparkTransform:
-		SparkTransformUpdate();
+	case PlayerState::TransformToSkill:
+		TransformToSkillUpdate();
 		break;
 	}
 }
@@ -557,6 +549,7 @@ void Player::Render()
 		std::string CurSkillStr = "";
 		std::string CurAnimationStr = "";
 		std::string CurSkillType = "";
+		std::string CurSwallowMonster = "";
 
 		if (SkillName_ == "")
 		{
@@ -586,12 +579,30 @@ void Player::Render()
 			CurSkillType = "CurSkill : Default";
 		}
 
+		if (CurSwallowMonster_ == SwallowMonsterType::Ice)
+		{
+			CurSwallowMonster = "CurSwallowMonster : Ice";
+		}
+		else if (CurSwallowMonster_ == SwallowMonsterType::Metal)
+		{
+			CurSwallowMonster = "CurSwallowMonster : Metal";
+		}
+		else if (CurSwallowMonster_ == SwallowMonsterType::Spark)
+		{
+			CurSwallowMonster = "CurSwallowMonster : Spark";
+		}
+		else
+		{
+			CurSwallowMonster = "CurSwallowMonster : Default";
+		}
+
 
 		SetBkMode(GameEngine::BackBufferDC(), OPAQUE);
 		SetTextColor(GameEngine::BackBufferDC(), RGB(0, 0, 0));
 		TextOut(GameEngine::BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 120, CurSkillStr.c_str(), static_cast<int>(CurSkillStr.length()));
 		TextOut(GameEngine::BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 100, CurAnimationStr.c_str(), static_cast<int>(CurAnimationStr.length()));
 		TextOut(GameEngine::BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 80, CurSkillType.c_str(), static_cast<int>(CurSkillType.length()));
+		TextOut(GameEngine::BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 60, CurSwallowMonster.c_str(), static_cast<int>(CurSwallowMonster.length()));
 
 	}
 }
@@ -661,11 +672,6 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("DefaultMonster", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
-			/*	for (size_t i = 0; i < ColList.size(); i++)
-				{
-					ColList[i]->GetActor()->Death();
-				}*/
-
 			FloatEffSound_.Stop();
 
 			IsHit_ = true;
@@ -820,7 +826,8 @@ void Player::InhaleColCheck()
 			InhaleEffect_->Death();
 			InhaleEffSound_.Stop();
 
-			ChangeState(PlayerState::FullToMetal);
+			CurSwallowMonster_ = SwallowMonsterType::Metal;
+			ChangeState(PlayerState::FullToSkill);
 			return;
 		}
 	}
@@ -833,7 +840,8 @@ void Player::InhaleColCheck()
 			InhaleEffect_->Death();
 			InhaleEffSound_.Stop();
 
-			ChangeState(PlayerState::FullToIce);
+			CurSwallowMonster_ = SwallowMonsterType::Ice;
+			ChangeState(PlayerState::FullToSkill);
 			return;
 		}
 	}
@@ -846,7 +854,8 @@ void Player::InhaleColCheck()
 			InhaleEffect_->Death();
 			InhaleEffSound_.Stop();
 
-			ChangeState(PlayerState::FullToSpark);
+			CurSwallowMonster_ = SwallowMonsterType::Spark;
+			ChangeState(PlayerState::FullToSkill);
 			return;
 		}
 	}
@@ -944,6 +953,27 @@ void Player::DirAnimationCheck()
 
 }
 
+void Player::SkillRelease()
+{
+	// 스킬 해제 사운드
+	GameEngineSound::SoundPlayOneShot("Release1.wav");
+	CurSwallowMonster_ = SwallowMonsterType::Max;
+
+	Effect_ReleaseSkill* Effect = GetLevel()->CreateActor<Effect_ReleaseSkill>((int)ORDER::EFFECT);
+
+	if (CurDir_ == PlayerDir::Right)
+	{
+		Effect->SetPosition(GetPosition());
+		Effect->SetDir(EffectDir::Right);
+
+	}
+	else if (CurDir_ == PlayerDir::Left)
+	{
+		Effect->SetPosition(GetPosition());
+		Effect->SetDir(EffectDir::Left);
+	}
+}
+
 
 void Player::CameraFix()
 {
@@ -1020,18 +1050,6 @@ void Player::DoorCheck(std::string ChangeLevelName_)
 
 void Player::StagePixelCheck(float _Speed)
 {
-	// 땅 밑으로 못 가게
-	//float4 CheckPos = GetPosition() + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
-
-	//int Color = MapColImage_->GetImagePixel(CheckPos);
-	//if (RGB(0, 0, 0) != Color)
-	//{
-	//	SetMove(MoveDir * GameEngineTime::GetDeltaTime() * _Speed);
-	//}
-
-	//float4 DownPos = GetPosition() + float4{ 0.0f, 15.f } + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
-
-
 	float4 DownPos = GetPosition() + float4{ 0.0f, 15.f } + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
 	float4 LeftPos = GetPosition() + float4{ -15.f, 0.f } + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
 	float4 RightPos = GetPosition() + float4{ 15.f, 0.f } + MoveDir * GameEngineTime::GetDeltaTime() * _Speed;
@@ -1089,33 +1107,6 @@ void Player::MovePixelCheck(float _x, float _y)
 
 void Player::HillPixelCheck()
 {
-	// 오르막, 내리막길 
-	//float4 CheckPos = float4::DOWN;
-	//float4 LeftUpPos = float4::UP;
-
-	//int DownColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0.0f, 20.0f } + CheckPos);
-	//int LeftColor = MapColImage_->GetImagePixel(GetPosition() + float4{ -20.0f, 0.0f } + CheckPos);
-
-	//if (RGB(0, 0, 0) != DownColor)
-	//{
-	//	// 땅에 닿아있는 동안은 계속 내려준다
-	//	while (RGB(0, 0, 0) == DownColor)
-	//	{
-	//		CheckPos += float4::DOWN;
-	//		DownColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
-	//	}
-	//	SetMove(CheckPos);
-	//}
-	//else if (RGB(0, 0, 0) == LeftColor)
-	//{
-	//	while (RGB(0, 0, 0) != LeftColor)
-	//	{
-	//		LeftUpPos += float4::UP;
-	//		LeftColor = MapColImage_->GetImagePixel(GetPosition() + CheckPos);
-	//	}
-	//	SetMove(LeftUpPos);
-	//}
-
 	float4 CheckPos = float4::DOWN;
 	float4 LeftUpPos = float4::UP;
 	float4 RightUpPos = float4::UP;
@@ -1275,7 +1266,8 @@ void Player::MetalKirbyUpdate()
 	}
 
 	CurSkill_ = KirbySkill::Metal;
-	ChangeState(PlayerState::SwallowMetal);
+	CurSwallowMonster_ = SwallowMonsterType::Metal;
+	ChangeState(PlayerState::SwallowToSkill);
 	return;
 }
 
@@ -1287,7 +1279,8 @@ void Player::IceKirbyUpdate()
 	}
 
 	CurSkill_ = KirbySkill::Ice;
-	ChangeState(PlayerState::SwallowIce);
+	CurSwallowMonster_ = SwallowMonsterType::Ice;
+	ChangeState(PlayerState::SwallowToSkill);
 	return;
 }
 
@@ -1299,22 +1292,9 @@ void Player::SparkKirbyUpdate()
 	}
 
 	CurSkill_ = KirbySkill::Spark;
-	ChangeState(PlayerState::SwallowSpark);
+	CurSwallowMonster_ = SwallowMonsterType::Spark;
+	ChangeState(PlayerState::SwallowToSkill);
 	return;
 }
 
 
-
-// 충돌 -> 다음 스테이지로 이동
-//void Player::DoorCheck()
-//{
-//	if (true == PlayerCollision->CollisionCheck("Door", CollisionType::Rect, CollisionType::Rect))
-//	{
-//		if (true == GameEngineInput::GetInst()->IsDown("MoveUp"))
-//		{
-//			ChangeState(PlayerState::Enter);
-//			GameEngine::GetInst().ChangeLevel("Level_2");
-//		}
-//		
-//	}
-//}

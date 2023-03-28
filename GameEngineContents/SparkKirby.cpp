@@ -90,6 +90,8 @@ void SparkKirby::Start()
 		// Attack
 		PlayerAnimationRender->CreateAnimation("Spark_Left.bmp", "SparkAttackStart_Left", 138, 138, 0.05f, false);
 		PlayerAnimationRender->CreateAnimation("Spark_Attack.bmp", "SparkAttack_Left", 0, 3, 0.02f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Left.bmp", "Damaged_Left", 71, 78, 0.04f, true);
+
 	}
 
 
@@ -121,6 +123,7 @@ void SparkKirby::Start()
 		// Attack
 		PlayerAnimationRender->CreateAnimation("Spark_Right.bmp", "SparkAttackStart_Right", 138, 138, 0.05f, false);
 		PlayerAnimationRender->CreateAnimation("Spark_Attack.bmp", "SparkAttack_Right", 0, 3, 0.02f, true);
+		PlayerAnimationRender->CreateAnimation("Default_Right.bmp", "Damaged_Right", 71, 78, 0.04f, true);
 	}
 
 	SkillName_ = "Spark";
@@ -149,35 +152,9 @@ void SparkKirby::Update()
 {
 	if (true == GameEngineInput::GetInst()->IsDown("SkillRelease"))
 	{
-		// 스킬 해제 사운드
-		GameEngineSound::SoundPlayOneShot("Release1.wav");
-
-		{
-			Effect_ReleaseSkill* Effect = GetLevel()->CreateActor<Effect_ReleaseSkill>((int)ORDER::EFFECT);
-
-			if (CurDir_ == PlayerDir::Right)
-			{
-				Effect->SetPosition(GetPosition());
-				Effect->SetDir(EffectDir::Right);
-
-			}
-			else if (CurDir_ == PlayerDir::Left)
-			{
-				Effect->SetPosition(GetPosition());
-				Effect->SetDir(EffectDir::Left);
-			}
-		}
-
-		SparkSkill->Off();
-		SparkName->Off();
-
-		// 디폴트 커비 On
-		MainPlayer->SetPosition(GetPosition());
-		CurSkill_ = KirbySkill::Default;
-		MainPlayer->On();
-
-		MainPlayer->InhaleCollision->Off();
-		Off();
+		SkillRelease();
+		SparkKirbyOff();
+		
 	}
 	else if (CurSkill_ != KirbySkill::Spark)
 	{
@@ -185,6 +162,20 @@ void SparkKirby::Update()
 	}
 
 	Player::Update();
+}
+
+void SparkKirby::SparkKirbyOff()
+{
+	SparkSkill->Off();
+	SparkName->Off();
+
+	// 디폴트 커비 On
+	MainPlayer->SetPosition(GetPosition());
+	CurSkill_ = KirbySkill::Default;
+	MainPlayer->On();
+
+	MainPlayer->InhaleCollision->Off();
+	Off();
 }
 
 void SparkKirby::IdleUpdate()

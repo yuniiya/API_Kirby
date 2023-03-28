@@ -24,6 +24,8 @@ public:
 	IceKirby& operator=(const IceKirby& _Other) = delete;
 	IceKirby& operator=(IceKirby&& _Other) noexcept = delete;
 
+	void IceKirbyOff();
+
 
 protected:
 	GameEngineSoundPlayer AttackEffSound_;
@@ -34,7 +36,6 @@ private:
 
 private:
 	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
-
 	void Start() override;
 	void Update() override;
 

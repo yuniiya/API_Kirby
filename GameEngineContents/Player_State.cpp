@@ -600,8 +600,17 @@ void Player::FullLoopUpdate()
 {
 	if (true == GameEngineInput::GetInst()->IsPress("Down"))
 	{
-		ChangeState(PlayerState::Swallow);
-		return;
+		if (CurSwallowMonster_ == SwallowMonsterType::Max)
+		{
+			ChangeState(PlayerState::Swallow);
+			return;
+		}
+		else
+		{
+			ChangeState(PlayerState::SwallowToSkill);
+			return;
+		}
+
 	}
 
 	if (true == IsMoveKey())
@@ -628,6 +637,20 @@ void Player::FullWalkUpdate()
 {
 	MonsterColCheck();
 	RunningTime_ = 0.1f;
+
+	if (true == GameEngineInput::GetInst()->IsPress("Down"))
+	{
+		if (CurSwallowMonster_ == SwallowMonsterType::Max)
+		{
+			ChangeState(PlayerState::Swallow);
+			return;
+		}
+		else
+		{
+			ChangeState(PlayerState::SwallowToSkill);
+			return;
+		}
+	}
 
 	if (false == IsMoveKey())
 	{
@@ -657,6 +680,20 @@ void Player::FullWalkUpdate()
 
 void Player::FullJumpUpdate()
 {
+	if (true == GameEngineInput::GetInst()->IsPress("Down"))
+	{
+		if (CurSwallowMonster_ == SwallowMonsterType::Max)
+		{
+			ChangeState(PlayerState::Swallow);
+			return;
+		}
+		else
+		{
+			ChangeState(PlayerState::SwallowToSkill);
+			return;
+		}
+	}
+
 	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
 	{
 		ChangeState(PlayerState::AttackStart);
@@ -818,7 +855,7 @@ void Player::DamagedUpdate()
 
 	if (PlayerAnimationRender->IsEndAnimation())
 	{
-		DamagedEffSound_.Stop();
+		//DamagedEffSound_.Stop();
 		IsHit_ = false;
 		ChangeState(PlayerState::Idle);
 		return;
@@ -829,11 +866,11 @@ void Player::DamagedUpdate()
 }
 
 
-void Player::FullToMetalUpdate()
+void Player::FullToSkillUpdate()
 {
 	if (true == GameEngineInput::GetInst()->IsPress("Down"))
 	{
-		ChangeState(PlayerState::SwallowMetal);
+		ChangeState(PlayerState::SwallowToSkill);
 		return;
 	}
 
@@ -856,116 +893,24 @@ void Player::FullToMetalUpdate()
 	}
 }
 
-void Player::SwallowMetalUpdate()
+void Player::SwallowToSkillUpdate()
 {
 	if (PlayerAnimationRender->IsEndAnimation())
 	{
-		ChangeState(PlayerState::MetalTransform);
+		ChangeState(PlayerState::TransformToSkill);
 		return;
 	}
 }
 
-void Player::MetalTransformUpdate()
+void Player::TransformToSkillUpdate()
 {
 	if (PlayerAnimationRender->IsEndAnimation())
 	{
+		CurSwallowMonster_ = SwallowMonsterType::Max;
 		ChangeState(PlayerState::Idle);
 		return;
 	}
 }
-
-void Player::FullToIceUpdate()
-{
-	if (true == GameEngineInput::GetInst()->IsPress("Down"))
-	{
-		ChangeState(PlayerState::SwallowIce);
-		return;
-	}
-
-	if (true == IsMoveKey())
-	{
-		ChangeState(PlayerState::FullWalk);
-		return;
-	}
-
-	if (true == IsJumpKey())
-	{
-		ChangeState(PlayerState::FullJump);
-		return;
-	}
-
-	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
-	{
-		ChangeState(PlayerState::AttackStart);
-		return;
-	}
-}
-
-void Player::SwallowIceUpdate()
-{
-	if (PlayerAnimationRender->IsEndAnimation())
-	{
-		ChangeState(PlayerState::IceTransform);
-		return;
-	}
-}
-
-void Player::IceTransformUpdate()
-{
-	if (PlayerAnimationRender->IsEndAnimation())
-	{
-		ChangeState(PlayerState::Idle);
-		return;
-	}
-}
-
-void Player::FullToSparkUpdate()
-{
-	if (true == GameEngineInput::GetInst()->IsPress("Down"))
-	{
-		ChangeState(PlayerState::SwallowSpark);
-		return;
-	}
-
-	if (true == IsMoveKey())
-	{
-		ChangeState(PlayerState::FullWalk);
-		return;
-	}
-
-	if (true == IsJumpKey())
-	{
-		ChangeState(PlayerState::FullJump);
-		return;
-	}
-
-	if (true == GameEngineInput::GetInst()->IsPress("Attack"))
-	{
-		ChangeState(PlayerState::AttackStart);
-		return;
-	}
-}
-
-void Player::SwallowSparkUpdate()
-{
-	if (PlayerAnimationRender->IsEndAnimation())
-	{
-		ChangeState(PlayerState::SparkTransform);
-		return;
-	}
-}
-
-void Player::SparkTransformUpdate()
-{
-	if (PlayerAnimationRender->IsEndAnimation())
-	{
-		ChangeState(PlayerState::Idle);
-		return;
-	}
-}
-
-
-
 
 //////////////////////////////////////// State
 
@@ -1311,15 +1256,16 @@ void Player::DamagedStart()
 	PrevState_ = PlayerState::Damaged;
 
 	DamagedEffSound_.Stop();
-	DamagedEffSound_ = GameEngineSound::SoundPlayControl("Damaged2.wav");
+	GameEngineSound::SoundPlayOneShot("Damaged2.wav");
 
 	MoveDir = float4::ZERO;
 
 	AnimationName_ = "Damaged_";
-	PlayerAnimationRender->ChangeAnimation(SkillName_ + AnimationName_ + ChangeDirText_);
+	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
-void Player::FullToMetalStart()
+
+void Player::FullToSkillStart()
 {
 	GameEngineSound::SoundPlayOneShot("Full.wav");
 
@@ -1327,40 +1273,7 @@ void Player::FullToMetalStart()
 	PlayerAnimationRender->ChangeAnimation(SkillName_ + AnimationName_ + ChangeDirText_);
 }
 
-void Player::SwallowMetalStart()
-{
-	GameEngineSound::SoundPlayOneShot("Swallow.wav");
-
-	{
-		Effect_Transform* Effect = GetLevel()->CreateActor<Effect_Transform>((int)ORDER::EFFECT);
-		Effect->SetPosition(GetPosition());
-	}
-
-	AnimationName_ = "Swallow_";
-	PlayerAnimationRender->ChangeAnimation(SkillName_ + AnimationName_ + ChangeDirText_);
-}
-
-void Player::MetalTrasformStart()
-{
-	GameEngineSound::SoundPlayOneShot("Transform.wav");
-
-	MainPlayer->Off();
-
-	MetalKirby::MetalPlayer->SetPosition(GetPosition());
-	MetalKirby::MetalPlayer->On();
-	MetalKirby::MetalSkill->On();
-	MetalKirby::MetalName->On();
-}
-
-void Player::FullToIceStart()
-{
-	GameEngineSound::SoundPlayOneShot("Full.wav");
-
-	AnimationName_ = "Full_";
-	PlayerAnimationRender->ChangeAnimation(SkillName_ + AnimationName_ + ChangeDirText_);
-}
-
-void Player::SwallowIceStart()
+void Player::SwallowToSkillStart()
 {
 	GameEngineSound::SoundPlayOneShot("Swallow.wav");
 
@@ -1373,57 +1286,50 @@ void Player::SwallowIceStart()
 	PlayerAnimationRender->ChangeAnimation(AnimationName_ + ChangeDirText_);
 }
 
-void Player::IceTransformStart()
+void Player::TransformToSkillStart()
 {
 	GameEngineSound::SoundPlayOneShot("Transform.wav");
-
 	MainPlayer->Off();
 
-	IceKirby::IcePlayer->SetPosition(GetPosition());
-	CurSkill_ = KirbySkill::Ice;
-	SkillName_ = "Ice";
-
-	IceKirby::IcePlayer->On();
-	IceKirby::IceSkill->On();
-	IceKirby::IceName->On();
-}
-
-void Player::FullToSparkStart()
-{
-	GameEngineSound::SoundPlayOneShot("Full.wav");
-
-	AnimationName_ = "Full_";
-	PlayerAnimationRender->ChangeAnimation(SkillName_ + AnimationName_ + ChangeDirText_);
-}
-
-void Player::SwallowSparkStart()
-{
-	GameEngineSound::SoundPlayOneShot("Swallow.wav");
-
+	switch (CurSwallowMonster_)
 	{
-		Effect_Transform* Effect = GetLevel()->CreateActor<Effect_Transform>((int)ORDER::EFFECT);
-		Effect->SetPosition(GetPosition());
+	case SwallowMonsterType::Metal:
+	{
+		MetalKirby::MetalPlayer->SetPosition(GetPosition());
+		CurSkill_ = KirbySkill::Metal;
+		SkillName_ = "Metal";
+
+		MetalKirby::MetalPlayer->On();
+		MetalKirby::MetalSkill->On();
+		MetalKirby::MetalName->On();
+	}
+		break;
+	case SwallowMonsterType::Ice:
+	{
+		IceKirby::IcePlayer->SetPosition(GetPosition());
+		CurSkill_ = KirbySkill::Ice;
+		SkillName_ = "Ice";
+
+		IceKirby::IcePlayer->On();
+		IceKirby::IceSkill->On();
+		IceKirby::IceName->On();
+	}
+		break;
+	case SwallowMonsterType::Spark:
+	{
+		SparkKirby::SparkPlayer->SetPosition(GetPosition());
+		CurSkill_ = KirbySkill::Spark;
+		SkillName_ = "Spark";
+
+		SparkKirby::SparkPlayer->On();
+		SparkKirby::SparkSkill->On();
+		SparkKirby::SparkName->On();
+	}
+		break;
+	case SwallowMonsterType::Max:
+		break;
+	default:
+		break;
 	}
 
-	AnimationName_ = "Swallow_";
-	PlayerAnimationRender->ChangeAnimation(SkillName_ + AnimationName_ + ChangeDirText_);
 }
-
-void Player::SparkTransformStart()
-{
-	GameEngineSound::SoundPlayOneShot("Transform.wav");
-
-	MainPlayer->Off();
-
-	SparkKirby::SparkPlayer->SetPosition(GetPosition());
-	CurSkill_ = KirbySkill::Spark;
-	SkillName_ = "Spark";
-
-	SparkKirby::SparkPlayer->On();
-	SparkKirby::SparkSkill->On();
-	SparkKirby::SparkName->On();
-}
-
-
-
-

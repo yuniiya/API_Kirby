@@ -146,26 +146,9 @@ void MetalKirby::Update()
 {
 	if (true == GameEngineInput::GetInst()->IsDown("SkillRelease"))
 	{
-		// 스킬 해제 사운드
-		GameEngineSound::SoundPlayOneShot("Release1.wav");
-
-		{
-			Effect_ReleaseSkill* Effect = GetLevel()->CreateActor<Effect_ReleaseSkill>((int)ORDER::EFFECT);
-
-			if (CurDir_ == PlayerDir::Right)
-			{
-				Effect->SetPosition(GetPosition());
-				Effect->SetDir(EffectDir::Right);
-
-			}
-			else if (CurDir_ == PlayerDir::Left)
-			{
-				Effect->SetPosition(GetPosition());
-				Effect->SetDir(EffectDir::Left);
-			}
-		}
-
+		SkillRelease();
 	
+		EffectSound_.Stop();
 		MetalSkill->Off();
 		MetalName->Off();
 
@@ -184,7 +167,6 @@ void MetalKirby::Update()
 
 	Player::Update();
 }
-
 
 void MetalKirby::IdleUpdate()
 {
@@ -566,9 +548,6 @@ void MetalKirby::WalkStart()
 	//GameEngineSound::SoundPlayOneShot("Metal1.wav");
 	EffectSound_.Stop();
 	EffectSound_ = GameEngineSound::SoundPlayControl("Metal1.wav");
-
-	//EffectSound_ = GameEngineSound::SoundPlayOneShot("Metal1.wav", -1);
-
 
 	Speed_ = 150.f;
 
