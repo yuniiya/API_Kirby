@@ -26,6 +26,8 @@ public:
 
 private:
 	static GameEngineRenderer* PlayerHPBar;
+	float OriginalScale_;
+	float PrevScale_;
 
 protected:
 	void Start() override;

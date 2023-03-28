@@ -142,7 +142,12 @@ void Player::GravityOn()
 
 void Player::Hit()
 {
-	CurHP_ = CurHP_ - 10;
+	if (CurHP_ <= 10.f)
+	{
+		return;
+	}
+
+	CurHP_ -= 10.f;
 
 	PlayerHP::MainHP->SetHP(CurHP_, MaxHP_);
 
@@ -774,7 +779,7 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("Item1", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
-			CurHP_ = CurHP_ + 10.f;
+			CurHP_ += 10.f;
 			PlayerHP::MainHP->SetHP(CurHP_, MaxHP_);
 
 
@@ -790,7 +795,7 @@ void Player::MonsterColCheck()
 
 		if (true == PlayerCollision->CollisionResult("Item2", ColList, CollisionType::Rect, CollisionType::Rect))
 		{
-			CurHP_ = CurHP_ + 10.f;
+			CurHP_ += 10.f;
 			PlayerHP::MainHP->SetHP(CurHP_, MaxHP_);
 
 			for (size_t i = 0; i < ColList.size(); i++)
